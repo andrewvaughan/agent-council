@@ -1,0 +1,8 @@
+{
+  "enabledPlugins": {
+    "code-documentation@claude-code-workflows": true,
+    "debugging-toolkit@claude-code-workflows": true,
+    "code-review-ai@claude-code-workflows": true,
+    "git-pr-workflows@claude-code-workflows": true
+  }
+}
