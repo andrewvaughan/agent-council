@@ -4,31 +4,93 @@
 
 ## 🚀 Quick Start
 
+### Prerequisites
+
+- **VS Code** with these extensions:
+  - **Claude Code** (required)
+  - **Dev Containers** (required)
+- **Docker Desktop** (for devcontainer)
+
+### Installation
+
 ```bash
-# Clone repository
-git clone git@github.com:YOUR_USERNAME/lawnsignal.git
+# 1. Clone repository
+git clone git@github.com:andrewvaughan/lawnsignal.git
 cd lawnsignal
 
-# Install dependencies
-pnpm install
+# 2. Open in VS Code
+code .
 
-# Start development environment
-# (Coming soon when monorepo is set up)
-# pnpm dev
+# 3. Reopen in devcontainer
+# VS Code will prompt: "Reopen in Container" → Click it
+# Or: Cmd/Ctrl+Shift+P → "Dev Containers: Reopen in Container"
+```
+
+### 4. Set Up Claude Code Plugins
+
+**In VS Code (inside devcontainer):**
+
+1. Open Command Palette (`Cmd/Ctrl+Shift+P`)
+2. Type "Claude Code: Manage Plugins"
+3. Click "Add Marketplace"
+4. Enter: `wshobson/agents` and press Enter
+
+5. Install ALL of the following plugins (click + icon next to each):
+
+#### Essential Development Tools
+- `code-documentation` - Documentation and technical writing
+- `debugging-toolkit` - Smart debugging and error analysis
+- `git-pr-workflows` - Git automation and PR workflows
+- `javascript-typescript` - TypeScript/JavaScript expertise
+- `full-stack-orchestration` - End-to-end feature development
+
+#### Frontend & Backend
+- `frontend-mobile-development` - React/React Native development
+- `backend-development` - REST/GraphQL API design
+- `backend-api-security` - NestJS security patterns
+- `frontend-mobile-security` - React security (XSS, CSRF)
+- `ui-design` - UI design
+- `database-design` - Database design
+
+#### Testing & Quality
+- `unit-testing` - Automated test generation (Jest)
+- `code-review-ai` - AI-powered code review
+- `api-testing-observability` - API testing and monitoring
+
+#### Security
+- `security-scanning` - Vulnerability scanning
+- `database-migrations` - Safe Prisma migrations
+
+#### Infrastructure & Operations
+- `cloud-infrastructure` - AWS/Docker/K8s architecture
+
+#### Additional Utilities
+- `documentation-generation` - Auto-generate docs
+- `dependency-management` - Package management
+
+**Total: 19 plugins**
+
+**Verify:** Command Palette → "Claude Code: Manage Plugins" → all 19 should show as installed
+
+### Start Development
+
+```bash
+# Inside devcontainer, dependencies are already installed
+pnpm dev
 ```
 
 ## 📖 Documentation
 
-- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to Lawnsignal
-- **[Development Guide](docs/DEVELOPMENT.md)** - Local setup and development workflow
-- **[Council Documentation](.claude/README.md)** - Using councils of agents for decision-making
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute (includes workflow and councils)
+- **[.claude/README.md](.claude/README.md)** - Using councils of agents
+- **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** - Detailed development guide
 
 ## 🏗️ Tech Stack
 
 ### Frontend
 - **Vite + React 19** - Fast, modern React framework
 - **TypeScript 5.7+** - Type-safe development
-- **Tailwind CSS + shadcn/ui** - Utility-first styling with beautiful components
+- **Tailwind CSS + shadcn/ui** - Utility-first styling
 
 ### Backend
 - **NestJS** - Scalable Node.js framework
@@ -40,35 +102,42 @@ pnpm install
 - **Docker** - Containerized deployment
 - **Self-hosted** - Full control, no vendor lock-in
 
-## 🎯 Philosophy
+## 🤖 Councils of Agents
 
-Lawnsignal is built with these core principles:
+This project uses **councils of agents** - specialized AI agents that evaluate decisions from multiple perspectives.
+
+**5 Councils:**
+- **Architecture** - Tech stack, DB schema, APIs
+- **Feature** - Feature planning with product/design
+- **Review** - Code review, security checks
+- **Deployment** - Production readiness
+- **Product** - Strategy, design, roadmap
+
+**Example:** Open Claude Code in VS Code and ask:
+```
+I need to activate the Architecture Council to evaluate:
+Should we use tRPC or REST for our API layer?
+```
+
+**Learn more:** [.claude/README.md](.claude/README.md)
+
+## 🎯 Philosophy
 
 1. **Speed over Perfection** - Ship fast, learn fast, iterate
 2. **Incremental Value** - Deliver in 1-2 week increments
 3. **Feature Flags** - Prototype and test before full rollout
-4. **User Feedback** - Data-driven decisions, not assumptions
-5. **Councils of Agents** - Multi-perspective decision-making
-
-## 🤖 Councils of Agents
-
-This project uses **councils of agents** - specialized AI agents that evaluate decisions from multiple perspectives:
-
-- **11 Specialized Agents** - Technical, product, design, delivery, and business perspectives
-- **5 Councils** - Architecture, Feature, Review, Deployment, Product
-- **Every Decision** - Evaluated for speed, quality, security, and value
-
-Learn more in the [Council Documentation](.claude/README.md).
+4. **User Feedback** - Data-driven decisions
+5. **Councils of Agents** - Multi-perspective decisions
 
 ## 🔄 Development Workflow
 
-We follow **Trunk-Based Development** for rapid iteration:
+**Trunk-Based Development:**
 
-- **Main branch** is always production-ready
-- **Short-lived feature branches** (< 2-3 days)
-- **All changes via pull requests** with required reviews
-- **Frequent integration** to avoid long-lived branches
-- **Feature flags** for incomplete work
+- Main branch is always production-ready
+- Short-lived feature branches (< 2-3 days)
+- All changes via pull requests
+- Frequent integration
+- Feature flags for incomplete work
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed workflow.
 
@@ -76,85 +145,68 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed workflow.
 
 ```
 lawnsignal/
-├── .claude/                    # Councils of agents configuration
-├── .github/                    # GitHub templates and workflows
-├── apps/                       # Applications (coming soon)
-│   ├── web/                    # React frontend
-│   └── api/                    # NestJS backend
-├── packages/                   # Shared packages (coming soon)
-│   ├── ui/                     # UI component library
-│   ├── types/                  # Shared TypeScript types
-│   └── utils/                  # Shared utilities
-├── docs/                       # Documentation
-├── CONTRIBUTING.md             # Contribution guidelines
-└── README.md                   # This file
+├── .claude/         # Councils configuration
+├── .devcontainer/   # Dev container setup
+├── .github/         # GitHub workflows
+├── apps/            # Applications (coming soon)
+│   ├── web/         # React frontend
+│   └── api/         # NestJS backend
+├── packages/        # Shared packages (coming soon)
+│   ├── ui/          # UI components
+│   ├── types/       # Shared types
+│   └── utils/       # Shared utilities
+├── docs/            # Documentation
+└── README.md        # This file
 ```
 
 ## 🧪 Testing
 
 ```bash
-# Run all tests
-pnpm test
-
-# Run tests in watch mode
-pnpm test:watch
-
-# Run E2E tests
-pnpm test:e2e
-
-# Check coverage
-pnpm test:coverage
+pnpm test              # Run all tests
+pnpm test:watch        # Watch mode
+pnpm test:e2e          # E2E tests
+pnpm test:coverage     # Coverage report
 ```
 
 ## 🔍 Code Quality
 
 ```bash
-# Type check
-pnpm type-check
-
-# Lint code
-pnpm lint
-
-# Format code
-pnpm format
-
-# Run all checks
-pnpm check-all
+pnpm type-check    # TypeScript check
+pnpm lint          # Lint code
+pnpm format        # Format code
+pnpm check-all     # Run all checks
 ```
 
 ## 🚢 Deployment
 
 **Current:** Self-hosted on homelab via Docker
-
 **Future:** Staging and beta environments (TBD)
 
 ## 🤝 Contributing
 
-We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) to get started.
+Read our [Contributing Guide](CONTRIBUTING.md) to get started.
 
 **Quick overview:**
-1. Create a feature branch from `main`
-2. Make your changes following our conventions
-3. Submit a pull request with clear description
-4. Address review feedback
-5. Merge when approved
+1. Set up devcontainer and Claude Code plugins (see above)
+2. Create feature branch from `main`
+3. Make changes following conventions
+4. Consult councils for major decisions
+5. Submit pull request
+6. Address review feedback
+7. Merge when approved
 
 ## 📝 License
 
-TBD
+Proprietary.
 
 ## 🙏 Acknowledgments
 
-- Built with [Claude Code](https://claude.com/claude-code) and councils of agents
-- Inspired by [trunk-based development](https://trunkbaseddevelopment.com/)
-- Powered by the [wshobson/agents](https://github.com/wshobson/agents) marketplace
+- [Trunk-based development](https://trunkbaseddevelopment.com/)
+- [wshobson/agents](https://github.com/wshobson/agents) marketplace
+- [Council pattern](https://www.theengineeringmanager.com/growth/councils-of-agents-group-thinking-with-llms/)
 
 ## 📧 Contact
 
 - **Website**: [lawnsignal.com](https://lawnsignal.com)
-- **Issues**: [GitHub Issues](https://github.com/YOUR_USERNAME/lawnsignal/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/YOUR_USERNAME/lawnsignal/discussions)
-
----
-
-**Built with speed, iteration, and councils of agents** 🚀
+- **Issues**: [GitHub Issues](https://github.com/andrewvaughan/lawnsignal/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/andrewvaughan/lawnsignal/discussions)

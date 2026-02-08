@@ -2,7 +2,22 @@
   "enabledPlugins": {
     "code-documentation@claude-code-workflows": true,
     "debugging-toolkit@claude-code-workflows": true,
+    "git-pr-workflows@claude-code-workflows": true,
+    "javascript-typescript@claude-code-workflows": true,
+    "full-stack-orchestration@claude-code-workflows": true,
+    "frontend-mobile-development@claude-code-workflows": true,
+    "backend-development@claude-code-workflows": true,
+    "backend-api-security@claude-code-workflows": true,
+    "frontend-mobile-security@claude-code-workflows": true,
+    "unit-testing@claude-code-workflows": true,
     "code-review-ai@claude-code-workflows": true,
-    "git-pr-workflows@claude-code-workflows": true
+    "api-testing-observability@claude-code-workflows": true,
+    "ui-design@claude-code-workflows": true,
+    "security-scanning@claude-code-workflows": true,
+    "database-migrations@claude-code-workflows": true,
+    "database-design@claude-code-workflows": true,
+    "cloud-infrastructure@claude-code-workflows": true,
+    "documentation-generation@claude-code-workflows": true,
+    "dependency-management@claude-code-workflows": true
   }
 }
