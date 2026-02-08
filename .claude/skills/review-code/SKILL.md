@@ -56,6 +56,8 @@ Focus on:
 
 Read the Review Council template from `.claude/councils/review-council.md` and conduct the full council review.
 
+> **Model Selection**: For each council member, read their agent definition from `.claude/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
+
 ### Security Engineer (Lead) — consult: security-scanning
 
 - Review all SAST findings from Step 2

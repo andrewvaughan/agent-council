@@ -27,6 +27,8 @@ If the user provides a brief description, that's sufficient — the councils wil
 
 Read the Product Council template from `.claude/councils/product-council.md` and evaluate the feature from all 6 member perspectives.
 
+> **Model Selection**: For each council member, read their agent definition from `.claude/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
+
 ### Product Strategist (Lead)
 - **User Value**: Does this solve a real user problem? Market fit?
 - **Priority**: Is this the right thing to build now?
@@ -74,6 +76,8 @@ Based on Product Council feedback, clearly define:
 ## Step 4: Activate the Feature Council
 
 Read the Feature Council template from `.claude/councils/feature-council.md` and create the technical implementation plan.
+
+> **Model Selection**: For each council member, read their agent definition from `.claude/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
 
 ### Principal Engineer (Lead) — consult: full-stack-orchestration
 - **Architecture Fit**: Does this align with system design?

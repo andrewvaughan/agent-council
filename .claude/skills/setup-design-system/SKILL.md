@@ -27,6 +27,8 @@ Ask the user:
 
 If initializing the design system or making significant structural changes, activate a Product Council subset:
 
+> **Model Selection**: For each council member, read their agent definition from `.claude/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
+
 ### Design Lead (Lead) — consult: ui-design
 - **Brand Identity**: Color palette, typography, visual language
 - **Component Hierarchy**: Primitives vs composed components

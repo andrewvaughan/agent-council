@@ -60,6 +60,8 @@ Activate the Deployment Council from `.claude/councils/deployment-council.md` if
 
 If activated, run through the full Deployment Checklist:
 
+> **Model Selection**: For each council member, read their agent definition from `.claude/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
+
 ### Platform Engineer (Lead) — consult: cloud-infrastructure
 - Docker builds successfully?
 - Environment variables configured?

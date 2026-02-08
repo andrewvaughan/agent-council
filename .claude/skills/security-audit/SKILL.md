@@ -130,6 +130,8 @@ Invoke `/security-scanning:attack-tree-construction` to build attack trees showi
 
 Activate a subset of the Architecture Council for security review:
 
+> **Model Selection**: For each council member, read their agent definition from `.claude/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
+
 ### Security Engineer (Lead) — consult: security-scanning
 - Validate automated findings (identify false positives)
 - Prioritize remediation based on actual risk
