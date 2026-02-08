@@ -82,7 +82,7 @@ pnpm dev
 ## 📖 Documentation
 
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute (includes workflow and councils)
-- **[.claude/README.md](.claude/README.md)** - Using councils of agents
+- **[.claude/README.md](.claude/README.md)** - Workflow skills and councils of agents
 - **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** - Detailed development guide
 
 ## 🏗️ Tech Stack
@@ -102,21 +102,27 @@ pnpm dev
 - **Docker** - Containerized deployment
 - **Self-hosted** - Full control, no vendor lock-in
 
-## 🤖 Councils of Agents
+## 🤖 Workflow Skills & Councils
 
-This project uses **councils of agents** - specialized AI agents that evaluate decisions from multiple perspectives.
+This project uses **workflow skills** (executable slash commands) and **councils of agents** for end-to-end development with multi-perspective decision-making.
 
-**5 Councils:**
-- **Architecture** - Tech stack, DB schema, APIs
-- **Feature** - Feature planning with product/design
-- **Review** - Code review, security checks
-- **Deployment** - Production readiness
-- **Product** - Strategy, design, roadmap
+**7 Skills** (type `/` in Claude Code):
 
-**Example:** Open Claude Code in VS Code and ask:
+| Skill | Purpose |
+|-------|---------|
+| `/plan-feature` | Plan a feature with Product + Feature council review |
+| `/build-feature` | Full-stack implementation (DB + API + UI + tests) |
+| `/build-api` | Backend-only API development |
+| `/review-code` | Multi-perspective code review + security scanning |
+| `/submit-pr` | Create PR with quality checks + deployment review |
+| `/security-audit` | SAST scanning + STRIDE threat modeling |
+| `/setup-design-system` | Design system initialization + accessible components |
+
+**5 Councils:** Architecture, Feature, Review, Deployment, Product
+
+**Example:** Open Claude Code in VS Code and run:
 ```
-I need to activate the Architecture Council to evaluate:
-Should we use tRPC or REST for our API layer?
+/plan-feature Add user authentication with OAuth2 providers
 ```
 
 **Learn more:** [.claude/README.md](.claude/README.md)
@@ -145,7 +151,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed workflow.
 
 ```
 lawnsignal/
-├── .claude/         # Councils configuration
+├── .claude/         # Skills, councils, and agent configuration
 ├── .devcontainer/   # Dev container setup
 ├── .github/         # GitHub workflows
 ├── apps/            # Applications (coming soon)
@@ -188,10 +194,10 @@ Read our [Contributing Guide](CONTRIBUTING.md) to get started.
 
 **Quick overview:**
 1. Set up devcontainer and Claude Code plugins (see above)
-2. Create feature branch from `main`
-3. Make changes following conventions
-4. Consult councils for major decisions
-5. Submit pull request
+2. `/plan-feature` - Plan and scope the feature
+3. `/build-feature` or `/build-api` - Implement with council guidance
+4. `/review-code` - Multi-perspective review
+5. `/submit-pr` - Create pull request
 6. Address review feedback
 7. Merge when approved
 
