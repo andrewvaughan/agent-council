@@ -1,6 +1,6 @@
 # Development Guide
 
-This guide covers the development workflow, local setup, and best practices for Lawnsignal development.
+This guide covers the development workflow, local setup, and best practices for this project.
 
 ## Prerequisites
 
@@ -14,8 +14,8 @@ This guide covers the development workflow, local setup, and best practices for 
 ### 1. Clone the Repository
 
 ```bash
-git clone git@github.com:YOUR_USERNAME/lawnsignal.git
-cd lawnsignal
+git clone git@github.com:YOUR_USERNAME/YOUR_PROJECT.git
+cd YOUR_PROJECT
 ```
 
 ### 2. Install Dependencies
@@ -180,7 +180,7 @@ graph LR
 ## Project Structure
 
 ```
-lawnsignal/
+your-project/
 ├── .claude/                    # Claude Code councils & agents
 ├── .github/                    # GitHub configs & templates
 │   ├── workflows/              # GitHub Actions CI/CD
@@ -254,7 +254,7 @@ pnpm db:studio
 pnpm build
 
 # Build specific package
-pnpm build --filter=@lawnsignal/web
+pnpm build --filter=@your-project/web
 
 # Build in watch mode
 pnpm build:watch
@@ -274,7 +274,7 @@ pnpm build:watch
       "request": "launch",
       "name": "Debug API",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@lawnsignal/api", "start:debug"],
+      "runtimeArgs": ["--filter", "@your-project/api", "start:debug"],
       "console": "integratedTerminal",
       "restart": true
     }

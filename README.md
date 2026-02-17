@@ -1,6 +1,6 @@
-# Lawnsignal
+# Agent Council
 
-> A cloud-agnostic, self-hosted web application built with TypeScript, rapid iteration, and councils of agents.
+> A template for multi-perspective decision-making and end-to-end development workflows using councils of AI agents in Claude Code.
 
 ## 🚀 Quick Start
 
@@ -15,8 +15,8 @@
 
 ```bash
 # 1. Clone repository
-git clone git@github.com:andrewvaughan/lawnsignal.git
-cd lawnsignal
+git clone git@github.com:YOUR_USERNAME/YOUR_PROJECT.git
+cd YOUR_PROJECT
 
 # 2. Open in VS Code
 code .
@@ -150,14 +150,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed workflow.
 ## 📦 Project Structure
 
 ```
-lawnsignal/
+your-project/
 ├── .claude/         # Skills, councils, and agent configuration
 ├── .devcontainer/   # Dev container setup
 ├── .github/         # GitHub workflows
-├── apps/            # Applications (coming soon)
-│   ├── web/         # React frontend
-│   └── api/         # NestJS backend
-├── packages/        # Shared packages (coming soon)
+├── apps/            # Applications
+│   ├── web/         # Frontend
+│   └── api/         # Backend
+├── packages/        # Shared packages
 │   ├── ui/          # UI components
 │   ├── types/       # Shared types
 │   └── utils/       # Shared utilities
@@ -213,6 +213,5 @@ Proprietary.
 
 ## 📧 Contact
 
-- **Website**: [lawnsignal.com](https://lawnsignal.com)
-- **Issues**: [GitHub Issues](https://github.com/andrewvaughan/lawnsignal/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/andrewvaughan/lawnsignal/discussions)
+- **Issues**: [GitHub Issues](https://github.com/YOUR_USERNAME/YOUR_PROJECT/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/YOUR_USERNAME/YOUR_PROJECT/discussions)

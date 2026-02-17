@@ -11,6 +11,7 @@ Initialize or extend the project's design system with properly accessible, consi
 ## Step 1: Assess Current State
 
 Check if a design system already exists:
+
 - Look for `packages/ui/` directory structure
 - Check for shadcn/ui configuration (`components.json`)
 - Check Tailwind configuration (`tailwind.config.*`)
@@ -18,6 +19,7 @@ Check if a design system already exists:
 - Check for design tokens (colors, spacing, typography definitions)
 
 Ask the user:
+
 - **Initializing** a new design system or **extending** the existing one?
 - If extending: what components or patterns are needed?
 - Any brand guidelines, color palette, or Figma designs to reference?
@@ -30,17 +32,20 @@ If initializing the design system or making significant structural changes, acti
 > **Model Selection**: For each council member, read their agent definition from `.claude/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
 
 ### Design Lead (Lead) — consult: ui-design
+
 - **Brand Identity**: Color palette, typography, visual language
 - **Component Hierarchy**: Primitives vs composed components
 - **Design Tokens**: Token architecture (colors, spacing, typography, shadows)
 - **Recommendations**: Design system structure and principles
 
 ### Frontend Specialist — consult: frontend-mobile-development
+
 - **Technical Architecture**: Component library structure, build pipeline
 - **Framework Integration**: Vite + React 19 compatibility, tree-shaking
 - **Recommendations**: Implementation patterns, tooling choices
 
 ### Product Strategist
+
 - **User-Facing Priorities**: Which components are needed first?
 - **Brand Consistency**: Does this align with product vision?
 - **Recommendations**: Prioritization of design system investment
@@ -56,6 +61,7 @@ Invoke `/ui-design:design-system-setup` for initialization guidance.
 Set up the foundation:
 
 **Design Tokens**
+
 - Color palette (primary, secondary, neutral, semantic: success/warning/error/info)
 - Typography scale (font families, sizes, weights, line heights)
 - Spacing scale (consistent spacing values: 0, 1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64)
@@ -65,12 +71,14 @@ Set up the foundation:
 
 **Tailwind Configuration**
 Using `/frontend-mobile-development:tailwind-design-system`:
+
 - Extend the Tailwind theme with design tokens
 - Configure shadcn/ui with project-specific theme colors
 - Set up CSS custom properties for runtime theming
 - Configure dark mode strategy (class-based or media-query)
 
 **Component Structure**
+
 ```
 packages/ui/src/
 ├── components/
@@ -94,16 +102,20 @@ Read the existing patterns and conventions before adding new components. Match t
 For each component needed, follow this process:
 
 ### 4a. Component Design
+
 Invoke `/ui-design:create-component` for guided component creation.
 
 Define the component API:
+
 - **Props interface**: All configurable options with TypeScript types
 - **Variants**: Size, color, and style variants (using cva or tailwind-variants)
 - **Default values**: Sensible defaults that work out-of-the-box
 - **Composition**: How it works with child components
 
 ### 4b. Implementation
+
 Build each component with:
+
 - Full TypeScript typing (no `any` types)
 - Tailwind CSS styling with shadcn/ui patterns
 - `React.forwardRef` for ref forwarding
@@ -111,7 +123,9 @@ Build each component with:
 - Responsive behavior using Tailwind breakpoints
 
 ### 4c. Accessibility
+
 Every component must include:
+
 - Semantic HTML elements (button, nav, dialog, etc.)
 - ARIA attributes (aria-label, aria-describedby, role, etc.)
 - Keyboard navigation (Tab, Enter, Escape, Arrow keys as appropriate)
@@ -121,7 +135,9 @@ Every component must include:
 - Touch target minimum size (44x44px for interactive elements)
 
 ### 4d. Tests
+
 For each component, write:
+
 - **Render test**: Component renders without errors
 - **Props test**: All variants and prop combinations render correctly
 - **Interaction test**: Click, hover, keyboard interactions work
@@ -136,6 +152,7 @@ After all components are built, run a comprehensive accessibility audit:
 Invoke `/ui-design:accessibility-audit` on all new/modified components.
 
 Check for:
+
 - **WCAG 2.1 AA compliance** (minimum standard)
 - **Color contrast**: All text meets contrast ratios
 - **Keyboard navigation**: Complete keyboard operability
@@ -172,18 +189,37 @@ Document the design system:
 Commit with conventional commit format:
 
 For new design system:
+
 ```
 feat(ui): initialize design system with core components
 ```
 
 For new components:
+
 ```
 feat(ui): add <component-name> component
 ```
 
 For design token changes:
+
 ```
 feat(ui): update design tokens for <change-description>
 ```
 
-**Next step**: Run `/review-code` for quality review, or continue building features with `/build-feature`.
+## Step 9: Hand Off — STOP Here
+
+> [!CAUTION]
+> **This skill's work is done.** Do NOT proceed to create a pull request, push to remote, or run a code review. Those are separate skills with their own workflows and checkpoints.
+
+Present the next step to the user:
+
+- **Recommended**: Run `/review-code` for multi-perspective quality and accessibility review before submitting
+- **If building a feature that uses these components**: Continue with `/build-feature` to implement the feature, then run `/review-code`
+- **If this is standalone design system work**: Run `/review-code` → `/submit-pr`
+
+> [!TIP]
+> **Pipeline**: `/plan-feature` → `/build-feature` or `/build-api` → `/review-code` → `/submit-pr`
+>
+> **`/setup-design-system`** can be run at any point in the pipeline or independently. You are here — proceed to `/review-code` when ready.
+
+**Do not push the branch, create a PR, or invoke `/submit-pr` from within this skill.**

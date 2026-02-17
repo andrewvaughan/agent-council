@@ -26,9 +26,9 @@ Skills compose into a natural development flow. The typical end-to-end workflow 
 
 ```
 /plan-feature       Scope and plan the feature with council review
-       |
+       |            Creates GitHub issue(s) with implementation plan
        v
-/build-feature      Implement database, API, frontend, and tests
+/build-feature      Implement from GitHub issue (or decision record)
   or /build-api     (for backend-only work)
        |
        v
@@ -39,6 +39,7 @@ Skills compose into a natural development flow. The typical end-to-end workflow 
 ```
 
 Standalone skills can be run at any point:
+
 - `/security-audit` - Comprehensive security audit (before releases, after security changes, or on a regular cadence)
 - `/setup-design-system` - Initialize or extend the design system with accessible components
 
@@ -84,9 +85,15 @@ Each skill suggests the next skill to run when it completes, so you always know 
 
 9. **Creates a feature branch** and saves the decision record to `.claude/councils/decisions/NNN-<feature-slug>.md`.
 
-**Outputs**: Decision record, feature branch, task breakdown ready for implementation.
+10. **Pre-issue validation**: Verifies the decision record is complete, council consensus has no Block votes, and the task breakdown is present.
 
-**Next step**: `/build-feature` or `/build-api`
+11. **CHECKPOINT**: Presents the assembled GitHub issue content for review before creation.
+
+12. **Creates GitHub issue(s)** via `gh issue create` with the implementation plan, council decisions, success metrics, and decision record reference. Supports single-issue or multi-issue (per-phase) creation.
+
+**Outputs**: Decision record (authoritative project-level record of council evaluations and rationale), feature branch, GitHub issue(s) (actionable work items referencing the decision record), task breakdown ready for implementation.
+
+**Next step**: `/build-feature <issue-number>` or `/build-api`
 
 ---
 
@@ -98,7 +105,7 @@ Each skill suggests the next skill to run when it completes, so you always know 
 
 **What it does**:
 
-1. **Loads the implementation plan** from the most recent decision record, or asks you what to build. Verifies you're on a feature branch.
+1. **Loads the implementation plan** from a GitHub issue number (primary), the most recent decision record (fallback), or asks you what to build. When given an issue number, fetches the issue via `gh issue view`, extracts the task breakdown, and reads the referenced decision record for full context. Verifies you're on a feature branch.
 
 2. **Database layer** (if schema changes needed):
    - Invokes `/database-design:postgresql` for schema design
@@ -339,13 +346,13 @@ Councils are groups of AI agents that evaluate decisions from multiple perspecti
 
 ### 5 Councils
 
-| Council | Members | When to Use |
-|---------|---------|-------------|
-| [Architecture](./councils/architecture-council.md) | Principal Engineer, Platform Engineer, Security Engineer, Backend Specialist | Tech stack, DB schema, APIs, monorepo structure |
-| [Feature](./councils/feature-council.md) | Principal Engineer, Frontend Specialist, Backend Specialist, QA Lead | New features, major refactoring |
-| [Review](./councils/review-council.md) | Security Engineer, QA Lead, DevX Engineer, Domain Specialist | Code review, security, quality |
-| [Deployment](./councils/deployment-council.md) | Platform Engineer, Security Engineer, QA Lead | Production releases, infrastructure changes |
-| [Product](./councils/product-council.md) | Product Strategist, Lean Delivery Lead, Design Lead, Business Ops Lead, Principal Engineer, Frontend Specialist | Strategy, design, roadmap, feature flags |
+| Council                                            | Members                                                                                                         | When to Use                                     |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| [Architecture](./councils/architecture-council.md) | Principal Engineer, Platform Engineer, Security Engineer, Backend Specialist                                    | Tech stack, DB schema, APIs, monorepo structure |
+| [Feature](./councils/feature-council.md)           | Principal Engineer, Frontend Specialist, Backend Specialist, QA Lead                                            | New features, major refactoring                 |
+| [Review](./councils/review-council.md)             | Security Engineer, QA Lead, DevX Engineer, Domain Specialist                                                    | Code review, security, quality                  |
+| [Deployment](./councils/deployment-council.md)     | Platform Engineer, Security Engineer, QA Lead                                                                   | Production releases, infrastructure changes     |
+| [Product](./councils/product-council.md)           | Product Strategist, Lean Delivery Lead, Design Lead, Business Ops Lead, Principal Engineer, Frontend Specialist | Strategy, design, roadmap, feature flags        |
 
 ### Activating Councils Directly
 
@@ -391,17 +398,18 @@ Skills invoke these 19 plugins at the appropriate moments. You can also invoke a
 
 ## Quick Reference
 
-| Situation | What to Do |
-|-----------|------------|
-| Starting a new feature | `/plan-feature` |
-| Building frontend + backend | `/build-feature` |
-| Building API only | `/build-api` |
-| Ready for code review | `/review-code` |
-| Ready to create PR | `/submit-pr` |
-| Need security check | `/security-audit` |
-| Creating UI components | `/setup-design-system` |
-| Ad-hoc tech decision | Activate a council directly |
-| Product/design decision | Activate Product Council directly |
+| Situation                   | What to Do                        |
+| --------------------------- | --------------------------------- |
+| Starting a new feature      | `/plan-feature` (creates issue)   |
+| Building from planned issue | `/build-feature <issue-number>`   |
+| Building frontend + backend | `/build-feature`                  |
+| Building API only           | `/build-api`                      |
+| Ready for code review       | `/review-code`                    |
+| Ready to create PR          | `/submit-pr`                      |
+| Need security check         | `/security-audit`                 |
+| Creating UI components      | `/setup-design-system`            |
+| Ad-hoc tech decision        | Activate a council directly       |
+| Product/design decision     | Activate Product Council directly |
 
 ## Best Practices
 

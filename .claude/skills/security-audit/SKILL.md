@@ -11,6 +11,7 @@ Run a comprehensive security audit that combines automated static analysis, thre
 ## Step 1: Define Audit Scope
 
 Ask the user:
+
 - **Scope**: Full codebase or specific area? (e.g., `apps/api/src/auth/`, `apps/web/src/`)
 - **Trigger**: What prompted this audit? (routine, pre-release, security incident, new feature, dependency update)
 - **Focus areas**: Authentication, API security, data protection, infrastructure, frontend security, or all?
@@ -22,6 +23,7 @@ Ask the user:
 Invoke `/security-scanning:security-sast` on the defined scope.
 
 Scan for:
+
 - **Injection**: SQL injection, NoSQL injection, command injection, LDAP injection
 - **XSS**: Reflected, stored, and DOM-based cross-site scripting
 - **CSRF**: Missing CSRF protections on state-changing endpoints
@@ -32,6 +34,7 @@ Scan for:
 - **Prototype pollution**: JavaScript-specific object manipulation attacks
 
 Collect every finding with:
+
 - **Severity**: Critical / High / Medium / Low / Info
 - **Category**: OWASP Top 10 mapping
 - **Location**: File path and line number
@@ -44,11 +47,13 @@ Collect every finding with:
 Invoke `/security-scanning:security-hardening` for a comprehensive hardening review:
 
 ### HTTP Security
+
 - Security headers (HSTS, CSP, X-Frame-Options, X-Content-Type-Options)
 - CORS configuration (allowed origins, methods, headers)
 - Cookie security flags (HttpOnly, Secure, SameSite)
 
 ### API Security
+
 - Rate limiting on all public endpoints
 - Input validation completeness (every user input validated)
 - Output encoding to prevent injection
@@ -56,6 +61,7 @@ Invoke `/security-scanning:security-hardening` for a comprehensive hardening rev
 - Request size limits
 
 ### Authentication and Authorization
+
 - Password hashing algorithm (bcrypt, argon2)
 - JWT configuration (algorithm, expiration, refresh)
 - Session management (timeout, invalidation, rotation)
@@ -63,6 +69,7 @@ Invoke `/security-scanning:security-hardening` for a comprehensive hardening rev
 - OAuth/OIDC configuration (if applicable)
 
 ### Data Protection
+
 - PII encrypted at rest
 - Sensitive data encrypted in transit (TLS 1.2+)
 - Logging does not include sensitive data
@@ -70,6 +77,7 @@ Invoke `/security-scanning:security-hardening` for a comprehensive hardening rev
 - Database connection uses SSL
 
 ### Infrastructure
+
 - Docker image security (base image, non-root user, multi-stage builds)
 - Environment variable management (no secrets in code or logs)
 - Network exposure (unnecessary ports, services)
@@ -79,35 +87,42 @@ Invoke `/security-scanning:security-hardening` for a comprehensive hardening rev
 Invoke `/security-scanning:stride-analysis-patterns` to systematically model threats:
 
 ### Spoofing
+
 - Can user identities be faked? (auth bypass, token theft)
 - Can service identities be spoofed? (service-to-service auth)
 
 ### Tampering
+
 - Can request data be modified in transit?
 - Can database records be altered without authorization?
 - Can client-side data (localStorage, cookies) be tampered?
 
 ### Repudiation
+
 - Are all security-relevant actions logged?
 - Can a user deny performing an action?
 - Is there an audit trail for data changes?
 
 ### Information Disclosure
+
 - Can sensitive data leak through error messages?
 - Can unauthorized users access other users' data?
 - Are there timing attacks or side-channel leaks?
 
 ### Denial of Service
+
 - Can the system be overwhelmed by excessive requests?
 - Are there resource-intensive endpoints without rate limiting?
 - Can large payloads cause memory exhaustion?
 
 ### Elevation of Privilege
+
 - Can a regular user access admin functionality?
 - Can horizontal privilege escalation occur (access another user's resources)?
 - Are there IDOR (Insecure Direct Object Reference) vulnerabilities?
 
 Document each threat with:
+
 - **Likelihood**: High / Medium / Low
 - **Impact**: Critical / High / Medium / Low
 - **Risk Score**: Likelihood x Impact
@@ -119,6 +134,7 @@ Document each threat with:
 For the top 3 highest-risk threats identified in STRIDE:
 
 Invoke `/security-scanning:attack-tree-construction` to build attack trees showing:
+
 - **Attack goal**: What the attacker wants to achieve
 - **Attack paths**: Different ways to reach the goal
 - **Sub-goals**: Intermediate steps required
@@ -133,18 +149,21 @@ Activate a subset of the Architecture Council for security review:
 > **Model Selection**: For each council member, read their agent definition from `.claude/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
 
 ### Security Engineer (Lead) — consult: security-scanning
+
 - Validate automated findings (identify false positives)
 - Prioritize remediation based on actual risk
 - Assess overall security posture
 - **Assessment**: Strong / Adequate / Needs Improvement / Critical Risk
 
 ### Principal Engineer — consult: full-stack-orchestration
+
 - Assess architectural implications of required remediations
 - Identify systemic patterns that create vulnerabilities
 - Recommend architectural changes for defense-in-depth
 - **Assessment**: Architecturally sound / Needs refactoring / Fundamental issues
 
 ### Backend Specialist — consult: backend-development
+
 - Evaluate backend-specific security patterns
 - Assess API security implementation quality
 - Review database access patterns for injection risks
@@ -155,13 +174,16 @@ Activate a subset of the Architecture Council for security review:
 Generate a structured security audit report:
 
 ### Executive Summary
+
 - **Overall Security Posture**: Strong / Adequate / Needs Improvement / Critical
 - **Total Findings**: Count by severity (Critical, High, Medium, Low)
 - **Top 3 Risks**: The most important issues to address
 - **STRIDE Coverage**: Summary of threat categories with risk levels
 
 ### Critical and High Findings (must-fix)
+
 For each finding:
+
 - Severity, category, and OWASP mapping
 - File and line number
 - Description with evidence
@@ -169,17 +191,21 @@ For each finding:
 - Effort estimate (quick fix / moderate / significant)
 
 ### Medium Findings (should-fix)
+
 Same format as above, prioritized by risk.
 
 ### Low and Info Findings (track)
+
 Summary list for tracking as technical debt.
 
 ### Threat Model Summary
+
 - STRIDE analysis results table
 - Top 3 attack trees (visual or structured text)
 - Defense gap analysis
 
 ### Recommended Actions (prioritized)
+
 1. **Immediate** (Critical): Must fix before next deployment
 2. **This Sprint** (High): Fix within current work cycle
 3. **Next Sprint** (Medium): Schedule for upcoming work
@@ -201,6 +227,16 @@ If the user chooses to remediate findings now:
    fix(security): remediate <finding-description>
    ```
 
-After remediation, suggest:
-- Run `/review-code` to verify fixes in context of other changes
-- Schedule follow-up audit for remaining findings
+After remediation, suggest the next step (see below).
+
+## Step 9: Hand Off
+
+Present the next step to the user:
+
+- **If code was changed** (remediation applied): Run `/review-code` to verify fixes in context of other changes
+- **If no code was changed** (audit-only): No further action needed — track findings as issues or technical debt
+- **If starting a new feature**: Run `/plan-feature` to begin the next feature with audit findings in mind
+
+**Pipeline**: `/plan-feature` → `/build-feature` or `/build-api` → `/review-code` → `/submit-pr`
+
+**Standalone**: `/security-audit` can be run at any point in the pipeline or independently.

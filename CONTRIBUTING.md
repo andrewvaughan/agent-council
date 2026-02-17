@@ -1,6 +1,6 @@
-# Contributing to Lawnsignal
+# Contributing
 
-Thank you for your interest in contributing to Lawnsignal! This document outlines our development workflow and contribution guidelines.
+Thank you for your interest in contributing! This document outlines our development workflow and contribution guidelines.
 
 ## Development Workflow
 
@@ -303,4 +303,4 @@ git branch -d feature/my-feature
 
 ---
 
-**Thank you for contributing to Lawnsignal!** 🚀
+**Thank you for contributing!** 🚀

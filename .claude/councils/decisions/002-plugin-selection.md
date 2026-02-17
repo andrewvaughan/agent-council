@@ -1,8 +1,13 @@
+---
+type: reference
+description: Council decision on which wshobson/agents plugins to install for the workspace.
+---
+
 # Decision 002: wshobson/agents Plugin Selection
 
-**Date**: 2024-02-07
-**Council**: Review Council
-**Status**: Approved
+- **Date**: 2024-02-07
+- **Council**: Review Council
+- **Status**: Approved
 
 ## Question
 
@@ -52,27 +57,32 @@ All council members agree on core set of high-value plugins while avoiding dupli
 ## Approved Plugins (9 total)
 
 ### Essential (3 plugins)
+
 1. ✅ `javascript-typescript` - Core language expertise
 2. ✅ `cloud-infrastructure` - AWS/Docker/K8s architecture
 3. ✅ `incident-response` - Production incident management
 
 ### Security & Quality (4 plugins)
+
 4. ✅ `security-scanning` - Vulnerability scanning
 5. ✅ `backend-api-security` - NestJS security patterns
 6. ✅ `frontend-mobile-security` - React security patterns
 7. ✅ `accessibility-compliance` - A11y testing
 
 ### Testing & Database (2 plugins)
+
 8. ✅ `api-testing-observability` - API testing and monitoring
 9. ✅ `database-migrations` - Prisma migration safety
 
 ## Rejected Plugins (16 total)
 
 **Duplicates:**
+
 - ❌ `dependency-management` - Already installed
 - ❌ `documentation-generation` - Already installed
 
 **Overlaps with existing:**
+
 - ❌ `developer-essentials` - Vague, likely duplicate
 - ❌ `ui-design` - Overlaps with frontend-mobile-development
 - ❌ `error-debugging` - debugging-toolkit covers this
@@ -81,6 +91,7 @@ All council members agree on core set of high-value plugins while avoiding dupli
 - ❌ `api-scaffolding` - NestJS CLI is better
 
 **Not needed yet (premature):**
+
 - ❌ `seo-content-creation`
 - ❌ `seo-technical-optimization`
 - ❌ `seo-analysis-monitoring`
@@ -88,13 +99,16 @@ All council members agree on core set of high-value plugins while avoiding dupli
 - ❌ `application-performance`
 
 **Unnecessary overhead:**
+
 - ❌ `agent-orchestration` - Have council pattern
 - ❌ `context-management` - Creates overhead
 - ❌ `deployment-strategies` - Not needed yet
 
-**Under evaluation:**
-- ⚠️ `comprehensive-review` - Check if adds value beyond code-review-ai
-- ⚠️ `cicd-automation` - Assess overlap with git-pr-workflows
+> [!IMPORTANT]
+> **Under evaluation** — revisit after initial development:
+>
+> - `comprehensive-review` — Check if adds value beyond code-review-ai
+> - `cicd-automation` — Assess overlap with git-pr-workflows
 
 ## Action Items
 
@@ -103,8 +117,11 @@ All council members agree on core set of high-value plugins while avoiding dupli
 - [x] Update .claude/README.md with simplified council guide
 - [x] Remove redundant documentation files (SETUP.md, ONBOARDING.md, COUNCIL_ACTIVATION.md)
 - [x] Create VS Code-first setup instructions
-- [ ] Install approved 9 plugins from wshobson/agents marketplace
-- [ ] Verify total of 19 plugins installed
+- [x] Install approved 9 plugins from wshobson/agents marketplace
+- [x] Verify total of 19 plugins installed
+
+> [!NOTE]
+> **Post-decision divergences**: `ui-design` and `database-design` were initially rejected but later installed because skills reference them directly (e.g., `/ui-design:create-component`, `/database-design:postgresql`). `accessibility-compliance` and `incident-response` from the approved list were not installed — their functionality is covered by `ui-design:accessibility-audit` and existing debugging/deployment skills respectively.
 
 ## Follow-up
 

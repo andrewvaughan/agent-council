@@ -72,9 +72,9 @@ jobs:
   #     postgres:
   #       image: postgres:16-alpine
   #       env:
-  #         POSTGRES_USER: lawnsignal
-  #         POSTGRES_PASSWORD: lawnsignal
-  #         POSTGRES_DB: lawnsignal_test
+  #         POSTGRES_USER: myapp
+  #         POSTGRES_PASSWORD: myapp
+  #         POSTGRES_DB: myapp_test
   #       options: >-
   #         --health-cmd pg_isready
   #         --health-interval 10s
@@ -117,7 +117,7 @@ jobs:
   #     - name: Run unit tests
   #       run: pnpm test
   #       env:
-  #         DATABASE_URL: postgresql://lawnsignal:lawnsignal@localhost:5432/lawnsignal_test
+  #         DATABASE_URL: postgresql://myapp:myapp@localhost:5432/myapp_test
   #
   #     - name: Upload coverage reports
   #       uses: codecov/codecov-action@v4
