@@ -41,8 +41,6 @@ Skills compose into a natural development flow. The typical end-to-end workflow 
 Standalone skills can be run at any point:
 
 - `/security-audit` - Comprehensive security audit (before releases, after security changes, or on a regular cadence)
-- `/setup-design-system` - Initialize or extend the design system with accessible components
-
 Each skill suggests the next skill to run when it completes, so you always know what comes next.
 
 ---
@@ -297,49 +295,6 @@ Each skill suggests the next skill to run when it completes, so you always know 
 
 ---
 
-### `/setup-design-system` - Design System
-
-**Purpose**: Initialize the project's design system or extend it with new components, ensuring accessibility, brand consistency, Tailwind/shadcn integration, and documentation.
-
-**When to use**: When setting up the initial design system, adding new component categories, or creating complex UI components that need design review.
-
-**What it does**:
-
-1. **Assesses current state**: Checks for existing `packages/ui/` structure, shadcn/ui config, Tailwind config, existing components, and design tokens.
-
-2. **Product Council design review** (for initialization or major changes):
-   - Design Lead: Brand identity, component hierarchy, token architecture
-   - Frontend Specialist: Technical architecture, framework integration
-   - Product Strategist: User-facing priorities, brand consistency
-   - **CHECKPOINT**: Presents architecture proposal for approval.
-
-3. **Design system infrastructure** (if initializing):
-   - Invokes `/ui-design:design-system-setup` for initialization guidance
-   - Sets up design tokens (colors, typography, spacing, borders, shadows, breakpoints)
-   - Configures Tailwind with `/frontend-mobile-development:tailwind-design-system` (theme extension, shadcn/ui theming, CSS custom properties, dark mode)
-   - Establishes component directory structure (primitives, layout, navigation, feedback, data-display, forms)
-
-4. **Builds components** (for each component needed):
-   - Invokes `/ui-design:create-component` for guided creation
-   - Full TypeScript typing, Tailwind/shadcn styling, `React.forwardRef`, `cn()` utility
-   - Accessibility: semantic HTML, ARIA, keyboard nav, focus management, color contrast (WCAG AA), touch targets
-   - Uses `/frontend-mobile-development:react-state-management` for interactive components
-   - Tests: render, props, interaction, accessibility
-   - **CHECKPOINT**: After each batch, presents components for visual review.
-
-5. **Accessibility audit**: Invokes `/ui-design:accessibility-audit` on all new/modified components for WCAG 2.1 AA compliance (contrast, keyboard, screen reader, focus, motion, touch targets).
-   - **CHECKPOINT**: Presents findings for approval.
-
-6. **Design review**: Invokes `/ui-design:design-review` for consistency, naming conventions, API patterns, visual coherence, completeness.
-
-7. **Documentation**: Component catalog, design tokens reference, accessibility guide, getting started guide.
-
-**Outputs**: Design system components with accessibility compliance, committed to feature branch.
-
-**Next step**: `/review-code`
-
----
-
 ## Councils
 
 Councils are groups of AI agents that evaluate decisions from multiple perspectives. Skills automatically activate the appropriate council at the right time, but you can also activate councils directly for ad-hoc decisions.
@@ -407,7 +362,6 @@ Skills invoke these 19 plugins at the appropriate moments. You can also invoke a
 | Ready for code review       | `/review-code`                    |
 | Ready to create PR          | `/submit-pr`                      |
 | Need security check         | `/security-audit`                 |
-| Creating UI components      | `/setup-design-system`            |
 | Ad-hoc tech decision        | Activate a council directly       |
 | Product/design decision     | Activate Product Council directly |
 

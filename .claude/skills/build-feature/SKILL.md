@@ -282,7 +282,44 @@ If implementation was initiated from a GitHub issue, comment on it with progress
 gh issue comment <number> --body "Implementation committed on branch \`<branch-name>\`. Proceeding to code review via \`/review-code\`."
 ```
 
-## Step 9: Hand Off — STOP Here
+## Step 9: Track Deferred Work
+
+If the implementation plan, council decisions, or self-review identified items that were **explicitly deferred** (not forgotten — intentionally postponed), document them now so they don't get lost.
+
+### Check for Deferred Items
+
+Review the following sources for deferred work:
+
+1. **Implementation plan**: Items marked as "Future Iterations" or "Post-MVP"
+2. **Council decisions**: Recommendations tagged as "not for this increment"
+3. **Self-review findings**: Items you noticed but chose not to address in this PR
+4. **CHECKPOINT notes**: Any "known limitations or deferred items" from Step 8
+
+### Document Deferred Work
+
+For each deferred item, draft a GitHub issue:
+
+```bash
+gh issue create \
+  --title "<type>: <deferred item description>" \
+  --body "<context on why it was deferred, what needs to happen, and any relevant references>" \
+  --label "enhancement"
+```
+
+If the deferred items are small, a single tracking issue with a checklist is sufficient. If they represent distinct features, create separate issues.
+
+### Link to Current Work
+
+Add a comment on the current feature's GitHub issue (if one exists) noting the deferred work issues:
+
+```bash
+gh issue comment <current-issue-number> --body "Deferred work tracked in #<new-issue-1>, #<new-issue-2>."
+```
+
+> [!TIP]
+> Not every feature generates deferred work. If nothing was explicitly deferred, skip this step entirely. Don't manufacture follow-up issues just to have them.
+
+## Step 10: Hand Off — STOP Here
 
 > [!CAUTION]
 > **This skill's work is done.** Do NOT proceed to create a pull request, push to remote, or run a code review. Those are separate skills with their own workflows and checkpoints.

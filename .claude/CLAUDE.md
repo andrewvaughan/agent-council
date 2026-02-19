@@ -4,7 +4,7 @@
 
 **NEVER create non-standard markdown files in project root** (e.g., RUN.md, INSTALL.md, SETUP.md, QUICKSTART.md).
 
-Allowed root markdown files: README.md, CONTRIBUTING.md, CHANGELOG.md, LICENSE
+Allowed root markdown files: README.md, CONTRIBUTING.md, CHANGELOG.md, LICENSE, AGENTS.md
 
 Where to put documentation:
 
@@ -245,6 +245,20 @@ If a tangent occurs mid-skill, after completing the tangent, proactively say whi
 3. Only report the PR as ready once all checks are green
 4. Run `pnpm format:check` locally before pushing to catch Prettier issues early
 
+## Security Audit Scope
+
+When running `/security-audit`, the audit scope includes all application code and infrastructure configuration. The following are standard focus areas:
+
+- **Authentication and authorization**: Login flows, session management, access control, token handling
+- **Input validation**: All user-facing inputs, API parameters, file uploads, URL parameters
+- **Data protection**: Encryption at rest and in transit, PII handling, logging sanitization
+- **Infrastructure security**: Docker configuration, environment variables, network exposure, secrets management
+- **Dependency vulnerabilities**: Known CVEs in direct and transitive dependencies
+- **API security**: Rate limiting, CORS configuration, error information leakage, injection vectors
+
+> [!NOTE]
+> `/security-audit` can target the full codebase or a specific directory. Specify the scope when invoking.
+
 ## Quality Standards
 
 - No `any` types without justification
@@ -255,6 +269,6 @@ If a tangent occurs mid-skill, after completing the tangent, proactively say whi
 
 ## Skills & Councils
 
-Use workflow skills: /plan-feature, /build-feature, /build-api, /review-code, /submit-pr, /security-audit, /setup-design-system
+Use workflow skills: /plan-feature, /build-feature, /build-api, /review-code, /submit-pr, /security-audit
 
 See .claude/README.md for details.

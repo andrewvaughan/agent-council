@@ -106,7 +106,7 @@ pnpm dev
 
 This project uses **workflow skills** (executable slash commands) and **councils of agents** for end-to-end development with multi-perspective decision-making.
 
-**7 Skills** (type `/` in Claude Code):
+**6 Skills** (type `/` in Claude Code):
 
 | Skill | Purpose |
 |-------|---------|
@@ -116,7 +116,6 @@ This project uses **workflow skills** (executable slash commands) and **councils
 | `/review-code` | Multi-perspective code review + security scanning |
 | `/submit-pr` | Create PR with quality checks + deployment review |
 | `/security-audit` | SAST scanning + STRIDE threat modeling |
-| `/setup-design-system` | Design system initialization + accessible components |
 
 **5 Councils:** Architecture, Feature, Review, Deployment, Product
 

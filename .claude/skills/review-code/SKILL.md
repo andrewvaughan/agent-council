@@ -160,16 +160,49 @@ For each item the user approves for fixing:
 2. Re-run the relevant check (lint, test, type-check, or SAST scan) to verify the fix
 3. Stage the changes
 
-If the user asks to skip certain findings, note them as accepted risks.
+If the user asks to skip certain findings, note them as deferred items for Step 9.
 
 ### CHECKPOINT: Present the applied fixes to the user. Confirm all changes look correct before committing.
 
-## Step 8: Commit and Next Steps
+## Step 8: Commit
 
 If the user approves:
 
 1. Stage all changes
 2. Commit with an appropriate conventional commit message (e.g., `fix(security): address SAST findings` or `refactor: address code review feedback`)
+
+## Step 9: Track Deferred Work
+
+If any review findings were deferred (not fixed in this cycle), document them so they don't get lost.
+
+### Check for Deferred Items
+
+Review the following sources for deferred work:
+
+1. **Skipped findings**: Items the user chose not to address from the review report
+2. **Low priority suggestions**: Items categorized as Low/Info that weren't fixed
+3. **Council recommendations**: Improvements suggested by council members that are out of scope for this PR
+
+### Document Deferred Work
+
+For each deferred item, draft a GitHub issue:
+
+```bash
+gh issue create \
+  --title "<type>: <deferred item description>" \
+  --body "<context on why it was deferred, what needs to happen, and any relevant references>" \
+  --label "enhancement"
+```
+
+If the deferred items are small, a single tracking issue with a checklist is sufficient. If they represent distinct features or fixes, create separate issues.
+
+> [!TIP]
+> Not every review generates deferred work. If all findings were addressed or accepted, skip this step entirely. Don't manufacture follow-up issues just to have them.
+
+## Step 10: Hand Off — STOP Here
+
+> [!CAUTION]
+> **This skill's work is done.** Do NOT proceed to create a pull request, push to remote, or merge anything. Those are separate skills with their own workflows and checkpoints.
 
 Suggest the next step — then **stop**:
 
