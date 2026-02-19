@@ -123,4 +123,4 @@ graph LR
 
 ## Example Real Decision
 
-See [002-plugin-selection.md](./002-plugin-selection.md) for a real council decision example.
+See existing decision records in this directory for real council decision examples.
