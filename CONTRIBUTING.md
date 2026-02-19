@@ -15,7 +15,7 @@ We follow **Trunk-Based Development (TBD)** to enable rapid iteration and contin
 ## Getting Started
 
 1. **Fork and clone** the repository (external contributors) or **clone directly** (team members)
-2. **Install dependencies** (see [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for setup)
+2. **Install dependencies** (see [README.md](README.md) for setup)
 3. **Create a feature branch** from `main`
 4. **Make your changes** following our conventions
 5. **Submit a pull request** back to `main`
@@ -298,7 +298,6 @@ git branch -d feature/my-feature
 
 - [Trunk-Based Development](https://trunkbaseddevelopment.com/)
 - [Conventional Commits](https://www.conventionalcommits.org/)
-- [Development Setup](docs/DEVELOPMENT.md)
 - [Pull Request Template](.github/PULL_REQUEST_TEMPLATE.md)
 
 ---
