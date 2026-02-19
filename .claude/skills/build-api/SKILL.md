@@ -200,10 +200,8 @@ Check for common issues:
 
 If this API change alters how the project is set up, built, or run, update the relevant documentation **before committing**:
 
-1. **README.md** — Update Quick Start, Running the Application, or Project Structure sections if the change introduces new infrastructure, services, environment variables, or commands
-2. **docs/DEVELOPMENT.md** — Update Prerequisites, Local Development Setup, Database Operations, or Troubleshooting sections as needed
-3. **Makefile** — Add new targets for common operations (e.g., new Docker services, database commands)
-4. **`.env.example` files** — Add new environment variables with clear descriptions and safe defaults
+1. **README.md** — Update Quick Start, Installation, Usage, or Project Structure sections if the change introduces new infrastructure, services, environment variables, or commands
+2. **Other docs** — Update any relevant documentation files as needed
 
 > [!IMPORTANT]
 > A developer cloning the repo fresh must be able to get the project running by following README.md alone. If your API change adds a Docker service, database, new environment variable, or external dependency, the docs MUST reflect it.

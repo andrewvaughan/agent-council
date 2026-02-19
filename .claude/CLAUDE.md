@@ -32,7 +32,7 @@ description: <one-line summary of the document's purpose>
 
 | Type        | Used for                         | Examples                                 |
 | ----------- | -------------------------------- | ---------------------------------------- |
-| `guide`     | Tutorials, walkthroughs, how-tos | `docs/DEVELOPMENT.md`, `CONTRIBUTING.md` |
+| `guide`     | Tutorials, walkthroughs, how-tos | `CONTRIBUTING.md`, `docs/*.md`           |
 | `overview`  | Project-level summaries          | `README.md`                              |
 | `reference` | API docs, specs, lookup tables   | `docs/api.md`                            |
 
@@ -181,10 +181,7 @@ Changes that require documentation updates:
 
 Files to update (as applicable):
 
-- `README.md` — Quick Start, Running the Application, Project Structure sections
-- `docs/DEVELOPMENT.md` — Prerequisites, Local Development Setup, Troubleshooting sections
-- `Makefile` — New targets for common operations
-- `apps/api/.env.example` — New environment variables with descriptions
+- `README.md` — Quick Start, Installation, Usage, Project Structure sections
 
 > [!IMPORTANT]
 > If you introduce a Docker service, database, environment variable, or new dev server, a developer cloning the repo fresh must be able to get running by following README.md alone. Test your documentation mentally: "If I deleted everything and followed these steps, would it work?"

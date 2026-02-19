@@ -83,7 +83,6 @@ pnpm dev
 
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute (includes workflow and councils)
 - **[.claude/README.md](.claude/README.md)** - Workflow skills and councils of agents
-- **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** - Detailed development guide
 
 ## 🏗️ Tech Stack
 
