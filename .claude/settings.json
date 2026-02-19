@@ -51,8 +51,7 @@
       "Bash(npm view:*)",
       "Bash(npm test:*)",
       "Bash(pnpm test:e2e:*)",
-      "Bash(pnpm format:check:*)",
-      "Bash(find:*)"
+      "Bash(pnpm format:check:*)"
     ]
   },
   "enabledPlugins": {
