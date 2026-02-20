@@ -1,0 +1,42 @@
+{
+  "plan-feature": {
+    "councils": ["product-council", "feature-council"],
+    "agents": [
+      "product-strategist",
+      "lean-delivery-lead",
+      "design-lead",
+      "business-ops-lead",
+      "principal-engineer",
+      "frontend-specialist",
+      "backend-specialist",
+      "qa-lead"
+    ],
+    "templates": ["decision-record"]
+  },
+  "review-code": {
+    "councils": ["review-council"],
+    "agents": [
+      "security-engineer",
+      "qa-lead",
+      "devx-engineer",
+      "frontend-specialist",
+      "backend-specialist"
+    ]
+  },
+  "submit-pr": {
+    "councils": ["deployment-council"],
+    "agents": [
+      "platform-engineer",
+      "security-engineer",
+      "qa-lead"
+    ]
+  },
+  "security-audit": {
+    "councils": ["architecture-council"],
+    "agents": [
+      "security-engineer",
+      "principal-engineer",
+      "backend-specialist"
+    ]
+  }
+}

@@ -77,11 +77,11 @@ Each skill suggests the next skill to run when it completes, so you always know 
 
 6. **CHECKPOINT**: Presents the implementation plan with task breakdown. You approve the plan.
 
-7. **Generates a decision record** using the template from `.claude/councils/decisions/001-example-architecture-decision.md`, invoking `/documentation-generation:architecture-decision-records` for formatting. Includes all council votes, rationale, action items, and timeline.
+7. **Generates a decision record** using the template from `canonical/templates/decision-record.md`, invoking `/documentation-generation:architecture-decision-records` for formatting. Includes all council votes, rationale, action items, and timeline.
 
 8. **CHECKPOINT**: Presents the decision record for final review.
 
-9. **Creates a feature branch** and saves the decision record to `.claude/councils/decisions/NNN-<feature-slug>.md`.
+9. **Creates a feature branch** and saves the decision record to `docs/decisions/NNN-<feature-slug>.md`.
 
 10. **Pre-issue validation**: Verifies the decision record is complete, council consensus has no Block votes, and the task breakdown is present.
 
@@ -200,7 +200,7 @@ Each skill suggests the next skill to run when it completes, so you always know 
    - Invokes `/ui-design:accessibility-audit` for WCAG compliance on modified components
    - Checks contrast, keyboard nav, ARIA, focus management, semantic HTML
 
-4. **Activates the Review Council** (all 4 members from `.claude/councils/review-council.md`):
+4. **Activates the Review Council** (all 4 members from `canonical/councils/review-council.md`):
    - **Security Engineer** (Lead): Reviews SAST findings, checks OWASP Top 10, validates input sanitization, auth patterns, secrets management. Votes Approve/Concern/Block.
    - **QA Lead**: Assesses test coverage for changed files, identifies untested edge cases, checks >80% coverage target. Votes Approve/Concern/Block.
    - **DevX Engineer**: Checks documentation is updated, reviews code readability, verifies README/docs reflect changes. Votes Approve/Concern/Block.
@@ -303,11 +303,11 @@ Councils are groups of AI agents that evaluate decisions from multiple perspecti
 
 | Council                                            | Members                                                                                                         | When to Use                                     |
 | -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| [Architecture](./councils/architecture-council.md) | Principal Engineer, Platform Engineer, Security Engineer, Backend Specialist                                    | Tech stack, DB schema, APIs, monorepo structure |
-| [Feature](./councils/feature-council.md)           | Principal Engineer, Frontend Specialist, Backend Specialist, QA Lead                                            | New features, major refactoring                 |
-| [Review](./councils/review-council.md)             | Security Engineer, QA Lead, DevX Engineer, Domain Specialist                                                    | Code review, security, quality                  |
-| [Deployment](./councils/deployment-council.md)     | Platform Engineer, Security Engineer, QA Lead                                                                   | Production releases, infrastructure changes     |
-| [Product](./councils/product-council.md)           | Product Strategist, Lean Delivery Lead, Design Lead, Business Ops Lead, Principal Engineer, Frontend Specialist | Strategy, design, roadmap, feature flags        |
+| [Architecture](../canonical/councils/architecture-council.md) | Principal Engineer, Platform Engineer, Security Engineer, Backend Specialist                                    | Tech stack, DB schema, APIs, monorepo structure |
+| [Feature](../canonical/councils/feature-council.md)           | Principal Engineer, Frontend Specialist, Backend Specialist, QA Lead                                            | New features, major refactoring                 |
+| [Review](../canonical/councils/review-council.md)             | Security Engineer, QA Lead, DevX Engineer, Domain Specialist                                                    | Code review, security, quality                  |
+| [Deployment](../canonical/councils/deployment-council.md)     | Platform Engineer, Security Engineer, QA Lead                                                                   | Production releases, infrastructure changes     |
+| [Product](../canonical/councils/product-council.md)           | Product Strategist, Lean Delivery Lead, Design Lead, Business Ops Lead, Principal Engineer, Frontend Specialist | Strategy, design, roadmap, feature flags        |
 
 ### Activating Councils Directly
 
@@ -320,34 +320,16 @@ Should we use tRPC or REST for our API layer?
 
 Context: TypeScript monorepo with React + NestJS
 
-Please use the decision template from .claude/councils/architecture-council.md
+Please use the decision template from canonical/councils/architecture-council.md
 ```
 
 ### Documenting Decisions
 
 1. Review each agent's vote and rationale
-2. Create `.claude/councils/decisions/NNN-title.md`
-3. Use the template from [001-example](./councils/decisions/001-example-architecture-decision.md)
+2. Create `docs/decisions/NNN-title.md`
+3. Use the template from [decision-record](../canonical/templates/decision-record.md)
 
 ---
-
-## Installed Plugins
-
-Skills invoke these 19 plugins at the appropriate moments. You can also invoke any plugin command directly:
-
-**Development**: `full-stack-orchestration`, `backend-development`, `frontend-mobile-development`, `javascript-typescript`
-
-**Security**: `security-scanning`, `backend-api-security`, `frontend-mobile-security`
-
-**Testing & Quality**: `unit-testing`, `code-review-ai`, `api-testing-observability`
-
-**Design**: `ui-design`, `database-design`
-
-**Infrastructure**: `cloud-infrastructure`, `database-migrations`
-
-**Documentation**: `code-documentation`, `documentation-generation`
-
-**Utilities**: `git-pr-workflows`, `dependency-management`, `debugging-toolkit`
 
 ---
 
@@ -371,12 +353,19 @@ Skills invoke these 19 plugins at the appropriate moments. You can also invoke a
 2. **Review before PR** - Run `/review-code` before `/submit-pr`
 3. **Audit regularly** - Run `/security-audit` before major releases
 4. **Respect checkpoints** - Don't skip human review points in workflows
-5. **Document decisions** - Council decisions go in `councils/decisions/`
+5. **Document decisions** - Council decisions go in `docs/decisions/`
 6. **Activate early** - Councils should be consulted before implementation, not after
 
 ## Reference
 
-- **Skills**: `skills/*/SKILL.md`
-- **Council templates**: `councils/*.md`
-- **Decision records**: `councils/decisions/*.md`
-- **Agent personas**: `agents/*.md`
+- **Skills (source)**: `.claude/skills/*/SKILL.md`
+- **Skills (distributable)**: `skills/*/SKILL.md`
+- **Council templates**: `canonical/councils/*.md`
+- **Agent personas**: `canonical/agents/*.md`
+- **Decision record template**: `canonical/templates/decision-record.md`
+- **Decision records**: `docs/decisions/*.md`
+- **Build script**: `scripts/build.sh`
+- **Skill manifest**: `scripts/skill-manifest.json`
+
+> [!IMPORTANT]
+> Files under `skills/` are **generated** by `scripts/build.sh` and should not be edited directly. Edit the source files in `.claude/skills/` (for SKILL.md) or `canonical/` (for agents, councils, templates), then run `./scripts/build.sh` to regenerate.
