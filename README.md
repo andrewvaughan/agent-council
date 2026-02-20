@@ -50,10 +50,10 @@ Eleven specialized perspectives that staff the councils:
 | Backend Specialist | API design, services, data access, performance |
 | Platform Engineer | Infrastructure, deployment, monitoring, reliability |
 | DevX Engineer | Documentation, developer experience, onboarding |
-| Product Manager | User value, scope, prioritization, success metrics |
-| Technical Writer | Clarity, completeness, audience-appropriate docs |
-| UX Designer | Usability, interaction design, accessibility |
-| Data Analyst | Metrics, analytics, data-driven decisions |
+| Product Strategist | Product vision, user needs, feature prioritization, go-to-market |
+| Lean Delivery Lead | Rapid iteration, feature flags, incremental delivery, shipping speed |
+| Design Lead | UI/UX design, design systems, accessibility, usability |
+| Business Operations Lead | Cost management, ROI analysis, resource allocation, operational impact |
 
 Each agent has complexity tiers (Standard and Advanced) that scale review depth based on the significance of the decision.
 
@@ -130,7 +130,7 @@ Implementation skills (`build-feature`, `build-api`) are technology-agnostic —
 | Codex CLI | Partial | Reference AGENTS.md, follow skill steps manually |
 | Other agents | Manual | Any agent that reads markdown can follow the structured workflows |
 
-Skills are plain markdown — no proprietary format, no runtime dependencies. Any AI coding agent that can read files and follow instructions can use them.
+Skills are plain markdown — no proprietary format, no runtime dependencies. Any AI coding agent that can read files and follow instructions can use them. For detailed per-agent setup instructions, workarounds, and a full feature matrix, see the [Agent Compatibility guide](docs/AGENT-COMPATIBILITY.md).
 
 ## Customization
 
@@ -139,6 +139,8 @@ Tailor the workflows to your project:
 - **Add an agent** — Create a `.md` file in `canonical/agents/` following the existing persona format
 - **Modify a council** — Edit the council template in `canonical/councils/` to add or remove members
 - **Customize a skill** — Edit the workflow in `canonical/skills/` and rebuild
+
+For a comprehensive guide including tech stack configuration, agent persona customization with examples, and council composition changes, see the [Customization Guide](docs/CUSTOMIZATION.md).
 
 ### Build System
 

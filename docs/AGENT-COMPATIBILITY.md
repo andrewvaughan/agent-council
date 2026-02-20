@@ -5,7 +5,7 @@ description: Per-agent compatibility matrix and platform-specific guidance for u
 
 # Agent Compatibility
 
-Agent Council skills are structured markdown workflows. Any AI coding agent that can read files and follow instructions can use them — the level of automation depends on the agent's capabilities.
+Agent Council skills are structured markdown workflows. Any AI coding agent that can read files and follow instructions can use them — the level of automation depends on the agent's capabilities. For details on what each skill does, see the [Skills Reference](SKILLS-REFERENCE.md). To customize skills for your project, see the [Customization Guide](CUSTOMIZATION.md).
 
 ## Feature Matrix
 
@@ -41,7 +41,7 @@ npx skills add andrewvaughan/agent-council
 
 **Usage**:
 
-- Invoke skills as slash commands: `/plan-feature`, `/build-feature`, `/review-code`, `/submit-pr`
+- Invoke skills as slash commands: `/plan-feature`, `/build-feature`, `/build-api`, `/review-code`, `/submit-pr`, `/security-audit`
 - Council members run in parallel via Task subagents
 - Checkpoints pause for user approval automatically
 - Model selection follows the `## Model` section in each agent definition

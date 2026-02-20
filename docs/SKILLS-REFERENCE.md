@@ -61,6 +61,8 @@ Each skill owns a single phase and hands off to the next. Skills never cross the
 | Cursor | Partial | Load SKILL.md as context, run steps manually |
 | Other agents | Manual | Follow the step-by-step workflow |
 
+For setup instructions and workarounds by agent, see [Agent Compatibility](AGENT-COMPATIBILITY.md).
+
 **Next step**: `/build-feature <issue-number>` or `/build-api`
 
 <details>
@@ -135,6 +137,8 @@ Feature Council: Approved (4/4)
 | Cursor | Partial | Follow steps manually, run commands in terminal |
 | Other agents | Manual | Follow the step-by-step workflow |
 
+For setup instructions and workarounds by agent, see [Agent Compatibility](AGENT-COMPATIBILITY.md).
+
 > [!NOTE]
 > This skill requires a `## Tech Stack` section in your project's `AGENTS.md`. If not defined, the skill will stop and ask you to provide it. See [CUSTOMIZATION.md](CUSTOMIZATION.md) for details.
 
@@ -181,8 +185,10 @@ Feature Council: Approved (4/4)
 | Cursor | Partial | Follow steps manually |
 | Other agents | Manual | Follow the step-by-step workflow |
 
+For setup instructions and workarounds by agent, see [Agent Compatibility](AGENT-COMPATIBILITY.md).
+
 > [!NOTE]
-> This skill requires a `## Tech Stack` section in your project's `AGENTS.md`. See [CUSTOMIZATION.md](CUSTOMIZATION.md).
+> This skill requires a `## Tech Stack` section in your project's `AGENTS.md`. If not defined, the skill will stop and ask you to provide it. See [CUSTOMIZATION.md](CUSTOMIZATION.md) for details.
 
 **Next step**: `/review-code`
 
@@ -227,6 +233,8 @@ Feature Council: Approved (4/4)
 | Claude Code | Full | Parallel council via Task subagents, automated scanning |
 | Cursor | Partial | Follow checklist manually, run checks in terminal |
 | Other agents | Manual | Follow the step-by-step workflow |
+
+For setup instructions and workarounds by agent, see [Agent Compatibility](AGENT-COMPATIBILITY.md).
 
 **Next step**: `/submit-pr`
 
@@ -302,6 +310,8 @@ Overall: Needs Changes (fix H1, recommended M1)
 | Cursor | Partial | Create PR manually, monitor CI in browser |
 | Other agents | Manual | Follow the checklist, use platform tools |
 
+For setup instructions and workarounds by agent, see [Agent Compatibility](AGENT-COMPATIBILITY.md).
+
 **Next step**: None — this is the end of the pipeline. After merge, run `/plan-feature` for the next feature.
 
 ---
@@ -341,6 +351,8 @@ Overall: Needs Changes (fix H1, recommended M1)
 | Claude Code | Full | Parallel council, automated scanning, remediation |
 | Cursor | Partial | Follow checklist manually, apply fixes in editor |
 | Other agents | Manual | Follow the step-by-step workflow |
+
+For setup instructions and workarounds by agent, see [Agent Compatibility](AGENT-COMPATIBILITY.md).
 
 **Next step**: `/review-code` (if code changed), `/plan-feature` (new feature), or none (audit-only).
 

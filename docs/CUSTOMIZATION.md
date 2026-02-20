@@ -179,7 +179,7 @@ If your project doesn't have a frontend, you might remove the Frontend Specialis
 
 ## Customizing Skill Workflows
 
-Skill workflows live in `canonical/skills/<skill-name>/SKILL.md`. You can modify any step, add checkpoints, or adjust the workflow to match your team's process.
+Skill workflows live in `canonical/skills/<skill-name>/SKILL.md`. You can modify any step, add checkpoints, or adjust the workflow to match your team's process. For a detailed breakdown of what each skill does and what it produces, see the [Skills Reference](SKILLS-REFERENCE.md).
 
 ### Common Customizations
 
@@ -187,7 +187,7 @@ Skill workflows live in `canonical/skills/<skill-name>/SKILL.md`. You can modify
 
 **Change commit conventions**: If your team uses a different commit format (e.g., Jira ticket references), update the commit step in each skill:
 
-```markdown
+~~~markdown
 ## Step 8: Commit
 
 Commit with your project's commit format:
@@ -195,18 +195,18 @@ Commit with your project's commit format:
 ```
 PROJ-123: implement <feature-name>
 ```
-```
+~~~
 
 **Add team-specific steps**: Insert steps for your team's workflow. For example, adding a design review step to `build-feature`:
 
-```markdown
+~~~markdown
 ### Step 4.5: Design Review
 
 If UI components were created, share screenshots or a Storybook link
 with the design team for feedback before proceeding to testing.
 
 ### CHECKPOINT: Present the design review feedback. Wait for approval.
-```
+~~~
 
 ### After Customizing
 
