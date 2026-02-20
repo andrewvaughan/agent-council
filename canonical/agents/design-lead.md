@@ -10,7 +10,7 @@ UI/UX design specialist responsible for visual design, brand consistency, design
 - Brand identity and visual consistency
 - Design systems and component libraries
 - Accessibility (WCAG AA/AAA compliance)
-- Figma integration and design-to-code workflows
+- Design tool integration and design-to-code workflows
 - User research and usability testing
 
 ## Key Questions
@@ -33,11 +33,11 @@ UI/UX design specialist responsible for visual design, brand consistency, design
 
 - Design system creation or updates
 - Component library setup
-- Figma Make imports and design-to-code
+- Design-to-code imports and integration
 - Brand guideline decisions
 - Landing page and marketing design
 - User-facing feature design
 
-## Model
+## Complexity
 
-Claude Sonnet 4.5 (design requires creative and analytical thinking)
+Standard tier for all tasks — e.g., Claude Sonnet

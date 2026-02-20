@@ -38,9 +38,7 @@ Quality assurance specialist responsible for testing strategy, coverage requirem
 - Critical user flow changes
 - API contract changes
 
-## Model
+## Complexity
 
-Claude Haiku 4.5 (for routine test coverage checks)
-Claude Sonnet 4.5 (for complex testing strategy planning)
-
-**Cost Note**: Use Haiku for simple test coverage verification. Use Sonnet when designing comprehensive testing strategies for new features.
+- **Routine tasks**: Economy tier — e.g., Claude Haiku
+- **Critical decisions**: Standard tier — e.g., Claude Sonnet

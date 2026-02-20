@@ -31,13 +31,13 @@ Developer experience specialist responsible for tooling, documentation, onboardi
 
 ## Activation Triggers
 
-- Tool configuration (ESLint, TypeScript, etc.)
+- Tool configuration (linting tools, type checking, etc.)
 - README and documentation updates
 - Monorepo setup and structure
 - Workflow automation (scripts, hooks)
 - New developer onboarding
 - Build performance issues
 
-## Model
+## Complexity
 
-Claude Haiku 4.5 (documentation and tooling tasks, fast execution)
+Economy tier for all tasks — e.g., Claude Haiku

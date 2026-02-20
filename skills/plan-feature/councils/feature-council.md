@@ -36,7 +36,7 @@ Plan and evaluate new feature implementations from frontend, backend, and qualit
 #### Frontend Specialist
 
 - **UI/UX Approach**: [Component structure, user interaction]
-- **Design Integration**: [Figma components needed?]
+- **Design Integration**: [Components from the design system needed?]
 - **Recommendations**: [Frontend implementation strategy]
 
 #### Backend Specialist
