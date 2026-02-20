@@ -1,305 +1,178 @@
+---
+type: guide
+description: How to contribute skills, agents, and councils to the Agent Council package.
+---
+
 # Contributing
 
-Thank you for your interest in contributing! This document outlines our development workflow and contribution guidelines.
+Thank you for your interest in contributing! This project provides AI coding agent workflows — skills, councils, and agent personas — distributed via [skills.sh](https://skills.sh).
+
+## What You Can Contribute
+
+- **Skills**: New workflow definitions (e.g., a `deploy` skill, a `migrate-db` skill)
+- **Agents**: New agent personas or improvements to existing ones
+- **Councils**: New council configurations or membership changes
+- **Documentation**: Improvements to AGENTS.md, README.md, or skill instructions
+- **Bug fixes**: Corrections to skill workflows, build scripts, or CI
+
+## Project Structure
+
+```
+canonical/              Source of truth for agents, councils, templates
+  agents/               11 agent persona definitions
+  councils/             5 council templates
+  templates/            Shared templates (decision records, etc.)
+
+.claude/skills/         Skill workflow source files (SKILL.md per skill)
+
+skills/                 GENERATED — do not edit directly
+  <skill-name>/         Self-contained skill package
+    SKILL.md            Workflow definition
+    agents/             Bundled agent definitions
+    councils/           Bundled council templates
+
+scripts/
+  build.sh              Generates skills/ from canonical + sources
+  skill-manifest.json   Maps skills to required agents and councils
+```
+
+> [!IMPORTANT]
+> Never edit files in `skills/` directly. Edit the sources in `canonical/` and `.claude/skills/`, then run `scripts/build.sh` to regenerate.
+
+## Adding a New Skill
+
+1. Create the skill workflow at `.claude/skills/<skill-name>/SKILL.md` with required frontmatter:
+
+   ```yaml
+   ---
+   name: <skill-name>
+   description: One-line description of what this skill does.
+   ---
+   ```
+
+2. Write the workflow as structured markdown with numbered steps, checkpoints, and a hand-off section
+
+3. Add the skill to `scripts/skill-manifest.json` with its required agents and councils:
+
+   ```json
+   {
+     "<skill-name>": {
+       "agents": ["principal-engineer", "security-engineer"],
+       "councils": ["review-council"]
+     }
+   }
+   ```
+
+4. Run `scripts/build.sh` to generate the self-contained `skills/<skill-name>/` directory
+
+5. Run `scripts/build.sh --check` to verify no drift between sources and generated output
+
+### Skill Design Principles
+
+- **Technology-agnostic**: No framework or tool names (say "your test runner" not a specific tool name)
+- **Checkpoint-driven**: Include `### CHECKPOINT` sections where the user must approve before continuing
+- **Scope-bounded**: Each skill owns one phase — include a `> [!CAUTION]` block stating what the skill does NOT do
+- **Hand-off aware**: End with a "Hand Off — STOP Here" section suggesting the next skill
+
+## Adding or Modifying an Agent
+
+Agent definitions live in `canonical/agents/<agent-name>.md`. Each agent has:
+
+- **Role description**: What perspective this agent brings
+- **Focus areas**: Specific topics this agent evaluates
+- **Complexity tiers**: Standard (routine) and Advanced (critical decisions)
+
+To add a new agent:
+
+1. Create `canonical/agents/<agent-name>.md` following the format of existing agents
+2. Add the agent to relevant councils in `canonical/councils/`
+3. Update `scripts/skill-manifest.json` for any skills that should include this agent
+4. Update the agent table in `AGENTS.md`
+5. Run `scripts/build.sh` to regenerate
+
+## Adding or Modifying a Council
+
+Council templates live in `canonical/councils/<council-name>.md`. Each council defines:
+
+- **Members**: Which agents participate
+- **Evaluation criteria**: What the council assesses
+- **Voting format**: Approve / Concern / Block with rationale
+
+To add a new council:
+
+1. Create `canonical/councils/<council-name>.md` following existing council format
+2. Reference the council from any skills that should activate it
+3. Update `scripts/skill-manifest.json` for skills using this council
+4. Update the council table in `AGENTS.md`
+5. Run `scripts/build.sh` to regenerate
 
 ## Development Workflow
 
-We follow **Trunk-Based Development (TBD)** to enable rapid iteration and continuous delivery:
+We follow trunk-based development: `main` is always releasable, all changes via pull requests.
 
-- **Main branch (`main`)** is always production-ready and deployable
-- **Short-lived feature branches** for all changes (max 2-3 days)
-- **All changes go through pull requests** - no direct commits to `main`
-- **Frequent integration** - merge to main multiple times per day when possible
-- **Feature flags** for incomplete features that need to merge early
+### Branch Naming
 
-## Getting Started
+- `feature/` — New skills, agents, councils, or enhancements
+- `fix/` — Bug fixes to existing workflows
+- `docs/` — Documentation updates
+- `refactor/` — Structural changes without behavior change
+- `chore/` — Build scripts, CI, maintenance
 
-1. **Fork and clone** the repository (external contributors) or **clone directly** (team members)
-2. **Install dependencies** (see [README.md](README.md) for setup)
-3. **Create a feature branch** from `main`
-4. **Make your changes** following our conventions
-5. **Submit a pull request** back to `main`
+### Commit Messages
 
-## Branching Strategy
-
-### Branch Naming Convention
-
-Use descriptive branch names with the following prefixes:
-
-- `feature/` - New features or enhancements
-- `fix/` - Bug fixes
-- `docs/` - Documentation updates
-- `refactor/` - Code refactoring
-- `test/` - Test additions or improvements
-- `chore/` - Maintenance tasks (dependencies, configs, etc.)
-
-**Examples:**
-```
-feature/user-authentication
-fix/email-validation-bug
-docs/api-documentation
-refactor/database-schema
-```
-
-### Branch Lifecycle
-
-1. **Create branch** from latest `main`:
-   ```bash
-   git checkout main
-   git pull origin main
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Keep branch up-to-date** with `main` (rebase frequently):
-   ```bash
-   git fetch origin
-   git rebase origin/main
-   ```
-
-3. **Keep branches short-lived** (< 2-3 days)
-   - Break large features into smaller, shippable increments
-   - Use feature flags for work-in-progress features
-   - Merge frequently to avoid long-lived branches
-
-4. **Delete branch after merge**:
-   ```bash
-   git branch -d feature/your-feature-name
-   git push origin --delete feature/your-feature-name
-   ```
-
-## Commit Guidelines
-
-### Commit Message Format
-
-We follow **Conventional Commits** for clear, scannable commit history:
+[Conventional Commits](https://www.conventionalcommits.org/) format:
 
 ```
 <type>(<scope>): <subject>
-
-<body>
-
-<footer>
 ```
 
-**Types:**
-- `feat` - New feature
-- `fix` - Bug fix
-- `docs` - Documentation only
-- `style` - Code style changes (formatting, no logic change)
-- `refactor` - Code refactoring (no feature change or bug fix)
-- `perf` - Performance improvements
-- `test` - Adding or updating tests
-- `chore` - Maintenance (dependencies, configs, build)
-- `ci` - CI/CD changes
+Types: `feat`, `fix`, `docs`, `refactor`, `chore`, `ci`, `test`
 
-**Examples:**
+Scopes: `skills`, `agents`, `councils`, `build`, `ci`, `docs`, or a specific skill name
+
+Examples:
+
 ```
-feat(auth): add OAuth2 authentication
-
-Implement OAuth2 authentication with Google and GitHub providers.
-Uses Passport.js for strategy management.
-
-Closes #123
-
----
-
-fix(api): validate email format in signup endpoint
-
-Added Zod validation to ensure email format is valid before
-creating user account. Prevents invalid emails in database.
-
----
-
-docs(readme): add development setup instructions
-
-Added step-by-step guide for local development environment setup
-including Docker, pnpm, and environment variables.
+feat(skills): add deploy skill workflow
+fix(agents): correct security-engineer focus areas
+docs(councils): clarify architecture council activation criteria
+chore(build): update build script for new manifest format
 ```
 
-### Commit Best Practices
+### Pull Request Process
 
-- **Atomic commits** - Each commit should be a single logical change
-- **Descriptive messages** - Explain *why*, not just *what*
-- **Sign commits** - All commits should be signed (GPG/SSH)
-- **Test before committing** - Run tests locally before pushing
-- **Small, frequent commits** - Better than large, infrequent ones
+1. Create a branch from `main`
+2. Make your changes to sources (not generated `skills/` directory)
+3. Run `scripts/build.sh` to regenerate
+4. Run `scripts/build.sh --check` to verify no drift
+5. Push and open a pull request targeting `main`
 
-## Pull Request Process
+PR requirements:
 
-### Before Creating a PR
-
-1. **Ensure all tests pass locally**:
-   ```bash
-   pnpm test
-   pnpm lint
-   pnpm type-check
-   ```
-
-2. **Rebase on latest `main`**:
-   ```bash
-   git fetch origin
-   git rebase origin/main
-   ```
-
-3. **Review your own changes** - Check the diff before submitting
-
-### Creating a Pull Request
-
-1. **Push your branch** to GitHub:
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-2. **Open a pull request** on GitHub targeting `main`
-
-3. **Fill out the PR template** completely:
-   - Clear title and description
-   - Link related issues
-   - List changes made
-   - Include screenshots (for UI changes)
-   - Note breaking changes (if any)
-
-4. **Request review** (will be automatic once team grows)
-
-### Pull Request Requirements
-
-All pull requests must meet these criteria before merging:
-
-- ✅ **CI checks pass** - All automated tests and lints must pass
-- ✅ **Code review approved** - At least one approval (when team > 1)
-- ✅ **Conflicts resolved** - Must be up-to-date with `main`
-- ✅ **Tests included** - New features must include tests
-- ✅ **Documentation updated** - Update docs for user-facing changes
-- ✅ **No direct commits to `main`** - Branch protection enforced
-
-### Pull Request Size
-
-Keep PRs small and focused:
-
-- **Ideal: < 400 lines changed** - Easy to review, fast to merge
-- **Maximum: < 1000 lines changed** - Beyond this, consider splitting
-- **Break large features** into multiple PRs using feature flags
-
-### Review Process
-
-1. **Automated checks run** (CI, linting, tests)
-2. **Code review** by team member (when team > 1)
-3. **Address feedback** - Make requested changes
-4. **Approval granted** - Reviewer approves PR
-5. **Merge to `main`** - Squash and merge or rebase (see below)
+- CI checks pass (skill format, self-containment, leakage scan, broken links)
+- No tech-stack terms in skill workflows (checked by CI leakage scan)
+- No personal paths in committed files (checked by CI community safety scan)
+- Generated `skills/` matches sources (checked by CI build drift)
 
 ### Merge Strategy
 
-We use **Squash and Merge** as default:
+Squash and merge (default). Keep PRs under 400 lines when possible.
 
-- **Squash and merge** - Combines all commits into one clean commit (preferred)
-- **Rebase and merge** - Keeps individual commits (use for well-crafted commit history)
-- **Never use merge commits** - Keeps history linear and clean
+## CI Checks
 
-## Code Standards
+The CI pipeline validates:
 
-### Code Quality
-
-- **TypeScript strict mode** - All code must type-check
-- **ESLint** - All linting rules must pass
-- **Prettier** - All code must be formatted
-- **No compiler warnings** - Fix all TypeScript warnings
-- **Test coverage > 80%** - Maintain high test coverage
-
-### Testing Requirements
-
-- **Unit tests** for business logic
-- **Integration tests** for API endpoints
-- **E2E tests** for critical user flows
-- **All tests must pass** before merging
-
-### Documentation Requirements
-
-- **Code comments** for complex logic
-- **JSDoc/TSDoc** for public APIs
-- **README updates** for new features
-- **CHANGELOG updates** for user-facing changes
-
-## Feature Flags
-
-For larger features that need multiple PRs, use feature flags:
-
-```typescript
-// Example feature flag usage
-if (featureFlags.newDashboard) {
-  return <NewDashboard />;
-} else {
-  return <OldDashboard />;
-}
-```
-
-Benefits:
-- Merge incomplete work to `main` safely
-- Test in production with limited users
-- Roll out gradually
-- Easy rollback if issues arise
-
-## Environment Strategy
-
-### Current Environments
-
-- **Production** - `main` branch deploys to production
-- **Local Development** - Run locally with Docker Compose
-
-### Future Environments (TBD)
-
-We're prepared to add:
-- **Staging** - Pre-production testing environment
-- **Beta** - Early access for beta users
-- **Preview** - PR-specific preview deployments
-
-When we add these, we'll update this document with the strategy.
+| Check | What it verifies |
+|-------|-----------------|
+| Skill Format | SKILL.md frontmatter has `name` and `description`, name matches directory |
+| Self-Containment | Every skill has bundled agents/ and councils/ |
+| Leakage Scan | No technology-specific terms in SKILL.md files |
+| Community Safety | No personal paths, no local settings tracked |
+| Broken Links | All relative markdown links resolve to existing files |
+| Markdown Lint | Frontmatter present, no trailing whitespace, no excessive blank lines |
 
 ## Getting Help
 
-- **Questions?** - Open a discussion on GitHub
-- **Found a bug?** - Open an issue with reproduction steps
-- **Need help?** - Tag someone in your PR for guidance
-
-## Code of Conduct
-
-- **Be respectful** and professional
-- **Provide constructive feedback** in reviews
-- **Assume good intent** from contributors
-- **Help others learn** and grow
-
-## Quick Reference
-
-```bash
-# Start new feature
-git checkout main
-git pull origin main
-git checkout -b feature/my-feature
-
-# Make changes, commit often
-git add .
-git commit -m "feat(scope): description"
-
-# Keep up-to-date with main
-git fetch origin
-git rebase origin/main
-
-# Push and create PR
-git push origin feature/my-feature
-# Then create PR on GitHub
-
-# After PR merged, clean up
-git checkout main
-git pull origin main
-git branch -d feature/my-feature
-```
-
-## Resources
-
-- [Trunk-Based Development](https://trunkbaseddevelopment.com/)
-- [Conventional Commits](https://www.conventionalcommits.org/)
-- [Pull Request Template](.github/PULL_REQUEST_TEMPLATE.md)
-
----
-
-**Thank you for contributing!** 🚀
+- **Questions**: Open a [GitHub Discussion](https://github.com/andrewvaughan/agent-council/discussions)
+- **Bugs**: Open an [issue](https://github.com/andrewvaughan/agent-council/issues) with reproduction steps
+- **Security**: See [SECURITY.md](SECURITY.md) for vulnerability reporting

@@ -1,241 +1,117 @@
+---
+type: overview
+description: Multi-perspective AI development workflows using councils of specialized agents.
+---
+
 # Agent Council
 
-> A template for multi-perspective decision-making and end-to-end development workflows using councils of AI agents in Claude Code.
+Structured development workflows powered by councils of specialized AI agents. Plan features, implement code, review changes, and submit PRs — all with multi-perspective evaluation from 11 agent personas organized into 5 councils.
 
-## 🚀 Quick Start
+## What You Get
 
-### Prerequisites
+**7 Skills** — executable workflows for every phase of development:
 
-- **VS Code** with these extensions:
-  - **Claude Code** (required)
-  - **Dev Containers** (required)
-- **Docker Desktop** (for devcontainer)
+| Skill | What it does |
+|-------|-------------|
+| plan-feature | Council-evaluated feature planning with decision records |
+| build-feature | Full-stack implementation (DB + API + UI + tests) |
+| build-api | Backend-only API and database development |
+| review-code | Security scanning + 4-member Review Council |
+| submit-pr | Quality checks, PR creation, CI monitoring |
+| security-audit | SAST + STRIDE threat modeling + attack trees |
 
-### Installation
+**5 Councils** — multi-perspective evaluation groups:
 
-```bash
-# 1. Clone repository
-git clone git@github.com:YOUR_USERNAME/YOUR_PROJECT.git
-cd YOUR_PROJECT
+| Council | Members | Evaluates |
+|---------|---------|-----------|
+| Product | 6 agents | Feature scope, priority, user value |
+| Feature | 4 agents | Technical planning, task breakdown |
+| Architecture | 4 agents | API design, schema changes, patterns |
+| Review | 4 agents | Code quality, security, documentation |
+| Deployment | 3 agents | Release readiness, infrastructure |
 
-# 2. Open in VS Code
-code .
+**11 Agent Personas** — specialized perspectives including Principal Engineer, Security Engineer, QA Lead, Frontend/Backend Specialists, and more.
 
-# 3. Reopen in devcontainer
-# VS Code will prompt: "Reopen in Container" → Click it
-# Or: Cmd/Ctrl+Shift+P → "Dev Containers: Reopen in Container"
-```
-
-### 4. Set Up Claude Code Plugins
-
-**In VS Code (inside devcontainer):**
-
-1. Open Command Palette (`Cmd/Ctrl+Shift+P`)
-2. Type "Claude Code: Manage Plugins"
-3. Click "Add Marketplace"
-4. Enter: `wshobson/agents` and press Enter
-
-5. Install ALL of the following plugins (click + icon next to each):
-
-#### Essential Development Tools
-- `code-documentation` - Documentation and technical writing
-- `debugging-toolkit` - Smart debugging and error analysis
-- `git-pr-workflows` - Git automation and PR workflows
-- `javascript-typescript` - TypeScript/JavaScript expertise
-- `full-stack-orchestration` - End-to-end feature development
-
-#### Frontend & Backend
-- `frontend-mobile-development` - React/React Native development
-- `backend-development` - REST/GraphQL API design
-- `backend-api-security` - NestJS security patterns
-- `frontend-mobile-security` - React security (XSS, CSRF)
-- `ui-design` - UI design
-- `database-design` - Database design
-
-#### Testing & Quality
-- `unit-testing` - Automated test generation (Jest)
-- `code-review-ai` - AI-powered code review
-- `api-testing-observability` - API testing and monitoring
-
-#### Security
-- `security-scanning` - Vulnerability scanning
-- `database-migrations` - Safe Prisma migrations
-
-#### Infrastructure & Operations
-- `cloud-infrastructure` - AWS/Docker/K8s architecture
-
-#### Additional Utilities
-- `documentation-generation` - Auto-generate docs
-- `dependency-management` - Package management
-
-**Total: 19 plugins**
-
-**Verify:** Command Palette → "Claude Code: Manage Plugins" → all 19 should show as installed
-
-### Start Development
+## Installation
 
 ```bash
-# Inside devcontainer, dependencies are already installed
-pnpm dev
+npx skills add andrewvaughan/agent-council
 ```
 
-## 📖 Documentation
+This installs skill workflows, agent definitions, and council templates into your project's skills directory. Each skill is self-contained with its own bundled agents and councils.
 
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute (includes workflow and councils)
-- **[.claude/README.md](.claude/README.md)** - Workflow skills and councils of agents
+### Post-Install
 
-## 🏗️ Tech Stack
+Point your AI agent to `AGENTS.md` in the installed package for full instructions on how to use the skills and councils.
 
-### Frontend
-- **Vite + React 19** - Fast, modern React framework
-- **TypeScript 5.7+** - Type-safe development
-- **Tailwind CSS + shadcn/ui** - Utility-first styling
+## Quick Demo
 
-### Backend
-- **NestJS** - Scalable Node.js framework
-- **Prisma + PostgreSQL** - Type-safe database access
-- **tRPC** - End-to-end type safety for APIs
+Here's what a typical workflow looks like:
 
-### Infrastructure
-- **pnpm + Turborepo** - Efficient monorepo management
-- **Docker** - Containerized deployment
-- **Self-hosted** - Full control, no vendor lock-in
+**1. Plan the feature**
 
-## 🤖 Workflow Skills & Councils
+Tell your agent to run the `plan-feature` skill with a description. The Product Council (6 members) evaluates scope and priority, then the Feature Council (4 members) creates a technical plan. You approve at each checkpoint.
 
-This project uses **workflow skills** (executable slash commands) and **councils of agents** for end-to-end development with multi-perspective decision-making.
+**2. Build it**
 
-**6 Skills** (type `/` in Claude Code):
+Run `build-feature` with the issue number from step 1. The agent implements across all layers — database, API, frontend, tests — with checkpoints for schema approval and API contract review.
 
-| Skill | Purpose |
-|-------|---------|
-| `/plan-feature` | Plan a feature with Product + Feature council review |
-| `/build-feature` | Full-stack implementation (DB + API + UI + tests) |
-| `/build-api` | Backend-only API development |
-| `/review-code` | Multi-perspective code review + security scanning |
-| `/submit-pr` | Create PR with quality checks + deployment review |
-| `/security-audit` | SAST scanning + STRIDE threat modeling |
+**3. Review and submit**
 
-**5 Councils:** Architecture, Feature, Review, Deployment, Product
+Run `review-code` for a 4-member council review with automated security scanning. Then `submit-pr` to create a pull request with quality checks and optional deployment council review.
 
-**Example:** Open Claude Code in VS Code and run:
-```
-/plan-feature Add user authentication with OAuth2 providers
+## How It Works
+
+```mermaid
+graph LR
+    A[plan-feature] --> B[build-feature]
+    A --> C[build-api]
+    B --> D[review-code]
+    C --> D
+    D --> E[submit-pr]
+    F[security-audit] -.-> |standalone| D
 ```
 
-**Learn more:** [.claude/README.md](.claude/README.md)
+Each skill activates the appropriate council at decision points. Council members are AI agent personas with specialized focus areas (security, quality, architecture, etc.) that vote Approve, Concern, or Block on proposals. This ensures every significant decision gets multi-perspective evaluation before proceeding.
 
-## 🎯 Philosophy
+Skills enforce strict boundaries — each owns a specific phase and hands off to the next. This prevents scope creep and keeps the human in control at every checkpoint.
 
-1. **Speed over Perfection** - Ship fast, learn fast, iterate
-2. **Incremental Value** - Deliver in 1-2 week increments
-3. **Feature Flags** - Prototype and test before full rollout
-4. **User Feedback** - Data-driven decisions
-5. **Councils of Agents** - Multi-perspective decisions
+## Agent Compatibility
 
-## 🔄 Development Workflow
+| Agent | Support | Notes |
+|-------|---------|-------|
+| Claude Code | Full | Native skill support, slash commands, Task subagents |
+| Cursor | Partial | Load AGENTS.md as context, invoke skills manually |
+| Codex CLI | Partial | Reference AGENTS.md, follow skill steps manually |
+| Other agents | Manual | Any agent that reads markdown can follow the workflows |
 
-**Trunk-Based Development:**
+Skills are written as structured markdown workflows. Any AI coding agent that can read files and follow instructions can use them — full automation depends on the agent's capabilities.
 
-- Main branch is always production-ready
-- Short-lived feature branches (< 2-3 days)
-- All changes via pull requests
-- Frequent integration
-- Feature flags for incomplete work
+## Customization
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed workflow.
+Tailor the workflows to your project:
 
-## 📦 Project Structure
+- **Add an agent**: Create a new `.md` file in `canonical/agents/` following the existing format
+- **Modify a council**: Edit the council template in `canonical/councils/` to add or remove members
+- **Customize a skill**: Edit the workflow in `.claude/skills/` and run `scripts/build.sh` to regenerate
 
-```
-agent-council/
-├── .claude/             # Claude Code integration
-│   ├── skills/          # Skill source SKILL.md files (authoring location)
-│   ├── CLAUDE.md        # Project instructions for Claude Code
-│   └── README.md        # Detailed skill and council documentation
-├── canonical/           # Single source of truth for shared resources
-│   ├── agents/          # Agent persona definitions (11 agents)
-│   ├── councils/        # Council templates (5 councils)
-│   └── templates/       # Shared templates (decision records, etc.)
-├── skills/              # Generated — distributable skill packages
-│   ├── plan-feature/    # Each skill bundles its own agents/councils
-│   ├── review-code/
-│   ├── security-audit/
-│   └── submit-pr/
-├── scripts/             # Build tooling
-│   ├── build.sh         # Generates skills/ from canonical + .claude/skills
-│   └── skill-manifest.json  # Maps skills to required resources
-├── docs/                # Project documentation
-│   └── decisions/       # Council decision records
-├── .github/             # CI workflows
-└── README.md            # This file
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full details.
 
-> **Do not edit files in `skills/` directly.** They are generated by `scripts/build.sh` from sources in `.claude/skills/` and `canonical/`. Your changes will be overwritten on the next build. Edit the source files instead, then run `./scripts/build.sh` to regenerate.
+## Documentation
 
-### Build Pipeline
+- [AGENTS.md](AGENTS.md) — Full reference for AI agents (skills, councils, agents, rules)
+- [CONTRIBUTING.md](CONTRIBUTING.md) — How to add skills, agents, and councils
 
-```
-.claude/skills/*/SKILL.md  ─┐
-                             ├──→  scripts/build.sh  ──→  skills/*/
-canonical/{agents,councils,  │
-           templates}/*.md  ─┘
-```
+## Contributing
 
-To regenerate skill packages after editing source files:
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
 
-```bash
-./scripts/build.sh           # Build all skills
-./scripts/build.sh --check   # Verify output matches (used in CI)
-```
-
-## 🧪 Testing
-
-```bash
-pnpm test              # Run all tests
-pnpm test:watch        # Watch mode
-pnpm test:e2e          # E2E tests
-pnpm test:coverage     # Coverage report
-```
-
-## 🔍 Code Quality
-
-```bash
-pnpm type-check    # TypeScript check
-pnpm lint          # Lint code
-pnpm format        # Format code
-pnpm check-all     # Run all checks
-```
-
-## 🚢 Deployment
-
-**Current:** Self-hosted on homelab via Docker
-**Future:** Staging and beta environments (TBD)
-
-## 🤝 Contributing
-
-Read our [Contributing Guide](CONTRIBUTING.md) to get started.
-
-**Quick overview:**
-1. Set up devcontainer and Claude Code plugins (see above)
-2. `/plan-feature` - Plan and scope the feature
-3. `/build-feature` or `/build-api` - Implement with council guidance
-4. `/review-code` - Multi-perspective review
-5. `/submit-pr` - Create pull request
-6. Address review feedback
-7. Merge when approved
-
-## 📝 License
+## License
 
 [MIT](LICENSE)
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- [Trunk-based development](https://trunkbaseddevelopment.com/)
-- [wshobson/agents](https://github.com/wshobson/agents) marketplace
-- [Council pattern](https://www.theengineeringmanager.com/growth/councils-of-agents-group-thinking-with-llms/)
-
-## 📧 Contact
-
-- **Issues**: [GitHub Issues](https://github.com/YOUR_USERNAME/YOUR_PROJECT/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/YOUR_USERNAME/YOUR_PROJECT/discussions)
+- [wshobson/agents](https://github.com/wshobson/agents) — MIT-licensed agent plugins that inspired the inline guidance pattern
+- [skills.sh](https://skills.sh) — The open agent skills ecosystem
+- [Council pattern](https://www.theengineeringmanager.com/growth/councils-of-agents-group-thinking-with-llms/) — Group thinking with LLMs
