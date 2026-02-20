@@ -5,10 +5,23 @@ description: Implement a full-stack feature following an approved plan. Builds d
 
 # Full-Stack Feature Implementation Workflow
 
-Execute a full-stack feature implementation across database, backend, frontend, and testing layers. This skill follows the implementation plan produced by `/plan-feature` and builds all layers with integrated testing.
+Execute a full-stack feature implementation across database, backend, frontend, and testing layers. This skill follows the implementation plan produced by `/plan-feature` and builds all layers with integrated testing. Read the project's `AGENTS.md` for tech stack details (frameworks, ORM, UI library, test runner, etc.).
 
 > [!CAUTION]
 > **Scope boundary**: This skill implements code and commits it. It does **NOT** create pull requests, push to remote, run code reviews, or submit anything for merge. When implementation and commits are complete, **stop** and suggest the user run `/review-code` next. Do not proceed to PR creation — that is `/submit-pr`'s job.
+
+> [!WARNING]
+> **Tech stack required.** This skill adapts to your project's technology choices. If `AGENTS.md` does not specify your project's frameworks, ORM, UI library, or test runner, **stop and ask the user** what their project uses. Then update `AGENTS.md` with a `## Tech Stack` section so future skills can reference it automatically. Example:
+>
+>     ## Tech Stack
+>     - Frontend: React with TypeScript
+>     - Backend: Express with TypeScript
+>     - ORM: Prisma with PostgreSQL
+>     - UI: Tailwind CSS + shadcn/ui
+>     - State: React Query for server state, Zustand for client state
+>     - Test runner: Vitest
+>     - E2E: Playwright
+>     - Package manager: npm
 
 ## Step 1: Load Implementation Plan
 
@@ -81,46 +94,37 @@ git checkout -b feature/<feature-slug>
 
 If database changes are required:
 
-1. Invoke `/database-design:postgresql` for schema design guidance
-
-2. Design the Prisma schema changes:
+1. Design the schema changes using your project's ORM or data access layer:
    - Models with proper field types and defaults
    - Relations with referential integrity
    - Indexes for query performance
    - Constraints and validations
    - Enums where appropriate
 
-3. Invoke `/database-migrations:sql-migrations` for migration best practices
-
 ### CHECKPOINT: Present the schema changes and migration plan to the user. Wait for approval before running.
 
-4. Generate and apply the migration:
-   ```bash
-   pnpm db:migrate
-   ```
+2. Generate and apply the migration using your project's migration tool.
 
 ## Step 3: Backend Implementation
 
-Invoke `/backend-development:feature-development` for backend scaffolding guidance.
-
-For each backend task from the plan:
+For each backend task from the plan, follow your project's backend framework conventions:
 
 ### Types and Validation
 
-- Define TypeScript interfaces for request/response types
-- Create Zod schemas for runtime validation
+- Define typed request/response interfaces
+- Create validation schemas for runtime validation
 - Export shared types for frontend consumption
 
 ### Service Layer
 
-- Implement business logic in NestJS services
+- Implement business logic in service classes/modules
 - Add proper error handling with typed exceptions
 - Validate business rules and enforce invariants
 - Keep services testable (dependency injection)
 
 ### API Layer
 
-- Create tRPC procedures or NestJS controllers
+- Create API handlers following your project's routing conventions
 - Wire up validation, auth guards, and rate limiting
 - Return proper status codes and error formats
 
@@ -130,36 +134,31 @@ For each backend task from the plan:
 - Integration tests for API endpoints
 - Test validation, auth, and error handling
 
-Run backend tests:
-
-```bash
-pnpm test
-```
+Run backend tests using your project's test runner.
 
 ### CHECKPOINT: Present the API contract (endpoints, request/response types) to the user. Confirm the contract before building the frontend against it.
 
 ## Step 4: Frontend Implementation
 
-For each frontend task from the plan:
+For each frontend task from the plan, follow your project's frontend framework conventions:
 
 ### Component Creation
 
-Invoke `/ui-design:create-component` for guided component creation with:
+Create components following your project's UI patterns:
 
-- Full TypeScript prop interfaces
-- Tailwind CSS + shadcn/ui styling (invoke `/frontend-mobile-development:tailwind-design-system` for patterns)
+- Typed prop interfaces
+- Styling per your project's design system
 - Keyboard navigation and ARIA attributes
 - Responsive design
 - Dark mode support (if applicable)
 
 ### State Management
 
-If the feature requires client-side state:
+If the feature requires client-side state, follow your project's state management patterns:
 
-- Invoke `/frontend-mobile-development:react-state-management` for state patterns
-- Use React Query / tRPC hooks for server state
-- Use local state (useState/useReducer) for UI state
-- Use context or Zustand for shared client state
+- Server state (data fetching, caching, revalidation)
+- UI state (local component state)
+- Shared client state (global stores if needed)
 
 ### Routing
 
@@ -171,23 +170,17 @@ If new pages or routes are needed:
 
 ### API Integration
 
-- Wire components to backend via tRPC client or API hooks
+- Wire components to backend via your project's API client
 - Handle loading states, error states, and empty states
 - Add optimistic updates where appropriate
 
 ### Feature Flag (if applicable)
 
-If the plan specifies a feature flag:
-
-```typescript
-const isEnabled = useFeatureFlag('FEATURE_NAME');
-if (!isEnabled) return <ExistingComponent />;
-return <NewFeature />;
-```
+If the plan specifies a feature flag, wrap the new feature behind the flag so it can be toggled without redeployment.
 
 ### Frontend Tests
 
-- Component render tests (React Testing Library)
+- Component render tests
 - User interaction tests (click, type, submit)
 - Integration tests with mocked API responses
 
@@ -203,26 +196,18 @@ Write E2E test outlines for critical user flows:
 
 If E2E test infrastructure exists, implement the tests.
 
-Run the full test suite:
-
-```bash
-pnpm test
-```
-
-Report coverage and any failures.
+Run the full test suite and report coverage and any failures.
 
 ## Step 6: Self-Review
 
-Before presenting to the user, perform a comprehensive self-review:
+Before presenting to the user, run your project's quality checks:
 
-```bash
-pnpm type-check      # No TypeScript errors
-pnpm lint            # No linting violations
-pnpm format:check    # No Prettier formatting issues
-pnpm test            # All tests pass
-```
+- Type checking (no type errors)
+- Linting (no violations)
+- Formatting (no style issues)
+- Tests (all pass)
 
-If `format:check` fails, run `pnpm exec prettier --write` on the reported files before proceeding.
+If formatting fails, run the auto-formatter on the reported files before proceeding.
 
 Check for:
 
@@ -230,18 +215,21 @@ Check for:
 - Input validation on all user-facing inputs
 - Proper error handling (no swallowed errors)
 - Accessible components (ARIA, keyboard nav)
-- No `any` types in TypeScript
+- Strict typing (no untyped escape hatches)
 - Proper loading and error states in UI
 
 ## Step 7: Update Documentation
 
 If this feature changes how the project is set up, built, or run, update the relevant documentation **before committing**:
 
-1. **README.md** — Update Quick Start, Installation, Usage, or Project Structure sections if the feature introduces new infrastructure, services, environment variables, or commands
-2. **Other docs** — Update any relevant documentation files as needed
+1. **AGENTS.md Tech Stack** — If this implementation introduces or changes any technology (new framework, new database, new UI library), update the `## Tech Stack` section in `AGENTS.md` so future skills reference the correct stack
+2. **README.md** — Update Quick Start, Installation, Usage, or Project Structure sections if the feature introduces new infrastructure, services, environment variables, or commands
+3. **Other docs** — Update any relevant documentation files as needed
+
+### CHECKPOINT: If the Tech Stack section in AGENTS.md needs updating, present the proposed changes to the user and wait for approval. The tech stack definition affects all future skill runs.
 
 > [!IMPORTANT]
-> A developer cloning the repo fresh must be able to get the project running by following README.md alone. If your feature adds a Docker service, database, new dev server, or environment variable, the docs MUST reflect it.
+> A developer cloning the repo fresh must be able to get the project running by following README.md alone. If your feature adds a service, database, new dev server, or environment variable, the docs MUST reflect it.
 
 ## Step 8: Commit
 
@@ -325,7 +313,6 @@ Present the next step to the user:
 
 - **Recommended**: Run `/review-code` for multi-perspective review before submitting
 - **If more work remains**: Continue with remaining tasks from the implementation plan, then run `/review-code`
-- **If UI-heavy**: Consider running `/ui-design:design-review` before code review
 
 If working from a GitHub issue, remind the user:
 

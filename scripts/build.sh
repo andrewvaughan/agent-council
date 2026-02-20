@@ -211,6 +211,17 @@ if [ -z "$skill_list" ]; then
   exit 1
 fi
 
+# Guard: reject unsafe skill names (path traversal protection)
+while IFS= read -r name; do
+  [ -n "$name" ] || continue
+  case "$name" in
+    *..* | */* | *\\*)
+      echo "ERROR: Unsafe skill name in manifest: '${name}'"
+      exit 1
+      ;;
+  esac
+done <<< "$skill_list"
+
 errors=0
 skills_built=0
 

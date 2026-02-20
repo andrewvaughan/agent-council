@@ -44,6 +44,25 @@ This installs skill workflows, agent definitions, and council templates into you
 
 Point your AI agent to `AGENTS.md` in the installed package for full instructions on how to use the skills and councils.
 
+### Configuring Your Tech Stack
+
+Implementation skills (`build-feature`, `build-api`) adapt to your project's technology choices. Add a `## Tech Stack` section to your project's `AGENTS.md` so skills know what frameworks and tools to use:
+
+```markdown
+## Tech Stack
+
+- Frontend: React with TypeScript
+- Backend: Express with TypeScript
+- ORM: Prisma with PostgreSQL
+- UI: Tailwind CSS + shadcn/ui
+- Validation: Zod
+- Test runner: Vitest
+- E2E: Playwright
+- Package manager: npm
+```
+
+If the tech stack is not defined, implementation skills will stop and ask you to provide it before proceeding.
+
 ## Quick Demo
 
 Here's what a typical workflow looks like:
@@ -107,10 +126,10 @@ scripts/build.sh
 scripts/build.sh --check
 ```
 
-After editing anything in `canonical/`, run `scripts/build.sh` to regenerate. The `--check` flag compares the generated output against the committed `skills/` directory and reports any drift — this is what CI runs to ensure the generated files stay in sync with their sources.
+After editing anything in `canonical/`, run `scripts/build.sh` to regenerate. The `--check` flag compares the generated output against the committed `skills/` directory and reports any drift. CI runs `--check` on every pull request — a mismatch will fail the build.
 
 > [!IMPORTANT]
-> Never edit files in `skills/` directly — they are overwritten by the build. Always edit the sources in `canonical/`.
+> Never edit files in `skills/` directly — they are overwritten by the build. The `.claude/skills/` entries are symlinks to `skills/` (the generated output), so editing through them also modifies generated files. Always edit the sources in `canonical/`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for full details on adding skills, agents, and councils.
 

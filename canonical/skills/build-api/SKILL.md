@@ -5,10 +5,21 @@ description: Build backend API endpoints, services, and database changes. Use fo
 
 # Backend API Development Workflow
 
-Build backend API endpoints, services, and database changes following NestJS patterns, Prisma schema design, and the project's clean architecture conventions.
+Build backend API endpoints, services, and database changes following your project's backend framework conventions and architecture patterns. Read the project's `AGENTS.md` for tech stack details (framework, ORM, API style, test runner, etc.).
 
 > [!CAUTION]
 > **Scope boundary**: This skill implements backend code and commits it. It does **NOT** create pull requests, push to remote, run code reviews, or submit anything for merge. When implementation and commits are complete, **stop** and suggest the user run `/review-code` next.
+
+> [!WARNING]
+> **Tech stack required.** This skill adapts to your project's technology choices. If `AGENTS.md` does not specify a backend framework, ORM, API style, validation library, or test runner, **stop and ask the user** what their project uses. Then update `AGENTS.md` with a `## Tech Stack` section so future skills can reference it automatically. Example:
+>
+>     ## Tech Stack
+>     - Backend: Express with TypeScript
+>     - ORM: Prisma with PostgreSQL
+>     - API style: REST
+>     - Validation: Zod
+>     - Test runner: Vitest
+>     - Package manager: npm
 
 ## Step 1: Define API Requirements
 
@@ -24,21 +35,19 @@ Ask the user (or read from the decision record if `/plan-feature` was run first)
 - What resource(s) or endpoint(s) are being created or modified?
 - What operations are needed (CRUD, custom actions, queries)?
 - Are there database schema changes?
-- Is this a tRPC procedure or REST endpoint?
+- What API style does the project use (REST, RPC, etc.)?
 - Are there authentication or authorization requirements?
 
 If a decision record exists in `docs/decisions/`, read it for the task breakdown.
 
 ## Step 2: Design API Contract
 
-Invoke `/backend-development:api-design-principles` for API design guidance.
+Design the full API contract following your project's API conventions:
 
-Design the full API contract:
-
-- **Endpoint paths and HTTP methods** (REST) or **procedure names** (tRPC)
-- **Request types**: Full TypeScript interfaces with all fields, optional/required markers
+- **Endpoints or procedures**: Paths, methods, or procedure names per your API style
+- **Request types**: Typed interfaces with all fields, optional/required markers
 - **Response types**: Success responses, error responses, pagination if applicable
-- **Validation rules**: Using Zod schemas for runtime validation
+- **Validation rules**: Using your project's validation library for runtime validation
 - **Error format**: Standardized error response structure
 - **Auth requirements**: Which endpoints need authentication, role-based access
 
@@ -67,7 +76,7 @@ If this represents a **significant API decision** (new resource type, breaking c
 ### Backend Specialist — consult: backend-development
 
 - **Vote**: Approve / Concern / Block
-- **Rationale**: API design quality, NestJS patterns, developer experience
+- **Rationale**: API design quality, framework patterns, developer experience
 - **Recommendations**: Implementation approach, ecosystem integration
 
 ### CHECKPOINT: Present the API contract (and Architecture Council evaluation if activated) to the user. Wait for approval before implementation begins.
@@ -76,55 +85,47 @@ If this represents a **significant API decision** (new resource type, breaking c
 
 If schema changes are required:
 
-1. Invoke `/database-design:postgresql` for PostgreSQL schema design guidance
-
-2. Design the Prisma schema changes:
+1. Design the schema changes using your project's ORM or data access layer:
    - Model definitions with proper field types
    - Relations and foreign keys
    - Indexes for query performance
    - Unique constraints and validations
    - Enums where appropriate
 
-3. Invoke `/database-migrations:sql-migrations` for migration generation guidance
+### CHECKPOINT: Present the schema changes and migration plan to the user. Wait for approval before running the migration.
 
-### CHECKPOINT: Present the Prisma schema changes and migration plan to the user. Wait for approval before running the migration.
+2. Generate and apply the migration using your project's migration tool.
 
-4. Generate and apply the migration:
-
-   ```bash
-   pnpm db:migrate
-   ```
-
-5. If seed data is needed, update the seed script.
+3. If seed data is needed, update the seed script.
 
 ## Step 4: Implement Backend
 
-Follow NestJS patterns and `/backend-development:architecture-patterns` for clean architecture:
+Follow your project's backend framework patterns and conventions:
 
 ### Types and DTOs
 
-- Define request/response TypeScript interfaces
-- Create Zod validation schemas for runtime validation
-- Export types for frontend consumption (via tRPC or shared packages)
+- Define typed request/response interfaces
+- Create validation schemas for runtime validation
+- Export types for frontend consumption if applicable
 
 ### Repository / Data Access Layer
 
-- Create or update Prisma queries
+- Create or update data access queries using your project's ORM
 - Implement data access patterns (repository pattern if used)
-- Add query optimization (select specific fields, use includes wisely)
+- Add query optimization (select specific fields, use eager loading wisely)
 
 ### Service Layer
 
-- Implement business logic in NestJS services
+- Implement business logic in service classes/modules
 - Add input validation and business rule enforcement
 - Handle error cases with typed exceptions
 - Keep services testable (inject dependencies)
 
 ### Controller / Router Layer
 
-- Create tRPC procedures or NestJS controllers
+- Create API handlers following your project's routing conventions
 - Wire up validation, auth guards, and services
-- Implement proper HTTP status codes (REST) or error codes (tRPC)
+- Implement proper status codes and error formats
 - Add rate limiting if needed for public endpoints
 
 ### Guards and Middleware
@@ -133,8 +134,6 @@ Follow NestJS patterns and `/backend-development:architecture-patterns` for clea
 - Add authorization checks (role-based or resource-based)
 - Add request logging for debugging
 
-Use `/javascript-typescript:typescript-advanced-types` for complex type scenarios (generics, conditional types, mapped types).
-
 ## Step 5: Write Tests
 
 Following the QA Lead testing strategy:
@@ -142,7 +141,7 @@ Following the QA Lead testing strategy:
 ### Unit Tests
 
 - Test each service method in isolation
-- Mock Prisma client and external dependencies
+- Mock database client and external dependencies
 - Test business logic, validation rules, error handling
 - Cover happy paths and edge cases
 
@@ -160,50 +159,42 @@ Following the QA Lead testing strategy:
 - Missing required fields
 - Type coercion and casting
 
-Run tests and verify coverage:
-
-```bash
-pnpm test
-```
-
-Ensure coverage meets the >80% target.
+Run tests using your project's test runner and verify coverage meets the >80% target.
 
 ## Step 6: Generate API Documentation
 
-Invoke `/documentation-generation:openapi-spec-generation` to generate or update API documentation for the new endpoints.
-
-If using tRPC, document the procedure signatures and usage examples.
-If using REST, generate or update the OpenAPI/Swagger specification.
+Generate or update API documentation for the new endpoints. If your project uses an API specification format (OpenAPI, AsyncAPI, etc.), update it to reflect the new endpoints.
 
 ## Step 7: Self-Review
 
-Before presenting to the user, verify:
+Before presenting to the user, run your project's quality checks:
 
-```bash
-pnpm type-check      # No TypeScript errors
-pnpm lint            # No linting violations
-pnpm format:check    # No Prettier formatting issues
-pnpm test            # All tests pass
-```
+- Type checking (no type errors)
+- Linting (no violations)
+- Formatting (no style issues)
+- Tests (all pass)
 
-If `format:check` fails, run `pnpm exec prettier --write` on the reported files before proceeding.
+If formatting fails, run the auto-formatter on the reported files before proceeding.
 
 Check for common issues:
 
 - No hardcoded secrets or credentials
 - Proper error handling (no swallowed errors)
 - Input validation on all external-facing endpoints
-- Proper use of TypeScript strict mode (no `any` types)
+- Strict typing (no untyped escape hatches)
 
 ## Step 8: Update Documentation
 
 If this API change alters how the project is set up, built, or run, update the relevant documentation **before committing**:
 
-1. **README.md** — Update Quick Start, Installation, Usage, or Project Structure sections if the change introduces new infrastructure, services, environment variables, or commands
-2. **Other docs** — Update any relevant documentation files as needed
+1. **AGENTS.md Tech Stack** — If this implementation introduces or changes any technology (new database, new library, new API pattern), update the `## Tech Stack` section in `AGENTS.md` so future skills reference the correct stack
+2. **README.md** — Update Quick Start, Installation, Usage, or Project Structure sections if the change introduces new infrastructure, services, environment variables, or commands
+3. **Other docs** — Update any relevant documentation files as needed
+
+### CHECKPOINT: If the Tech Stack section in AGENTS.md needs updating, present the proposed changes to the user and wait for approval. The tech stack definition affects all future skill runs.
 
 > [!IMPORTANT]
-> A developer cloning the repo fresh must be able to get the project running by following README.md alone. If your API change adds a Docker service, database, new environment variable, or external dependency, the docs MUST reflect it.
+> A developer cloning the repo fresh must be able to get the project running by following README.md alone. If your API change adds a service, database, new environment variable, or external dependency, the docs MUST reflect it.
 
 ## Step 9: Commit
 
