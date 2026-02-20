@@ -38,5 +38,18 @@
       "principal-engineer",
       "backend-specialist"
     ]
+  },
+  "build-feature": {
+    "agents": [],
+    "councils": []
+  },
+  "build-api": {
+    "councils": ["architecture-council"],
+    "agents": [
+      "principal-engineer",
+      "platform-engineer",
+      "security-engineer",
+      "backend-specialist"
+    ]
   }
 }

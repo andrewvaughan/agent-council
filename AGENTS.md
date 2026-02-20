@@ -173,7 +173,7 @@ Skills, agents, and councils can be customized for your project:
 
 - **Agents**: Edit agent definitions in canonical/agents/ to adjust focus areas, complexity tiers, or add new personas
 - **Councils**: Edit council templates in canonical/councils/ to change membership or evaluation criteria
-- **Skills**: Edit skill workflows in .claude/skills/ to modify steps, checkpoints, or guidance
+- **Skills**: Edit skill workflows in canonical/skills/ to modify steps, checkpoints, or guidance
 - **Build**: Run scripts/build.sh to regenerate the distributable skills/ directory after changes
 
 See CONTRIBUTING.md for detailed instructions on adding or modifying skills, agents, and councils.
@@ -197,15 +197,18 @@ After installation, the package provides:
         agents/
         councils/
       build-feature/
-        SKILL.md              (internal — not yet genericized)
+        SKILL.md
       build-api/
-        SKILL.md              (internal — not yet genericized)
+        SKILL.md
+        agents/
+        councils/
       security-audit/
         SKILL.md
         agents/
         councils/
 
     canonical/                Source of truth (for contributors)
+      skills/                 Skill workflow sources (SKILL.md per skill)
       agents/                 All 11 agent definitions
       councils/               All 5 council templates
       templates/              Shared templates

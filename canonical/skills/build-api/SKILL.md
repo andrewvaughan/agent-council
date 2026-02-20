@@ -1,7 +1,6 @@
 ---
 name: build-api
 description: Build backend API endpoints, services, and database changes. Use for backend-only work like new API routes, business logic, database schema changes, or microservice patterns. Activates the Architecture Council for significant API decisions.
-user-invocable: true
 ---
 
 # Backend API Development Workflow
@@ -43,9 +42,9 @@ Design the full API contract:
 - **Error format**: Standardized error response structure
 - **Auth requirements**: Which endpoints need authentication, role-based access
 
-If this represents a **significant API decision** (new resource type, breaking change to existing API, new architectural pattern), activate the Architecture Council using `canonical/councils/architecture-council.md`:
+If this represents a **significant API decision** (new resource type, breaking change to existing API, new architectural pattern), activate the Architecture Council using the skill's `councils/architecture-council.md`:
 
-> **Model Selection**: For each council member, read their agent definition from `canonical/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
+> **Model Selection**: For each council member, read their agent definition from the skill's `agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
 
 ### Principal Engineer — consult: full-stack-orchestration
 

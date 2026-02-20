@@ -18,12 +18,11 @@ Thank you for your interest in contributing! This project provides AI coding age
 ## Project Structure
 
 ```
-canonical/              Source of truth for agents, councils, templates
+canonical/              Source of truth for all content
+  skills/               Skill workflow sources (SKILL.md per skill)
   agents/               11 agent persona definitions
   councils/             5 council templates
   templates/            Shared templates (decision records, etc.)
-
-.claude/skills/         Skill workflow source files (SKILL.md per skill)
 
 skills/                 GENERATED — do not edit directly
   <skill-name>/         Self-contained skill package
@@ -37,11 +36,11 @@ scripts/
 ```
 
 > [!IMPORTANT]
-> Never edit files in `skills/` directly. Edit the sources in `canonical/` and `.claude/skills/`, then run `scripts/build.sh` to regenerate.
+> Never edit files in `skills/` directly. Edit the sources in `canonical/`, then run `scripts/build.sh` to regenerate.
 
 ## Adding a New Skill
 
-1. Create the skill workflow at `.claude/skills/<skill-name>/SKILL.md` with required frontmatter:
+1. Create the skill workflow at `canonical/skills/<skill-name>/SKILL.md` with required frontmatter:
 
    ```yaml
    ---
