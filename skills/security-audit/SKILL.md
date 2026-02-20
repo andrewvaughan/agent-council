@@ -1,7 +1,6 @@
 ---
 name: security-audit
 description: Run a comprehensive security audit combining automated SAST scanning, STRIDE threat modeling, and attack tree analysis. Use before major releases, after security-sensitive changes, or on a regular cadence. Can audit the full codebase or specific directories.
-user-invocable: true
 ---
 
 # Security Audit Workflow
@@ -12,7 +11,7 @@ Run a comprehensive security audit that combines automated static analysis, thre
 
 Ask the user:
 
-- **Scope**: Full codebase or specific area? (e.g., `apps/api/src/auth/`, `apps/web/src/`)
+- **Scope**: Full codebase or specific area? (e.g., `src/auth/`, `src/api/`)
 - **Trigger**: What prompted this audit? (routine, pre-release, security incident, new feature, dependency update)
 - **Focus areas**: Authentication, API security, data protection, infrastructure, frontend security, or all?
 
@@ -20,18 +19,16 @@ Ask the user:
 
 ## Step 2: Automated SAST Scanning
 
-Invoke `/security-scanning:security-sast` on the defined scope.
-
-Scan for:
+Perform static application security testing on the defined scope. Scan for:
 
 - **Injection**: SQL injection, NoSQL injection, command injection, LDAP injection
 - **XSS**: Reflected, stored, and DOM-based cross-site scripting
 - **CSRF**: Missing CSRF protections on state-changing endpoints
 - **Authentication**: Weak password policies, broken auth flows, session fixation
 - **Secrets**: Hardcoded API keys, passwords, tokens, connection strings
-- **Dependencies**: Known vulnerabilities in npm packages (CVEs)
+- **Dependencies**: Known vulnerabilities in packages (CVEs)
 - **Deserialization**: Insecure deserialization patterns
-- **Prototype pollution**: JavaScript-specific object manipulation attacks
+- **Prototype pollution**: Object manipulation attacks (JavaScript/TypeScript)
 
 Collect every finding with:
 
@@ -42,9 +39,11 @@ Collect every finding with:
 - **Evidence**: The specific code pattern that triggered the finding
 - **Remediation**: How to fix it
 
+> **Claude Code optimization**: If the `/security-scanning:security-sast` skill is available, use it for enhanced automated scanning. Otherwise, perform the manual review above.
+
 ## Step 3: Security Hardening Review
 
-Invoke `/security-scanning:security-hardening` for a comprehensive hardening review:
+Perform a comprehensive hardening review across the following areas:
 
 ### HTTP Security
 
@@ -78,13 +77,15 @@ Invoke `/security-scanning:security-hardening` for a comprehensive hardening rev
 
 ### Infrastructure
 
-- Docker image security (base image, non-root user, multi-stage builds)
+- Container image security (base image, non-root user, multi-stage builds)
 - Environment variable management (no secrets in code or logs)
 - Network exposure (unnecessary ports, services)
 
+> **Claude Code optimization**: If the `/security-scanning:security-hardening` skill is available, use it for automated hardening analysis. Otherwise, follow the manual checklist above.
+
 ## Step 4: STRIDE Threat Modeling
 
-Invoke `/security-scanning:stride-analysis-patterns` to systematically model threats:
+Systematically model threats using the STRIDE framework:
 
 ### Spoofing
 
@@ -131,9 +132,7 @@ Document each threat with:
 
 ## Step 5: Attack Tree Analysis
 
-For the top 3 highest-risk threats identified in STRIDE:
-
-Invoke `/security-scanning:attack-tree-construction` to build attack trees showing:
+For the top 3 highest-risk threats identified in STRIDE, build attack trees showing:
 
 - **Attack goal**: What the attacker wants to achieve
 - **Attack paths**: Different ways to reach the goal
@@ -144,25 +143,23 @@ Invoke `/security-scanning:attack-tree-construction` to build attack trees showi
 
 ## Step 6: Architecture Council Security Review
 
-Activate a subset of the Architecture Council for security review:
+Activate a subset of the Architecture Council for security review. For each council member, read their agent definition from the skill's `agents/` directory and use the complexity tier specified to calibrate review depth.
 
-> **Model Selection**: For each council member, read their agent definition from `canonical/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
-
-### Security Engineer (Lead) — consult: security-scanning
+### Security Engineer (Lead)
 
 - Validate automated findings (identify false positives)
 - Prioritize remediation based on actual risk
 - Assess overall security posture
 - **Assessment**: Strong / Adequate / Needs Improvement / Critical Risk
 
-### Principal Engineer — consult: full-stack-orchestration
+### Principal Engineer
 
 - Assess architectural implications of required remediations
 - Identify systemic patterns that create vulnerabilities
 - Recommend architectural changes for defense-in-depth
 - **Assessment**: Architecturally sound / Needs refactoring / Fundamental issues
 
-### Backend Specialist — consult: backend-development
+### Backend Specialist
 
 - Evaluate backend-specific security patterns
 - Assess API security implementation quality
@@ -220,7 +217,7 @@ If the user chooses to remediate findings now:
 1. Address findings in priority order (Critical first, then High)
 2. For each fix:
    - Apply the remediation
-   - Re-run the relevant SAST scan to verify the fix
+   - Re-run the relevant scan to verify the fix
    - Run tests to ensure no regressions
 3. Commit each fix with:
    ```

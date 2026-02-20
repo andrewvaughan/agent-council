@@ -1,7 +1,6 @@
 ---
 name: review-code
 description: Run a comprehensive multi-perspective code review on current changes. Activates the Review Council (security, quality, documentation, domain review) and runs automated security scanning. Use before creating a pull request or when you want a thorough review of your work.
-user-invocable: true
 ---
 
 # Code Review Workflow
@@ -19,63 +18,91 @@ Identify all changes on the current branch:
 2. Run `git diff` and `git diff --cached` to catch any uncommitted work
 3. Run `git status` to see modified, added, and deleted files
 
-Categorize changed files into:
+Categorize changed files by layer based on your project's directory structure:
 
-- **Frontend**: `apps/web/**`, `packages/ui/**`
-- **Backend**: `apps/api/**`
-- **Database**: `prisma/**`, `**/migrations/**`
-- **Configuration**: `*.config.*`, `docker*`, `*.yml`, `*.json`
-- **Documentation**: `*.md`, `docs/**`
-- **Tests**: `**/*.test.*`, `**/*.spec.*`
+- **Frontend**: UI components, pages, styles, client-side logic
+- **Backend**: API routes, services, business logic, server-side code
+- **Database**: Schema files, migrations, seed data
+- **Configuration**: Config files, CI/CD, container definitions, environment files
+- **Documentation**: Markdown files, docs directories
+- **Tests**: Test files (`.test.*`, `.spec.*`)
 
 Present a summary of changed files by category to the user.
 
 ## Step 2: Run Formatting and Lint Checks
 
-Run formatting and lint checks before the council review to catch mechanical issues early:
+Run your project's formatting and lint commands before the council review to catch mechanical issues early. Common examples:
 
-```bash
-pnpm format:check
-pnpm lint
+```
+# Adapt to your project's toolchain
+format:check    # Prettier, Black, gofmt, etc.
+lint            # ESLint, Ruff, golangci-lint, etc.
 ```
 
-If `format:check` fails, fix it immediately by running `pnpm exec prettier --write` on the reported files and stage the changes. Do not include formatting issues in the council review — just fix them.
+If formatting checks fail, fix them immediately by running the auto-formatter on the reported files and stage the changes. Do not include formatting issues in the council review — just fix them.
 
 ## Step 3: Run Automated Security Scanning
 
-Invoke `/security-scanning:security-sast` on all changed files.
+Perform static application security testing (SAST) on all changed files. Scan for:
 
-If backend files are changed, also invoke `/security-scanning:security-hardening` with focus on:
+<details>
+<summary>SAST Scanning Checklist</summary>
 
-- Input validation completeness
-- Authentication and authorization checks
-- SQL injection and injection vulnerabilities
-- Secret exposure in code
-- Error information leakage
+- Are all database queries parameterized? (SQL/NoSQL injection)
+- Are user inputs sanitized before rendering? (XSS — reflected, stored, DOM-based)
+- Are state-changing endpoints protected against CSRF?
+- Are there hardcoded secrets, API keys, passwords, or connection strings?
+- Are authentication flows following secure patterns? (no auth bypass paths)
+- Are error messages leaking internal details? (stack traces, DB structure)
+- Are dependencies free of known CVEs?
+- Are file uploads validated and restricted?
+- Are authorization checks present on all protected endpoints?
+
+</details>
+
+If backend files are changed, also perform a hardening review:
+
+<details>
+<summary>Hardening Review Checklist</summary>
+
+- Is input validation comprehensive on all user-facing inputs?
+- Are authentication and authorization checks present and correct?
+- Are error responses safe? (no internal details leaked)
+- Are secrets managed securely? (environment variables, vaults — not hardcoded)
+- Are security headers configured? (CSP, HSTS, X-Frame-Options)
+- Are rate limits configured on public endpoints?
+
+</details>
 
 Collect all findings with severity levels (Critical, High, Medium, Low, Info).
 
+> **Claude Code optimization**: If the `/security-scanning:security-sast` and `/security-scanning:security-hardening` skills are available, use them for enhanced automated scanning. Otherwise, follow the manual checklists above.
+
 ## Step 4: Run Accessibility Audit (if frontend changes)
 
-If any frontend files (React components, CSS, HTML templates) are in the changeset:
+If any frontend files (UI components, CSS, HTML templates) are in the changeset, check WCAG compliance on modified components:
 
-Invoke `/ui-design:accessibility-audit` to check WCAG compliance on modified components.
+<details>
+<summary>Accessibility Checklist</summary>
 
-Focus on:
+- Do text and interactive elements meet color contrast ratios? (4.5:1 for normal text, 3:1 for large text)
+- Can all interactive elements be reached and operated via keyboard alone?
+- Are ARIA attributes used correctly? (roles, labels, live regions)
+- Is focus managed properly during dynamic content changes? (modals, route transitions)
+- Is semantic HTML used? (`<button>` not `<div onClick>`, `<nav>`, `<main>`, `<article>`)
+- Are images and icons given accessible names? (`alt` text, `aria-label`)
+- Are form inputs associated with labels?
+- Does the page make sense when read linearly by a screen reader?
 
-- Color contrast ratios
-- Keyboard navigation
-- ARIA attributes and screen reader support
-- Focus management
-- Semantic HTML usage
+</details>
+
+> **Claude Code optimization**: If the `/ui-design:accessibility-audit` skill is available, use it for automated WCAG compliance checking. Otherwise, follow the manual checklist above.
 
 ## Step 5: Activate the Review Council
 
-Read the Review Council template from `canonical/councils/review-council.md` and conduct the full council review.
+Read the Review Council template from the skill's `councils/review-council.md` and conduct the full council review. For each council member, read their agent definition from the skill's `agents/` directory and use the complexity tier specified to calibrate review depth.
 
-> **Model Selection**: For each council member, read their agent definition from `canonical/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
-
-### Security Engineer (Lead) — consult: security-scanning
+### Security Engineer (Lead)
 
 - Review all SAST findings from Step 3
 - Check for OWASP Top 10 vulnerabilities in the changed code
@@ -102,7 +129,7 @@ Read the Review Council template from `canonical/councils/review-council.md` and
 - Check if documentation is updated for user-facing changes
 - Review code readability and clarity of complex logic
 - Verify README/docs reflect any new features or changes
-- Check that public APIs have proper JSDoc/TSDoc
+- Check that public APIs have proper documentation comments
 - **Vote**: Approve / Concern / Block
 - **Findings**: Documentation gaps, unclear code sections
 - **Recommendations**: Documentation and clarity improvements
@@ -117,9 +144,9 @@ Select the appropriate specialist based on changed files:
 
 Review domain-specific best practices:
 
-- Component patterns, hooks usage, state management (frontend)
-- NestJS patterns, service architecture, API design (backend)
-- Prisma schema design, query optimization (database)
+- Component patterns, state management, rendering performance (frontend)
+- Framework patterns, service architecture, API design (backend)
+- Schema design, query optimization, migration safety (database)
 - **Vote**: Approve / Concern / Block
 - **Findings**: Pattern violations, anti-patterns, performance concerns
 - **Recommendations**: Specific improvements
@@ -157,7 +184,7 @@ Nice-to-have improvements (Low findings, style suggestions, minor documentation 
 For each item the user approves for fixing:
 
 1. Apply the fix
-2. Re-run the relevant check (lint, test, type-check, or SAST scan) to verify the fix
+2. Re-run the relevant check (lint, test, type-check, or security scan) to verify the fix
 3. Stage the changes
 
 If the user asks to skip certain findings, note them as deferred items for Step 9.
@@ -185,16 +212,7 @@ Review the following sources for deferred work:
 
 ### Document Deferred Work
 
-For each deferred item, draft a GitHub issue:
-
-```bash
-gh issue create \
-  --title "<type>: <deferred item description>" \
-  --body "<context on why it was deferred, what needs to happen, and any relevant references>" \
-  --label "enhancement"
-```
-
-If the deferred items are small, a single tracking issue with a checklist is sufficient. If they represent distinct features or fixes, create separate issues.
+For each deferred item, create a tracking issue in your project's issue tracker with the finding description, context on why it was deferred, and what needs to happen.
 
 > [!TIP]
 > Not every review generates deferred work. If all findings were addressed or accepted, skip this step entirely. Don't manufacture follow-up issues just to have them.
