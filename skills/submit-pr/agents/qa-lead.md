@@ -40,5 +40,5 @@ Quality assurance specialist responsible for testing strategy, coverage requirem
 
 ## Complexity
 
-- **Routine tasks**: Economy tier — e.g., Claude Haiku
-- **Critical decisions**: Standard tier — e.g., Claude Sonnet
+- **Routine tasks**: Economy tier — e.g., Claude Haiku (coverage checks, simple test review)
+- **Critical decisions**: Standard tier — e.g., Claude Sonnet (testing strategy design, new feature QA planning)
