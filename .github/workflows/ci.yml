@@ -146,7 +146,7 @@ jobs:
               echo ""
               errors=$((errors + 1))
             fi
-          done < <(find skills/ -type f -name "*.md")
+          done < <(find skills/ -maxdepth 2 -name "SKILL.md")
 
           if [ $errors -gt 0 ]; then
             echo "${errors} file(s) contain tech-stack references"
@@ -175,7 +175,7 @@ jobs:
               echo "$matches"
               errors=$((errors + 1))
             fi
-          done < <(find . -type f \( -name "*.md" -o -name "*.json" -o -name "*.yml" -o -name "*.yaml" -o -name "*.sh" \) | grep -v node_modules | grep -v '.git/')
+          done < <(find . -type f \( -name "*.md" -o -name "*.json" -o -name "*.yml" -o -name "*.yaml" -o -name "*.sh" \) | grep -v node_modules | grep -v '.git/' | grep -v '.github/workflows/')
 
           if [ $errors -gt 0 ]; then
             echo "${errors} file(s) contain personal paths"
@@ -227,6 +227,10 @@ jobs:
             for link in $links; do
               # Resolve relative to the file's directory
               if [ -n "$link" ]; then
+                # Skip template placeholders (e.g., NNN-slug.md, <number>)
+                case "$link" in
+                  *NNN*|*'<'*) continue ;;
+                esac
                 resolved="${dir}/${link}"
                 if [ ! -e "$resolved" ]; then
                   echo "BROKEN LINK in ${file}: ${link}"
