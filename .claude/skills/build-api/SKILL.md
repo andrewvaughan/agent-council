@@ -28,7 +28,7 @@ Ask the user (or read from the decision record if `/plan-feature` was run first)
 - Is this a tRPC procedure or REST endpoint?
 - Are there authentication or authorization requirements?
 
-If a decision record exists in `.claude/councils/decisions/`, read it for the task breakdown.
+If a decision record exists in `docs/decisions/`, read it for the task breakdown.
 
 ## Step 2: Design API Contract
 
@@ -43,9 +43,9 @@ Design the full API contract:
 - **Error format**: Standardized error response structure
 - **Auth requirements**: Which endpoints need authentication, role-based access
 
-If this represents a **significant API decision** (new resource type, breaking change to existing API, new architectural pattern), activate the Architecture Council using `.claude/councils/architecture-council.md`:
+If this represents a **significant API decision** (new resource type, breaking change to existing API, new architectural pattern), activate the Architecture Council using `canonical/councils/architecture-council.md`:
 
-> **Model Selection**: For each council member, read their agent definition from `.claude/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
+> **Model Selection**: For each council member, read their agent definition from `canonical/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
 
 ### Principal Engineer — consult: full-stack-orchestration
 

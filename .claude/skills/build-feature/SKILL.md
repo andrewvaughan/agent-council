@@ -51,7 +51,7 @@ If the user provides a GitHub issue number (e.g., `/build-feature 42` or `/build
 
 If no issue number is given:
 
-1. Read the most recent decision record from `.claude/councils/decisions/` that matches the current feature
+1. Read the most recent decision record from `docs/decisions/` that matches the current feature
 2. If no decision record exists, fall through to Option C
 
 ### Option C: User Description (Last Resort)

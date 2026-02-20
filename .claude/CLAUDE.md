@@ -11,7 +11,7 @@ Where to put documentation:
 - Project overview, setup, usage: README.md
 - Contribution workflow: CONTRIBUTING.md
 - Technical deep-dives: docs/ directory with descriptive names
-- Decision records: .claude/councils/decisions/NNN-title.md
+- Decision records: docs/decisions/NNN-title.md
 
 If content doesn't fit in README.md, create a file in docs/ and link from README.md.
 
