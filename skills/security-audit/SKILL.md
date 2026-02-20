@@ -10,6 +10,9 @@ Run a comprehensive security audit that combines automated static analysis, thre
 > [!CAUTION]
 > **Scope boundary**: This skill audits code and optionally remediates findings. It does **NOT** create pull requests, push to remote, or merge anything. When the audit is complete, **stop** and suggest the appropriate next step (see Step 9).
 
+> [!WARNING]
+> **Checkpoint protocol.** When this workflow reaches a `### CHECKPOINT`, you **must** actively prompt the user for a decision — do not simply present information and continue. Use your agent's interactive prompting mechanism (e.g., `AskUserQuestion` in Claude Code) to require an explicit response before proceeding. This prevents queued or in-flight messages from being misinterpreted as approval. If your agent lacks interactive prompting, output the checkpoint content and **stop all work** until the user explicitly responds.
+
 ## Step 1: Define Audit Scope
 
 Ask the user:

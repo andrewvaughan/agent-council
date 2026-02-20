@@ -11,6 +11,9 @@ Build backend API endpoints, services, and database changes following your proje
 > **Scope boundary**: This skill implements backend code and commits it. It does **NOT** create pull requests, push to remote, run code reviews, or submit anything for merge. When implementation and commits are complete, **stop** and suggest the user run `/review-code` next.
 
 > [!WARNING]
+> **Checkpoint protocol.** When this workflow reaches a `### CHECKPOINT`, you **must** actively prompt the user for a decision — do not simply present information and continue. Use your agent's interactive prompting mechanism (e.g., `AskUserQuestion` in Claude Code) to require an explicit response before proceeding. This prevents queued or in-flight messages from being misinterpreted as approval. If your agent lacks interactive prompting, output the checkpoint content and **stop all work** until the user explicitly responds.
+
+> [!WARNING]
 > **Tech stack required.** This skill adapts to your project's technology choices. If `AGENTS.md` does not specify a backend framework, ORM, API style, validation library, or test runner, **stop and ask the user** what their project uses. Then update `AGENTS.md` with a `## Tech Stack` section so future skills can reference it automatically. Example:
 >
 >     ## Tech Stack
