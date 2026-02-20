@@ -36,7 +36,7 @@ scripts/
 ```
 
 > [!IMPORTANT]
-> Never edit files in `skills/` directly. Edit the sources in `canonical/`, then run `scripts/build.sh` to regenerate.
+> Never edit files in `skills/` directly. The `.claude/skills/` entries are symlinks to `skills/`, so editing through them also modifies generated files. Always edit the sources in `canonical/`, then run `scripts/build.sh` to regenerate.
 
 ## Adding a New Skill
 
@@ -104,6 +104,14 @@ To add a new council:
 3. Update `scripts/skill-manifest.json` for skills using this council
 4. Update the council table in `AGENTS.md` and the summary in `README.md`
 5. Run `scripts/build.sh` to regenerate
+
+## Quick Start
+
+1. Fork and clone the repository
+2. Edit sources in `canonical/` (skills, agents, councils, or templates)
+3. Run `scripts/build.sh` to regenerate `skills/`
+4. Run `scripts/build.sh --check` to verify no drift
+5. Commit both `canonical/` and `skills/` changes, push, and open a PR
 
 ## Development Workflow
 

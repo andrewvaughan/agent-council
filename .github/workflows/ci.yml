@@ -32,6 +32,17 @@ jobs:
           test -d scripts || { echo "Missing scripts/"; exit 1; }
           test -f scripts/build.sh || { echo "Missing scripts/build.sh"; exit 1; }
           test -f scripts/skill-manifest.json || { echo "Missing scripts/skill-manifest.json"; exit 1; }
+
+          # Verify .claude/skills/ symlinks match manifest entries
+          manifest_count=$(python3 -c "import json; print(len(json.load(open('scripts/skill-manifest.json'))))")
+          symlink_count=$(ls -1 .claude/skills/ 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$symlink_count" != "$manifest_count" ]; then
+            echo "ERROR: .claude/skills/ has ${symlink_count} entries but manifest has ${manifest_count} skills"
+            exit 1
+          fi
+          for link in .claude/skills/*/; do
+            [ -d "$link" ] || { echo "ERROR: Broken symlink: $link"; exit 1; }
+          done
           echo "Infrastructure verified!"
 
       - name: Validate SKILL.md frontmatter
@@ -97,19 +108,21 @@ jobs:
           for dir in skills/*/; do
             skill_name=$(basename "$dir")
 
-            # Read expected agents/councils from manifest
+            # Read expected agents/councils from manifest (-1 = not in manifest)
             manifest_agents=$(python3 -c "
           import json, sys
           with open('scripts/skill-manifest.json') as f:
               m = json.load(f)
-          print(len(m.get(sys.argv[1], {}).get('agents', [])))
+          d = m.get(sys.argv[1])
+          print(-1 if d is None else len(d.get('agents', [])))
           " "$skill_name" 2>/dev/null || echo "-1")
 
             manifest_councils=$(python3 -c "
           import json, sys
           with open('scripts/skill-manifest.json') as f:
               m = json.load(f)
-          print(len(m.get(sys.argv[1], {}).get('councils', [])))
+          d = m.get(sys.argv[1])
+          print(-1 if d is None else len(d.get('councils', [])))
           " "$skill_name" 2>/dev/null || echo "-1")
 
             # Skills not in manifest are orphans (checked by build --check)
