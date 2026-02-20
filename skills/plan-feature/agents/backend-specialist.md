@@ -15,7 +15,7 @@ API and backend architecture expert responsible for backend architecture, databa
 
 ## Key Questions
 
-- "Is the API design consistent and type-safe?"
+- "Is the API design idiomatic and type-safe?"
 - "Is the database schema normalized and optimized?"
 - "Are edge cases and error scenarios handled?"
 - "Is validation comprehensive (input, business rules)?"
@@ -23,7 +23,7 @@ API and backend architecture expert responsible for backend architecture, databa
 
 ## Evaluation Criteria
 
-- **API Design**: Consistent principles, type safety, clear contracts
+- **API Design**: Sound design principles (REST, GraphQL, or RPC conventions), type safety, clear contracts
 - **Database Schema**: Normalization, indexing, relationships
 - **Business Logic**: Correct, testable, maintainable
 - **Error Handling**: Comprehensive, user-friendly error messages

@@ -40,4 +40,4 @@ System architect and technical visionary responsible for evaluating architectura
 ## Complexity
 
 - **Routine tasks**: Standard tier — e.g., Claude Sonnet
-- **Critical decisions**: Advanced tier — e.g., Claude Opus
+- **Critical decisions**: Advanced tier — e.g., Claude Opus (foundational architecture, major framework choices)

@@ -35,7 +35,7 @@ Validate production readiness before deployment, ensuring infrastructure, securi
 - ☐ HTTPS/TLS configured
 - ☐ API authentication working
 - ☐ CORS configured correctly
-- ☐ Security headers set
+- ☐ Security headers configured (e.g., Content-Security-Policy, X-Frame-Options, HSTS)
 - ☐ No high-severity vulnerabilities
 
 ### QA Lead
