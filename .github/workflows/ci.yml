@@ -96,6 +96,13 @@ jobs:
           for dir in skills/*/; do
             skill_name=$(basename "$dir")
 
+            # Skip internal/stub skills (Phase 2 skills not yet genericized)
+            skill_md="${dir}SKILL.md"
+            if [ -f "$skill_md" ] && grep -q 'internal: true' "$skill_md" 2>/dev/null; then
+              echo "SKIP: ${skill_name} (internal stub)"
+              continue
+            fi
+
             # Every skill must have at least one agent
             if [ ! -d "${dir}agents" ] || [ -z "$(ls "${dir}agents/" 2>/dev/null)" ]; then
               echo "ERROR: ${skill_name} has no agents directory or it is empty"
