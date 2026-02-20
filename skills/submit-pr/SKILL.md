@@ -1,7 +1,6 @@
 ---
 name: submit-pr
 description: Create a pull request for the current feature branch. Generates a PR description from commits, runs pre-submission checks, and optionally activates the Deployment Council for production-impacting changes. Use when your feature branch is ready to merge to main.
-user-invocable: true
 ---
 
 # Submit Pull Request Workflow
@@ -26,20 +25,32 @@ Verify the branch is ready for a pull request:
 
    If there are conflicts, stop and help the user resolve them before proceeding.
 
-3. Run all quality checks:
+3. Run your project's quality checks. Adapt these to your toolchain:
 
-   ```bash
-   pnpm type-check
-   pnpm lint
-   pnpm format:check
-   pnpm test
+   ```
+   type-check      # TypeScript tsc, mypy, etc.
+   lint            # ESLint, Ruff, golangci-lint, etc.
+   format:check    # Prettier, Black, gofmt, etc.
+   test            # Vitest, Jest, pytest, etc.
+   build           # If a build step exists
    ```
 
-   If `format:check` fails, auto-fix by running `pnpm exec prettier --write` on the reported files and stage the changes.
+   If formatting checks fail, auto-fix by running the formatter on the reported files and stage the changes.
 
-   If builds exist: `pnpm build`
+4. Perform a final security scan on changed files:
 
-4. Run a final security scan by invoking `/security-scanning:security-sast` on changed files.
+   <details>
+   <summary>Pre-Submission Security Checklist</summary>
+
+   - Are there hardcoded secrets, API keys, or credentials in the diff?
+   - Are all user inputs validated and sanitized?
+   - Are authentication and authorization checks present on new endpoints?
+   - Are error responses safe? (no internal details leaked)
+   - Are dependencies free of known CVEs?
+
+   </details>
+
+   > **Claude Code optimization**: If the `/security-scanning:security-sast` skill is available, use it for automated scanning. Otherwise, follow the manual checklist above.
 
 If any check fails, report the failure clearly and ask the user whether to fix it now or proceed anyway.
 
@@ -55,41 +66,39 @@ Determine:
 
 - **Type of change**: feature, fix, docs, refactor, test, chore (from commit prefixes)
 - **Scope**: frontend, backend, full-stack, infrastructure
-- **Includes database migrations?** (check for prisma/migrations or schema changes)
-- **Includes infrastructure changes?** (Docker, CI/CD, environment files)
+- **Includes database migrations?** (check for migration files or schema changes)
+- **Includes infrastructure changes?** (containers, CI/CD, environment files)
 - **Includes security-sensitive changes?** (auth, authorization, API security, secrets)
 - **Related issues**: Extract from commit messages (Closes #NNN, Fixes #NNN)
 
 ## Step 3: Deployment Council Review (Conditional)
 
-Activate the Deployment Council from `canonical/councils/deployment-council.md` if ANY of these are true:
+Activate the Deployment Council from the skill's `councils/deployment-council.md` if ANY of these are true:
 
 - Database migrations are included
-- Docker or infrastructure files changed
+- Container or infrastructure files changed
 - Environment variables were added or modified
 - Authentication or authorization code changed
 - CI/CD pipeline files modified
 
-If activated, run through the full Deployment Checklist:
+If activated, read the council template and run through the full Deployment Checklist. For each council member, read their agent definition from the skill's `agents/` directory and use the complexity tier specified to calibrate review depth. Adapt the checklist to your deployment infrastructure:
 
-> **Model Selection**: For each council member, read their agent definition from `canonical/agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
+### Platform Engineer (Lead)
 
-### Platform Engineer (Lead) — consult: cloud-infrastructure
-
-- Docker builds successfully?
+- Application builds and packages successfully for deployment?
 - Environment variables configured?
 - Health check endpoints working?
 - Resource limits set (CPU, memory)?
 - Logging and monitoring configured?
 - Rollback strategy defined?
 
-### Security Engineer — consult: security-scanning
+### Security Engineer
 
 - Secrets managed securely (not in code)?
 - HTTPS/TLS configured?
 - API authentication working?
 - CORS configured correctly?
-- Security headers set?
+- Security headers configured (e.g., Content-Security-Policy, X-Frame-Options, HSTS)?
 - No high-severity vulnerabilities?
 
 ### QA Lead
@@ -111,7 +120,7 @@ If activated, run through the full Deployment Checklist:
 
 ## Step 4: Generate PR Description
 
-Using the PR template from `.github/PULL_REQUEST_TEMPLATE.md`, generate a complete PR:
+If your project has a PR template (e.g., `.github/PULL_REQUEST_TEMPLATE.md`), use it. Otherwise, generate a complete PR with these sections:
 
 ### Title
 
@@ -120,8 +129,6 @@ Using the PR template from `.github/PULL_REQUEST_TEMPLATE.md`, generate a comple
 - Use the primary commit type and scope
 
 ### Body
-
-Fill in each section of the PR template:
 
 **Description**: Synthesize from commit messages and changed files. Explain the why, not just the what.
 
@@ -142,49 +149,49 @@ Fill in each section of the PR template:
 
 **Deployment Notes**: Include migration steps, new environment variables, infrastructure changes. Reference Deployment Council findings if activated.
 
-Invoke `/documentation-generation:changelog-automation` to generate a changelog entry for user-facing changes.
+### Changelog Entry
+
+If the PR includes user-facing changes, draft a changelog entry:
+
+- Determine the category: Added / Changed / Fixed / Removed
+- Write a one-line description from the user's perspective
+- Reference the PR number
 
 ### CHECKPOINT: Present the PR title and full body to the user. Allow them to review and request edits before submission.
 
 ## Step 5: Push and Create PR
 
-1. Push the branch to origin:
+1. Push the branch to the remote:
 
    ```bash
    git push origin <branch-name> -u
    ```
 
-2. Create the PR using the GitHub CLI:
+2. Create the PR. Using the GitHub CLI as an example:
 
    ```bash
    gh pr create --title "<title>" --body "<body>" --base main
    ```
 
-3. If the PR template includes labels, add appropriate labels:
-   ```bash
-   gh pr edit <pr-number> --add-label "<label>"
-   ```
+   Adapt to your project's version control platform if not using GitHub.
+
+3. If the PR template includes labels, add appropriate labels.
 
 ## Step 6: Monitor CI Pipeline
 
 After creating the PR, watch the CI pipeline until it completes:
 
-1. Get the latest workflow run ID for the branch:
+1. Check for the latest CI run on the branch.
+
+2. Monitor the run until it finishes. Using GitHub CLI as an example:
 
    ```bash
    gh run list --branch <branch-name> --limit 1 --json databaseId,status
-   ```
-
-2. Watch the run until it finishes:
-
-   ```bash
    gh run watch <run-id> --exit-status
    ```
 
-   This streams real-time job progress and exits with the run's pass/fail status.
-
-3. If CI **fails**, fetch the failed job logs: `gh run view <run-id> --log-failed`
-   - **Formatting failures** (`format:check`): Auto-fix with `pnpm exec prettier --write`, commit, push, and re-watch. No checkpoint needed.
+3. If CI **fails**, fetch the failed job logs and diagnose:
+   - **Formatting failures**: Auto-fix with the formatter, commit, push, and re-watch. No checkpoint needed.
    - **All other failures**: **CHECKPOINT** — present the diagnosis and proposed fix to the user. Wait for approval before committing. After approval, fix, commit, push, and re-watch.
 
 4. If CI **passes**: proceed to Step 7.
@@ -197,7 +204,7 @@ Present to the user:
 - Summary of what was submitted
 - CI status (all checks passing)
 - Changelog entry (if generated)
-- Reminder about branch lifecycle: delete branch after merge per CONTRIBUTING.md
+- Reminder about branch lifecycle: delete branch after merge
 
 If the Deployment Council was activated, remind the user of any deployment-specific steps that need to happen after merge.
 
