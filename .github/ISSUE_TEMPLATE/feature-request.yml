@@ -1,0 +1,48 @@
+name: Feature Request
+description: Suggest a new skill, agent, council, or improvement
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for a new skill, agent persona, or council? We'd love to hear it!
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: What are you requesting?
+      options:
+        - New skill workflow
+        - New agent persona
+        - New council
+        - Improvement to existing skill
+        - Improvement to existing agent or council
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the feature or improvement you'd like.
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem it solves
+      description: What problem does this address? What workflow gap does it fill?
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you considered other approaches? What are the trade-offs?
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Any other details — examples, references, mockups, etc.
