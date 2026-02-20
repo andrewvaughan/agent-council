@@ -10,6 +10,9 @@ Take a feature idea from concept to an approved implementation plan with lean sc
 > [!CAUTION]
 > **Scope boundary**: This skill produces a _plan_, a decision record, and issue(s) in your project tracker. It does **NOT** write application code, create components, modify database schemas, run tests, create branches for implementation, or perform any build work. If the user asks to start building after the plan is approved, direct them to run `/build-feature <issue-number>` — do not begin implementation yourself.
 
+> [!WARNING]
+> **Checkpoint protocol.** When this workflow reaches a `### CHECKPOINT`, you **must** actively prompt the user for a decision — do not simply present information and continue. Use your agent's interactive prompting mechanism (e.g., `AskUserQuestion` in Claude Code) to require an explicit response before proceeding. This prevents queued or in-flight messages from being misinterpreted as approval. If your agent lacks interactive prompting, output the checkpoint content and **stop all work** until the user explicitly responds.
+
 ## Step 1: Gather Feature Context
 
 Ask the user to describe:

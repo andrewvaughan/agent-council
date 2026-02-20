@@ -10,6 +10,9 @@ Run a comprehensive, multi-perspective code review on the current branch changes
 > [!CAUTION]
 > **Scope boundary**: This skill reviews code and commits fixes. It does **NOT** create pull requests, push to remote, or merge anything. When the review is complete, **stop** and suggest the user run `/submit-pr` next. Do not proceed to PR creation — that is `/submit-pr`'s job.
 
+> [!WARNING]
+> **Checkpoint protocol.** When this workflow reaches a `### CHECKPOINT`, you **must** actively prompt the user for a decision — do not simply present information and continue. Use your agent's interactive prompting mechanism (e.g., `AskUserQuestion` in Claude Code) to require an explicit response before proceeding. This prevents queued or in-flight messages from being misinterpreted as approval. If your agent lacks interactive prompting, output the checkpoint content and **stop all work** until the user explicitly responds.
+
 ## Step 1: Analyze Current Changes
 
 Identify all changes on the current branch:
