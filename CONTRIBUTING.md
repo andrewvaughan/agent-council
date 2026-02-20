@@ -87,7 +87,7 @@ To add a new agent:
 1. Create `canonical/agents/<agent-name>.md` following the format of existing agents
 2. Add the agent to relevant councils in `canonical/councils/`
 3. Update `scripts/skill-manifest.json` for any skills that should include this agent
-4. Update the agent table in `AGENTS.md`
+4. Update the agent table in `AGENTS.md` and the summary in `README.md`
 5. Run `scripts/build.sh` to regenerate
 
 ## Adding or Modifying a Council
@@ -103,7 +103,7 @@ To add a new council:
 1. Create `canonical/councils/<council-name>.md` following existing council format
 2. Reference the council from any skills that should activate it
 3. Update `scripts/skill-manifest.json` for skills using this council
-4. Update the council table in `AGENTS.md`
+4. Update the council table in `AGENTS.md` and the summary in `README.md`
 5. Run `scripts/build.sh` to regenerate
 
 ## Development Workflow

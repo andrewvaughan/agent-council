@@ -25,7 +25,7 @@ Examples of unacceptable behavior:
 
 ## Enforcement
 
-Instances of unacceptable behavior may be reported to the project maintainers via [GitHub Security Advisories](https://github.com/andrewvaughan/agent-council/security/advisories/new) or by contacting the repository owner through their GitHub profile.
+Instances of unacceptable behavior may be reported by contacting the project maintainer through their [GitHub profile](https://github.com/andrewvaughan). All reports will be handled confidentially.
 
 All complaints will be reviewed and investigated promptly and fairly.
 

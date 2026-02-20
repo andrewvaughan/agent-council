@@ -1,3 +1,8 @@
+---
+type: reference
+description: Full reference for AI agents — skills, councils, agent personas, and operating rules.
+---
+
 # Agent Council
 
 Multi-perspective AI development workflows using councils of specialized agents. Install these skills to add structured planning, implementation, review, and security workflows to your AI coding agent.
@@ -18,8 +23,6 @@ Multi-perspective AI development workflows using councils of specialized agents.
 ### Development Pipeline
 
 Skills compose into an end-to-end development workflow:
-
-    plan-feature --> build-feature or build-api --> review-code --> submit-pr
 
     plan-feature    Scope and plan the feature with council review
          |          Creates issue(s) with implementation plan
@@ -62,7 +65,7 @@ Councils are groups of agent personas that evaluate decisions from multiple pers
 | Product | Product Strategist, Lean Delivery Lead, Design Lead, Business Ops Lead, Principal Engineer, Frontend Specialist | Feature scoping, priority, user value |
 | Feature | Principal Engineer, Frontend Specialist, Backend Specialist, QA Lead | Technical planning, task breakdown |
 | Architecture | Principal Engineer, Platform Engineer, Security Engineer, Backend Specialist | API design, schema changes, patterns |
-| Review | Security Engineer, QA Lead, DevX Engineer, Domain Specialist | Code quality, security, documentation |
+| Review | Security Engineer, QA Lead, DevX Engineer, Frontend or Backend Specialist | Code quality, security, documentation |
 | Deployment | Platform Engineer, Security Engineer, QA Lead | Release readiness, infrastructure |
 
 ### Activating a Council Directly
@@ -193,6 +196,10 @@ After installation, the package provides:
         SKILL.md
         agents/
         councils/
+      build-feature/
+        SKILL.md              (internal — not yet genericized)
+      build-api/
+        SKILL.md              (internal — not yet genericized)
       security-audit/
         SKILL.md
         agents/

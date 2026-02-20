@@ -51,7 +51,7 @@ Formatting rules:
 
 ## Documentation Standards
 
-Allowed root markdown files: README.md, CONTRIBUTING.md, CHANGELOG.md, LICENSE, AGENTS.md
+Allowed root markdown files: README.md, CONTRIBUTING.md, CHANGELOG.md, LICENSE, AGENTS.md, CODE_OF_CONDUCT.md, SECURITY.md
 
 All project documentation files must include YAML frontmatter:
 

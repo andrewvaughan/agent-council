@@ -22,6 +22,8 @@ Instead, please use one of these methods:
 
 - Acknowledgment within 48 hours
 - Status update within 7 days
+- Resolution target within 90 days of confirmed vulnerability
+- Coordinated disclosure — we will notify you before any public disclosure
 - Credit in the fix (unless you prefer anonymity)
 
 ## Scope
