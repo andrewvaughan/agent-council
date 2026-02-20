@@ -62,17 +62,12 @@ Perform static application security testing (SAST) on all changed files. Scan fo
 
 If backend files are changed, also perform a hardening review:
 
-<details>
-<summary>Hardening Review Checklist</summary>
-
 - Is input validation comprehensive on all user-facing inputs?
 - Are authentication and authorization checks present and correct?
 - Are error responses safe? (no internal details leaked)
 - Are secrets managed securely? (environment variables, vaults — not hardcoded)
 - Are security headers configured? (CSP, HSTS, X-Frame-Options)
 - Are rate limits configured on public endpoints?
-
-</details>
 
 Collect all findings with severity levels (Critical, High, Medium, Low, Info).
 
@@ -96,7 +91,7 @@ If any frontend files (UI components, CSS, HTML templates) are in the changeset,
 
 </details>
 
-> **Claude Code optimization**: If the `/ui-design:accessibility-audit` skill is available, use it for automated WCAG compliance checking. Otherwise, follow the manual checklist above.
+> **Claude Code optimization**: If the `/ui-design:accessibility-audit` skill is available, use it for enhanced automated WCAG compliance checking. Otherwise, follow the manual checklist above.
 
 ## Step 5: Activate the Review Council
 

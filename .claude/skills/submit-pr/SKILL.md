@@ -25,9 +25,10 @@ Verify the branch is ready for a pull request:
 
    If there are conflicts, stop and help the user resolve them before proceeding.
 
-3. Run your project's quality checks. Adapt these to your toolchain:
+3. Run your project's quality checks:
 
    ```
+   # Adapt to your project's toolchain
    type-check      # TypeScript tsc, mypy, etc.
    lint            # ESLint, Ruff, golangci-lint, etc.
    format:check    # Prettier, Black, gofmt, etc.
@@ -39,18 +40,13 @@ Verify the branch is ready for a pull request:
 
 4. Perform a final security scan on changed files:
 
-   <details>
-   <summary>Pre-Submission Security Checklist</summary>
-
    - Are there hardcoded secrets, API keys, or credentials in the diff?
    - Are all user inputs validated and sanitized?
    - Are authentication and authorization checks present on new endpoints?
    - Are error responses safe? (no internal details leaked)
    - Are dependencies free of known CVEs?
 
-   </details>
-
-   > **Claude Code optimization**: If the `/security-scanning:security-sast` skill is available, use it for automated scanning. Otherwise, follow the manual checklist above.
+   > **Claude Code optimization**: If the `/security-scanning:security-sast` skill is available, use it for enhanced automated scanning. Otherwise, follow the manual checklist above.
 
 If any check fails, report the failure clearly and ask the user whether to fix it now or proceed anyway.
 
