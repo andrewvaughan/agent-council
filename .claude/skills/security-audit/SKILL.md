@@ -7,6 +7,9 @@ description: Run a comprehensive security audit combining automated SAST scannin
 
 Run a comprehensive security audit that combines automated static analysis, threat modeling, and multi-perspective council review. This skill produces a prioritized audit report with actionable remediation steps.
 
+> [!CAUTION]
+> **Scope boundary**: This skill audits code and optionally remediates findings. It does **NOT** create pull requests, push to remote, or merge anything. When the audit is complete, **stop** and suggest the appropriate next step (see Step 9).
+
 ## Step 1: Define Audit Scope
 
 Ask the user:
@@ -39,7 +42,7 @@ Collect every finding with:
 - **Evidence**: The specific code pattern that triggered the finding
 - **Remediation**: How to fix it
 
-> **Claude Code optimization**: If the `/security-scanning:security-sast` skill is available, use it for enhanced automated scanning. Otherwise, perform the manual review above.
+> **Claude Code optimization**: If the `/security-scanning:security-sast` skill is available, use it for enhanced automated scanning. Otherwise, follow the manual checklist above.
 
 ## Step 3: Security Hardening Review
 
@@ -81,7 +84,7 @@ Perform a comprehensive hardening review across the following areas:
 - Environment variable management (no secrets in code or logs)
 - Network exposure (unnecessary ports, services)
 
-> **Claude Code optimization**: If the `/security-scanning:security-hardening` skill is available, use it for automated hardening analysis. Otherwise, follow the manual checklist above.
+> **Claude Code optimization**: If the `/security-scanning:security-hardening` skill is available, use it for enhanced automated hardening analysis. Otherwise, follow the manual checklist above.
 
 ## Step 4: STRIDE Threat Modeling
 
