@@ -65,7 +65,7 @@ Evaluate product strategy, feature prioritization, design decisions, and budget 
 #### Principal Engineer
 
 - **Technical Feasibility**: [Can we build this? Complexity?]
-- **Architectural Fit**: [Does this align with tech stack?]
+- **Architectural Fit**: [Does this align with the project's established architecture?]
 - **Recommendations**: [Technical constraints or alternatives]
 
 #### Frontend Specialist

@@ -11,7 +11,7 @@ Security and compliance specialist responsible for identifying vulnerabilities, 
 - Data protection and encryption
 - Secret management
 - OWASP Top 10 vulnerabilities
-- Docker security best practices
+- Container security best practices
 
 ## Key Questions
 
@@ -34,10 +34,10 @@ Security and compliance specialist responsible for identifying vulnerabilities, 
 - Authentication/authorization implementation
 - API endpoint creation
 - Database schema changes (PII fields)
-- Docker and deployment configuration
+- Container and deployment configuration
 - User input handling
 - Third-party integrations
 
-## Model
+## Complexity
 
-Claude Sonnet 4.5 (thorough security analysis with good cost efficiency)
+Standard tier for all tasks — e.g., Claude Sonnet

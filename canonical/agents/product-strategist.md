@@ -41,9 +41,9 @@ Product vision and strategy specialist responsible for market research, user nee
 - Product positioning and messaging
 - Roadmap and strategic planning
 
-## Model
+## Complexity
 
-Claude Sonnet 4.5 (strategic and analytical thinking)
+Standard tier for all tasks — e.g., Claude Sonnet
 
 ## Notes
 

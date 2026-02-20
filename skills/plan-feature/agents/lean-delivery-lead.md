@@ -44,9 +44,9 @@ Rapid iteration and delivery specialist responsible for ensuring fast shipping, 
 - Shipping speed optimization
 - Feedback loop implementation
 
-## Model
+## Complexity
 
-Claude Haiku 4.5 (fast execution and tactical thinking)
+Economy tier for all tasks — e.g., Claude Haiku
 
 ## Notes
 

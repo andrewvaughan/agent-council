@@ -13,7 +13,7 @@ Validate production readiness before deployment, ensuring infrastructure, securi
 ## Activation Triggers
 
 - Pre-deployment validation (before production release)
-- Infrastructure changes (Docker, CI/CD)
+- Infrastructure changes (containers, CI/CD)
 - Production hotfixes
 - Environment configuration changes
 - Database migrations
@@ -22,7 +22,7 @@ Validate production readiness before deployment, ensuring infrastructure, securi
 
 ### Platform Engineer
 
-- ☐ Docker builds successfully
+- ☐ Application builds and packages successfully for deployment
 - ☐ Environment variables configured
 - ☐ Health check endpoint working
 - ☐ Resource limits set (CPU, memory)
@@ -35,7 +35,7 @@ Validate production readiness before deployment, ensuring infrastructure, securi
 - ☐ HTTPS/TLS configured
 - ☐ API authentication working
 - ☐ CORS configured correctly
-- ☐ Security headers set (helmet)
+- ☐ Security headers set
 - ☐ No high-severity vulnerabilities
 
 ### QA Lead

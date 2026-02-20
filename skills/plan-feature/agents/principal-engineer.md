@@ -37,9 +37,7 @@ System architect and technical visionary responsible for evaluating architectura
 - Technology stack decisions
 - Major refactoring proposals
 
-## Model
+## Complexity
 
-Claude Sonnet 4.5 (default for architecture reviews)
-Claude Opus 4.6 (only for critical decisions: monorepo structure, major framework choices)
-
-**Cost Note**: Use Sonnet for routine architecture reviews. Only invoke Opus for foundational architectural decisions that will impact the entire project.
+- **Routine tasks**: Standard tier — e.g., Claude Sonnet
+- **Critical decisions**: Advanced tier — e.g., Claude Opus

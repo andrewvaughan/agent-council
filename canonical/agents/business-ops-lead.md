@@ -38,6 +38,6 @@ Financial and operational specialist responsible for cost management, ROI analys
 - Budget allocation for features or initiatives
 - Cost optimization reviews
 
-## Model
+## Complexity
 
-Claude Sonnet 4.5 (financial analysis and operational thinking)
+Standard tier for all tasks — e.g., Claude Sonnet
