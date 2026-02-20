@@ -14,7 +14,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 MANIFEST="${REPO_ROOT}/scripts/skill-manifest.json"
 CANONICAL="${REPO_ROOT}/canonical"
-SKILLS_SOURCE="${REPO_ROOT}/.claude/skills"
+SKILLS_SOURCE="${REPO_ROOT}/canonical/skills"
 SKILLS_OUTPUT="${REPO_ROOT}/skills"
 CHECK_MODE=false
 
@@ -260,20 +260,12 @@ if [ "$CHECK_MODE" = true ]; then
     errors=$((errors + 1))
   else
     # Check for orphaned skill directories (in skills/ but not in manifest).
-    # Directories with metadata.internal: true in SKILL.md are exempt (Phase 2 stubs).
     for dir in "$SKILLS_OUTPUT"/*/; do
       [ -d "$dir" ] || continue
       dir_name=$(basename "$dir")
       if [ ! -d "${TEMP_DIR}/${dir_name}" ]; then
-        # Check if this is an internal/stub skill
-        local_skill_md="${dir}SKILL.md"
-        if [ -f "$local_skill_md" ] && grep -q 'internal: true' "$local_skill_md" 2>/dev/null; then
-          # Copy internal skill to temp dir so diff excludes it
-          cp -r "$dir" "${TEMP_DIR}/${dir_name}"
-        else
-          echo "ORPHAN: skills/${dir_name}/ exists but is not in the skill manifest"
-          errors=$((errors + 1))
-        fi
+        echo "ORPHAN: skills/${dir_name}/ exists but is not in the skill manifest"
+        errors=$((errors + 1))
       fi
     done
 
@@ -304,7 +296,6 @@ echo "Building self-contained skill directories..."
 echo ""
 
 # Clean skill output directories that are managed by the manifest.
-# Directories not in the manifest (e.g., Phase 2 stubs) are preserved.
 if [ -d "$SKILLS_OUTPUT" ]; then
   while IFS= read -r managed_skill; do
     [ -n "$managed_skill" ] || continue

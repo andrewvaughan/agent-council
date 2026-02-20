@@ -93,7 +93,7 @@ Tailor the workflows to your project:
 
 - **Add an agent**: Create a new `.md` file in `canonical/agents/` following the existing format
 - **Modify a council**: Edit the council template in `canonical/councils/` to add or remove members
-- **Customize a skill**: Edit the workflow in `.claude/skills/` and run `scripts/build.sh` to regenerate
+- **Customize a skill**: Edit the workflow in `canonical/skills/` and run `scripts/build.sh` to regenerate
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for full details.
 

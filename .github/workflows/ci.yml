@@ -24,6 +24,7 @@ jobs:
       - name: Verify infrastructure directories
         run: |
           echo "Verifying project structure..."
+          test -d canonical/skills || { echo "Missing canonical/skills/"; exit 1; }
           test -d canonical/agents || { echo "Missing canonical/agents/"; exit 1; }
           test -d canonical/councils || { echo "Missing canonical/councils/"; exit 1; }
           test -d canonical/templates || { echo "Missing canonical/templates/"; exit 1; }
@@ -96,23 +97,40 @@ jobs:
           for dir in skills/*/; do
             skill_name=$(basename "$dir")
 
-            # Skip internal/stub skills (Phase 2 skills not yet genericized)
-            skill_md="${dir}SKILL.md"
-            if [ -f "$skill_md" ] && grep -q 'internal: true' "$skill_md" 2>/dev/null; then
-              echo "SKIP: ${skill_name} (internal stub)"
+            # Read expected agents/councils from manifest
+            manifest_agents=$(python3 -c "
+          import json, sys
+          with open('scripts/skill-manifest.json') as f:
+              m = json.load(f)
+          print(len(m.get(sys.argv[1], {}).get('agents', [])))
+          " "$skill_name" 2>/dev/null || echo "-1")
+
+            manifest_councils=$(python3 -c "
+          import json, sys
+          with open('scripts/skill-manifest.json') as f:
+              m = json.load(f)
+          print(len(m.get(sys.argv[1], {}).get('councils', [])))
+          " "$skill_name" 2>/dev/null || echo "-1")
+
+            # Skills not in manifest are orphans (checked by build --check)
+            if [ "$manifest_agents" = "-1" ]; then
               continue
             fi
 
-            # Every skill must have at least one agent
-            if [ ! -d "${dir}agents" ] || [ -z "$(ls "${dir}agents/" 2>/dev/null)" ]; then
-              echo "ERROR: ${skill_name} has no agents directory or it is empty"
-              errors=$((errors + 1))
+            # Only check agents if the manifest declares agents for this skill
+            if [ "$manifest_agents" -gt 0 ]; then
+              if [ ! -d "${dir}agents" ] || [ -z "$(ls "${dir}agents/" 2>/dev/null)" ]; then
+                echo "ERROR: ${skill_name} has no agents directory or it is empty"
+                errors=$((errors + 1))
+              fi
             fi
 
-            # Every skill must have at least one council
-            if [ ! -d "${dir}councils" ] || [ -z "$(ls "${dir}councils/" 2>/dev/null)" ]; then
-              echo "ERROR: ${skill_name} has no councils directory or it is empty"
-              errors=$((errors + 1))
+            # Only check councils if the manifest declares councils for this skill
+            if [ "$manifest_councils" -gt 0 ]; then
+              if [ ! -d "${dir}councils" ] || [ -z "$(ls "${dir}councils/" 2>/dev/null)" ]; then
+                echo "ERROR: ${skill_name} has no councils directory or it is empty"
+                errors=$((errors + 1))
+              fi
             fi
           done
 

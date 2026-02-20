@@ -1,7 +1,6 @@
 ---
 name: build-feature
 description: Implement a full-stack feature following an approved plan. Builds database layer, backend API, frontend components, and tests. Use after plan-feature has produced an approved implementation plan, or when you have a clear set of tasks to implement across the stack.
-user-invocable: true
 ---
 
 # Full-Stack Feature Implementation Workflow
