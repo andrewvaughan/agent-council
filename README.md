@@ -9,7 +9,7 @@ Structured development workflows powered by councils of specialized AI agents. P
 
 ## What You Get
 
-**7 Skills** — executable workflows for every phase of development:
+**6 Skills** — executable workflows for every phase of development:
 
 | Skill | What it does |
 |-------|-------------|
