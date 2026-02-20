@@ -5,32 +5,79 @@ description: Multi-perspective AI development workflows using councils of specia
 
 # Agent Council
 
-Structured development workflows powered by councils of specialized AI agents. Plan features, implement code, review changes, and submit PRs — all with multi-perspective evaluation from 11 agent personas organized into 5 councils.
+**Ship better code by replacing single-agent guesswork with structured, multi-perspective AI workflows.**
 
-## What You Get
+When a single AI agent plans, builds, and reviews its own code, blind spots compound. Agent Council fixes this by organizing 11 specialized agent personas into 5 councils — each bringing a distinct perspective (security, architecture, quality, operations, user experience) to every significant decision. The result: fewer missed edge cases, stronger security posture, and production-ready code that's been evaluated from multiple angles before it ever reaches a pull request.
 
-**6 Skills** — executable workflows for every phase of development:
+> [!TIP]
+> **New to council-driven development?** Jump to [Why Councils?](#why-councils) to understand the approach, or skip straight to [Installation](#installation) to try it.
 
-| Skill | What it does |
-|-------|-------------|
-| plan-feature | Council-evaluated feature planning with decision records |
-| build-feature | Full-stack implementation (DB + API + UI + tests) |
-| build-api | Backend-only API and database development |
-| review-code | Security scanning + 4-member Review Council |
-| submit-pr | Quality checks, PR creation, CI monitoring |
-| security-audit | SAST + STRIDE threat modeling + attack trees |
+## Skills
 
-**5 Councils** — multi-perspective evaluation groups:
+Six executable workflows covering the full development lifecycle:
 
-| Council | Members | Evaluates |
-|---------|---------|-----------|
-| Product | 6 agents | Feature scope, priority, user value |
-| Feature | 4 agents | Technical planning, task breakdown |
-| Architecture | 4 agents | API design, schema changes, patterns |
-| Review | 4 agents | Code quality, security, documentation |
-| Deployment | 3 agents | Release readiness, infrastructure |
+| Skill | Phase | What it does |
+|-------|-------|-------------|
+| `plan-feature` | Plan | Product Council evaluates scope and priority; Feature Council produces a technical plan with decision records |
+| `build-feature` | Build | Full-stack implementation across database, API, frontend, and tests — with user checkpoints at every layer |
+| `build-api` | Build | Backend-focused API and database development; activates Architecture Council for significant API decisions |
+| `review-code` | Review | Automated SAST scanning + 4-member Review Council for security, quality, documentation, and domain review |
+| `submit-pr` | Ship | Pre-submission quality checks, PR creation with conventional formatting, and CI pipeline monitoring |
+| `security-audit` | Audit | SAST + STRIDE threat modeling + attack tree analysis — standalone or as part of the review pipeline |
 
-**11 Agent Personas** — specialized perspectives including Principal Engineer, Security Engineer, QA Lead, Frontend/Backend Specialists, and more.
+## Councils
+
+Councils are groups of agent personas that evaluate proposals through structured voting. Each member votes **Approve**, **Concern**, or **Block** with rationale — surfacing risks and trade-offs that a single perspective would miss.
+
+| Council | Members | When it activates |
+|---------|---------|-------------------|
+| Product | 6 agents | Feature planning — evaluates scope, priority, and user value |
+| Feature | 4 agents | Technical planning — breaks down implementation and identifies risks |
+| Architecture | 4 agents | API design — reviews schema changes, patterns, and scalability |
+| Review | 4 agents | Code review — assesses security, quality, testing, and documentation |
+| Deployment | 3 agents | PR submission — checks release readiness and infrastructure impact |
+
+## Agent Personas
+
+Eleven specialized perspectives that staff the councils:
+
+| Agent | Focus |
+|-------|-------|
+| Principal Engineer | Architecture, system design, cross-cutting concerns |
+| Security Engineer | OWASP, threat modeling, auth, secrets management |
+| QA Lead | Test strategy, coverage, edge cases, regression |
+| Frontend Specialist | Components, accessibility, state management, UX |
+| Backend Specialist | API design, services, data access, performance |
+| Platform Engineer | Infrastructure, deployment, monitoring, reliability |
+| DevX Engineer | Documentation, developer experience, onboarding |
+| Product Manager | User value, scope, prioritization, success metrics |
+| Technical Writer | Clarity, completeness, audience-appropriate docs |
+| UX Designer | Usability, interaction design, accessibility |
+| Data Analyst | Metrics, analytics, data-driven decisions |
+
+Each agent has complexity tiers (Standard and Advanced) that scale review depth based on the significance of the decision.
+
+## Why Councils?
+
+A single AI agent reviewing its own work is like a developer merging their own PRs without review — it works until it doesn't. Council-driven development addresses three fundamental problems:
+
+**Perspective diversity.** A security engineer spots injection risks that a frontend specialist wouldn't flag. A QA lead identifies untested edge cases that a backend developer considers obvious. By routing decisions through multiple specialized perspectives, councils catch the issues that single-agent workflows systematically miss.
+
+**Structured checkpoints.** Each skill enforces explicit approval gates — you approve the schema before migration runs, the API contract before frontend builds against it, the review findings before they're committed. The AI proposes; you decide. This keeps the human in control without requiring you to micromanage every line.
+
+**Audit trail.** Council evaluations, votes, and rationale are recorded in decision documents. When you revisit a feature six months later and wonder "why did we design it this way?", the council record has the answer — complete with trade-offs considered and alternatives rejected.
+
+```mermaid
+graph LR
+    A[plan-feature] --> B[build-feature]
+    A --> C[build-api]
+    B --> D[review-code]
+    C --> D
+    D --> E[submit-pr]
+    F[security-audit] -.-> |standalone| D
+```
+
+Skills enforce strict scope boundaries — each owns a single phase and hands off to the next. `build-feature` never creates a PR. `review-code` never pushes code. This prevents scope creep and makes each step independently auditable.
 
 ## Installation
 
@@ -38,15 +85,15 @@ Structured development workflows powered by councils of specialized AI agents. P
 npx skills add andrewvaughan/agent-council
 ```
 
-This installs skill workflows, agent definitions, and council templates into your project's skills directory. Each skill is self-contained with its own bundled agents and councils.
+This installs self-contained skill packages — each with its own bundled agent definitions and council templates — into your project's skills directory.
 
 ### Post-Install
 
-Point your AI agent to `AGENTS.md` in the installed package for full instructions on how to use the skills and councils.
+Point your AI agent to `AGENTS.md` in the installed package for full instructions on available skills, councils, and agents.
 
 ### Configuring Your Tech Stack
 
-Implementation skills (`build-feature`, `build-api`) adapt to your project's technology choices. Add a `## Tech Stack` section to your project's `AGENTS.md` so skills know what frameworks and tools to use:
+Implementation skills (`build-feature`, `build-api`) are technology-agnostic — they adapt to whatever your project uses. Add a `## Tech Stack` section to your project's `AGENTS.md` so skills know what frameworks and tools to target:
 
 ```markdown
 ## Tech Stack
@@ -61,62 +108,41 @@ Implementation skills (`build-feature`, `build-api`) adapt to your project's tec
 - Package manager: npm
 ```
 
-If the tech stack is not defined, implementation skills will stop and ask you to provide it before proceeding.
+> [!NOTE]
+> If the tech stack isn't defined, implementation skills will stop and ask you what your project uses before proceeding. They'll also suggest updating `AGENTS.md` when they introduce new technologies, so the stack definition stays current.
 
-## Quick Demo
+## Quick Start
 
-Here's what a typical workflow looks like:
+**1. Plan** — Run `plan-feature` with a feature description. The Product Council (6 members) evaluates scope and priority, then the Feature Council (4 members) creates a technical implementation plan. You approve at each checkpoint.
 
-**1. Plan the feature**
+**2. Build** — Run `build-feature` (full-stack) or `build-api` (backend-only) with the issue number from step 1. The agent implements across all layers with checkpoints for schema approval and API contract review.
 
-Tell your agent to run the `plan-feature` skill with a description. The Product Council (6 members) evaluates scope and priority, then the Feature Council (4 members) creates a technical plan. You approve at each checkpoint.
+**3. Review** — Run `review-code` for automated SAST scanning and a 4-member council review covering security, quality, testing, and documentation.
 
-**2. Build it**
-
-Run `build-feature` with the issue number from step 1. The agent implements across all layers — database, API, frontend, tests — with checkpoints for schema approval and API contract review.
-
-**3. Review and submit**
-
-Run `review-code` for a 4-member council review with automated security scanning. Then `submit-pr` to create a pull request with quality checks and optional deployment council review.
-
-## How It Works
-
-```mermaid
-graph LR
-    A[plan-feature] --> B[build-feature]
-    A --> C[build-api]
-    B --> D[review-code]
-    C --> D
-    D --> E[submit-pr]
-    F[security-audit] -.-> |standalone| D
-```
-
-Each skill activates the appropriate council at decision points. Council members are AI agent personas with specialized focus areas (security, quality, architecture, etc.) that vote Approve, Concern, or Block on proposals. This ensures every significant decision gets multi-perspective evaluation before proceeding.
-
-Skills enforce strict boundaries — each owns a specific phase and hands off to the next. This prevents scope creep and keeps the human in control at every checkpoint.
+**4. Ship** — Run `submit-pr` to push, create a PR with conventional formatting, and monitor CI until green.
 
 ## Agent Compatibility
 
 | Agent | Support | Notes |
 |-------|---------|-------|
-| Claude Code | Full | Native skill support, slash commands, Task subagents |
-| Cursor | Partial | Load AGENTS.md as context, invoke skills manually |
+| Claude Code | Full | Native skill support, slash commands, Task subagents for parallel council evaluation |
+| Cursor | Partial | Load AGENTS.md as context, invoke skill workflows manually |
 | Codex CLI | Partial | Reference AGENTS.md, follow skill steps manually |
-| Other agents | Manual | Any agent that reads markdown can follow the workflows |
+| Other agents | Manual | Any agent that reads markdown can follow the structured workflows |
 
-Skills are written as structured markdown workflows. Any AI coding agent that can read files and follow instructions can use them — full automation depends on the agent's capabilities.
+Skills are plain markdown — no proprietary format, no runtime dependencies. Any AI coding agent that can read files and follow instructions can use them.
 
 ## Customization
 
 Tailor the workflows to your project:
 
-- **Add an agent**: Create a new `.md` file in `canonical/agents/` following the existing format
-- **Modify a council**: Edit the council template in `canonical/councils/` to add or remove members
-- **Customize a skill**: Edit the workflow in `canonical/skills/` and rebuild
+- **Add an agent** — Create a `.md` file in `canonical/agents/` following the existing persona format
+- **Modify a council** — Edit the council template in `canonical/councils/` to add or remove members
+- **Customize a skill** — Edit the workflow in `canonical/skills/` and rebuild
 
 ### Build System
 
-All source content lives in `canonical/` — skill workflows, agent definitions, council templates, and shared templates. The build script assembles self-contained skill packages in `skills/` by copying each skill's SKILL.md and bundling the agents, councils, and templates it needs (defined in `scripts/skill-manifest.json`).
+All source content lives in `canonical/` — skill workflows, agent definitions, council templates, and shared templates. The build script reads `scripts/skill-manifest.json` to determine which agents, councils, and templates each skill needs, then assembles self-contained packages in `skills/`.
 
 ```bash
 # Regenerate skills/ from canonical sources
@@ -126,17 +152,20 @@ scripts/build.sh
 scripts/build.sh --check
 ```
 
-After editing anything in `canonical/`, run `scripts/build.sh` to regenerate. The `--check` flag compares the generated output against the committed `skills/` directory and reports any drift. CI runs `--check` on every pull request — a mismatch will fail the build.
+After editing anything in `canonical/`, run `scripts/build.sh` to regenerate. The `--check` flag compares generated output against the committed `skills/` directory and reports any drift — CI runs this on every pull request.
 
 > [!IMPORTANT]
-> Never edit files in `skills/` directly — they are overwritten by the build. The `.claude/skills/` entries are symlinks to `skills/` (the generated output), so editing through them also modifies generated files. Always edit the sources in `canonical/`.
+> Never edit files in `skills/` directly — they are overwritten by the build. The `.claude/skills/` entries are symlinks to `skills/`, so editing through them also modifies generated files. Always edit sources in `canonical/`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for full details on adding skills, agents, and councils.
 
 ## Documentation
 
-- [AGENTS.md](AGENTS.md) — Full reference for AI agents (skills, councils, agents, rules)
-- [CONTRIBUTING.md](CONTRIBUTING.md) — How to add skills, agents, and councils
+| Document | Purpose |
+|----------|---------|
+| [AGENTS.md](AGENTS.md) | Full reference for AI agents — skills, councils, agents, configuration rules |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to add skills, agents, councils, and submit changes |
+| [SECURITY.md](SECURITY.md) | Vulnerability reporting and security policy |
 
 ## Contributing
 
@@ -148,6 +177,6 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
 
 ## Acknowledgments
 
-- [wshobson/agents](https://github.com/wshobson/agents) — MIT-licensed agent plugins that inspired the inline guidance pattern
 - [skills.sh](https://skills.sh) — The open agent skills ecosystem
+- [wshobson/agents](https://github.com/wshobson/agents) — MIT-licensed agent plugins that inspired the inline guidance pattern
 - [Council pattern](https://www.theengineeringmanager.com/growth/councils-of-agents-group-thinking-with-llms/) — Group thinking with LLMs
