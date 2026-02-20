@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security Vulnerability
+    url: https://github.com/andrewvaughan/agent-council/security/advisories/new
+    about: Report security vulnerabilities privately via GitHub Security Advisories
+  - name: Questions & Discussion
+    url: https://github.com/andrewvaughan/agent-council/discussions
+    about: Ask questions or start a discussion about skills and workflows
