@@ -1,0 +1,90 @@
+name: Agent Compatibility Report
+description: Report how Agent Council works with a specific AI coding agent
+labels: ["compatibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us improve cross-agent support! Report your experience using Agent Council skills with any AI coding agent.
+
+  - type: input
+    id: agent-name
+    attributes:
+      label: Agent Name
+      description: Which AI coding agent did you test with?
+      placeholder: e.g., Cursor, Codex CLI, GitHub Copilot, Aider, Windsurf
+    validations:
+      required: true
+
+  - type: input
+    id: agent-version
+    attributes:
+      label: Agent Version
+      description: What version of the agent are you using?
+      placeholder: e.g., Cursor 0.45, Copilot Chat 1.2
+
+  - type: dropdown
+    id: skills-tested
+    attributes:
+      label: Skills Tested
+      description: Which skills did you test?
+      multiple: true
+      options:
+        - plan-feature
+        - build-feature
+        - build-api
+        - review-code
+        - submit-pr
+        - security-audit
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-worked
+    attributes:
+      label: What worked
+      description: Which features and workflow steps worked correctly?
+      placeholder: |
+        - File reading and editing worked well
+        - Council evaluation steps ran sequentially without issues
+        - Checkpoints paused for my review
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-didnt
+    attributes:
+      label: What didn't work
+      description: Which features or steps failed or required manual workarounds?
+      placeholder: |
+        - Slash command invocation not supported — had to reference SKILL.md directly
+        - GitHub CLI commands needed to be run manually in the terminal
+        - Model selection was ignored — agent used its default model
+
+  - type: textarea
+    id: workarounds
+    attributes:
+      label: Workarounds discovered
+      description: Any workarounds you found to make things work better?
+      placeholder: |
+        - Prompting "evaluate as the Security Engineer" worked for council steps
+        - Adding AGENTS.md to context helped the agent understand the workflow
+
+  - type: dropdown
+    id: overall-experience
+    attributes:
+      label: Overall experience
+      description: How would you rate the overall experience?
+      options:
+        - Works well with minor limitations
+        - Usable with workarounds
+        - Significant limitations
+        - Not practical for this agent
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Any other details — screenshots, error messages, configuration, etc.

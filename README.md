@@ -164,6 +164,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full details on adding skills, agents
 | Document | Purpose |
 |----------|---------|
 | [AGENTS.md](AGENTS.md) | Full reference for AI agents — skills, councils, agents, configuration rules |
+| [Skills Reference](docs/SKILLS-REFERENCE.md) | Detailed per-skill documentation with step summaries and example output |
+| [Agent Compatibility](docs/AGENT-COMPATIBILITY.md) | Feature matrix and per-agent guidance for Claude Code, Cursor, Codex, and more |
+| [Customization Guide](docs/CUSTOMIZATION.md) | How to adapt skills, agents, and councils for your project |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to add skills, agents, councils, and submit changes |
 | [SECURITY.md](SECURITY.md) | Vulnerability reporting and security policy |
 
