@@ -93,9 +93,26 @@ Tailor the workflows to your project:
 
 - **Add an agent**: Create a new `.md` file in `canonical/agents/` following the existing format
 - **Modify a council**: Edit the council template in `canonical/councils/` to add or remove members
-- **Customize a skill**: Edit the workflow in `canonical/skills/` and run `scripts/build.sh` to regenerate
+- **Customize a skill**: Edit the workflow in `canonical/skills/` and rebuild
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for full details.
+### Build System
+
+All source content lives in `canonical/` — skill workflows, agent definitions, council templates, and shared templates. The build script assembles self-contained skill packages in `skills/` by copying each skill's SKILL.md and bundling the agents, councils, and templates it needs (defined in `scripts/skill-manifest.json`).
+
+```bash
+# Regenerate skills/ from canonical sources
+scripts/build.sh
+
+# Verify generated files match committed files (used by CI)
+scripts/build.sh --check
+```
+
+After editing anything in `canonical/`, run `scripts/build.sh` to regenerate. The `--check` flag compares the generated output against the committed `skills/` directory and reports any drift — this is what CI runs to ensure the generated files stay in sync with their sources.
+
+> [!IMPORTANT]
+> Never edit files in `skills/` directly — they are overwritten by the build. Always edit the sources in `canonical/`.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full details on adding skills, agents, and councils.
 
 ## Documentation
 
