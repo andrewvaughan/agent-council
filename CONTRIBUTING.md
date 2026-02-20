@@ -163,7 +163,7 @@ PR requirements:
 
 ### Merge Strategy
 
-Squash and merge (default). Keep PRs under 400 lines when possible.
+Rebase and merge. Keep PRs focused and commits atomic — each commit should be a self-contained, meaningful change.
 
 ## CI Checks
 
