@@ -227,7 +227,7 @@ Read our [Contributing Guide](CONTRIBUTING.md) to get started.
 
 ## 📝 License
 
-Proprietary.
+[MIT](LICENSE)
 
 ## 🙏 Acknowledgments
 
