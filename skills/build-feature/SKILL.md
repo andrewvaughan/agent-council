@@ -14,17 +14,27 @@ Execute a full-stack feature implementation across database, backend, frontend, 
 > **Checkpoint protocol.** When this workflow reaches a `### CHECKPOINT`, you **must** actively prompt the user for a decision — do not simply present information and continue. Use your agent's interactive prompting mechanism (e.g., `AskUserQuestion` in Claude Code) to require an explicit response before proceeding. This prevents queued or in-flight messages from being misinterpreted as approval. If your agent lacks interactive prompting, output the checkpoint content and **stop all work** until the user explicitly responds.
 
 > [!WARNING]
-> **Tech stack required.** This skill adapts to your project's technology choices. If `AGENTS.md` does not specify your project's frameworks, ORM, UI library, or test runner, **stop and ask the user** what their project uses. Then update `AGENTS.md` with a `## Tech Stack` section so future skills can reference it automatically. Example:
+> **Tech stack required.** This skill adapts to your project's technology choices. If `AGENTS.md` does not specify your project's frameworks, ORM, UI library, or test runner, **stop and ask the user** what their project uses. Then update `AGENTS.md` with a `## Tech Stack` section so future skills can reference it automatically. Your tech stack entries will look different from these examples — the format is the same, the values are yours:
+>
+> TypeScript/Node.js project:
 >
 >     ## Tech Stack
 >     - Frontend: React with TypeScript
 >     - Backend: Express with TypeScript
 >     - ORM: Prisma with PostgreSQL
->     - UI: Tailwind CSS + shadcn/ui
->     - State: React Query for server state, Zustand for client state
+>     - UI: Tailwind CSS
 >     - Test runner: Vitest
->     - E2E: Playwright
 >     - Package manager: npm
+>
+> Python project:
+>
+>     ## Tech Stack
+>     - Frontend: Vue with TypeScript
+>     - Backend: FastAPI with Python
+>     - ORM: SQLAlchemy with PostgreSQL
+>     - UI: Tailwind CSS
+>     - Test runner: pytest
+>     - Package manager: uv
 
 ## Step 1: Load Implementation Plan
 
@@ -85,6 +95,32 @@ From the plan (regardless of source), identify:
 - **Frontend tasks**: Components, routing, state management, styling
 - **Testing requirements**: Coverage goals, E2E scenarios, edge cases
 - **Feature flag**: Whether to wrap behind a flag
+
+### Tech Stack Detection
+
+Read `AGENTS.md` and locate the `## Tech Stack` section. Handle one of three cases:
+
+**Case 1 — `## Tech Stack` found:** Output a structured confirmation before proceeding:
+
+```
+Tech stack loaded from AGENTS.md:
+- Frontend: <value>
+- Backend: <value>
+- ORM / Data access: <value>
+- UI: <value>
+- Test runner: <value>
+- Package manager: <value>
+```
+
+If any detected framework is unfamiliar, state your confidence level and ask the user for conventions before generating framework-specific code:
+
+> I found `<framework>` in your AGENTS.md. I have general knowledge of `<framework>` but may not know your project's specific conventions. Are there patterns, file structures, or examples I should follow?
+
+Do not generate framework-specific scaffolding until the user responds.
+
+**Case 2 — AGENTS.md exists but has no `## Tech Stack` section:** Stop and ask the user to add one before continuing. Point to the `[!WARNING]` example above for format guidance.
+
+**Case 3 — AGENTS.md does not exist:** Stop and ask the user to create it with a `## Tech Stack` section before continuing.
 
 Verify we are on a feature branch (not `main`). If on `main`:
 

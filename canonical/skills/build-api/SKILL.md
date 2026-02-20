@@ -14,7 +14,9 @@ Build backend API endpoints, services, and database changes following your proje
 > **Checkpoint protocol.** When this workflow reaches a `### CHECKPOINT`, you **must** actively prompt the user for a decision — do not simply present information and continue. Use your agent's interactive prompting mechanism (e.g., `AskUserQuestion` in Claude Code) to require an explicit response before proceeding. This prevents queued or in-flight messages from being misinterpreted as approval. If your agent lacks interactive prompting, output the checkpoint content and **stop all work** until the user explicitly responds.
 
 > [!WARNING]
-> **Tech stack required.** This skill adapts to your project's technology choices. If `AGENTS.md` does not specify a backend framework, ORM, API style, validation library, or test runner, **stop and ask the user** what their project uses. Then update `AGENTS.md` with a `## Tech Stack` section so future skills can reference it automatically. Example:
+> **Tech stack required.** This skill adapts to your project's technology choices. If `AGENTS.md` does not specify a backend framework, ORM, API style, validation library, or test runner, **stop and ask the user** what their project uses. Then update `AGENTS.md` with a `## Tech Stack` section so future skills can reference it automatically. Your tech stack entries will look different from these examples — the format is the same, the values are yours:
+>
+> TypeScript/Node.js project:
 >
 >     ## Tech Stack
 >     - Backend: Express with TypeScript
@@ -23,6 +25,16 @@ Build backend API endpoints, services, and database changes following your proje
 >     - Validation: Zod
 >     - Test runner: Vitest
 >     - Package manager: npm
+>
+> Python project:
+>
+>     ## Tech Stack
+>     - Backend: FastAPI with Python
+>     - ORM: SQLAlchemy with PostgreSQL
+>     - API style: REST
+>     - Validation: Pydantic
+>     - Test runner: pytest
+>     - Package manager: uv
 
 ## Step 1: Define API Requirements
 
@@ -32,6 +44,32 @@ Verify we are on a feature branch (not `main`). If on `main`:
 git checkout main && git pull origin main
 git checkout -b feature/<feature-slug>
 ```
+
+### Tech Stack Detection
+
+Read `AGENTS.md` and locate the `## Tech Stack` section. Handle one of three cases:
+
+**Case 1 — `## Tech Stack` found:** Output a structured confirmation before proceeding:
+
+```
+Tech stack loaded from AGENTS.md:
+- Backend: <value>
+- ORM / Data access: <value>
+- API style: <value>
+- Validation: <value>
+- Test runner: <value>
+- Package manager: <value>
+```
+
+If any detected framework is unfamiliar, state your confidence level and ask the user for conventions before generating framework-specific code:
+
+> I found `<framework>` in your AGENTS.md. I have general knowledge of `<framework>` but may not know your project's specific conventions. Are there patterns, file structures, or examples I should follow?
+
+Do not generate framework-specific scaffolding until the user responds.
+
+**Case 2 — AGENTS.md exists but has no `## Tech Stack` section:** Stop and ask the user to add one before continuing. Point to the `[!WARNING]` example above for format guidance.
+
+**Case 3 — AGENTS.md does not exist:** Stop and ask the user to create it with a `## Tech Stack` section before continuing.
 
 Ask the user (or read from the decision record if `/plan-feature` was run first):
 
