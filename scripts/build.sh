@@ -247,6 +247,14 @@ if [ "$CHECK_MODE" = true ]; then
     fi
     cp "$src_skill" "$skill_dir/SKILL.md"
 
+    # Copy any extra files from the skill source directory
+    for extra_file in "${SKILLS_SOURCE}/${skill}"/*.md; do
+      base_name=$(basename "$extra_file")
+      [ "$base_name" != "SKILL.md" ] || continue
+      [ -f "$extra_file" ] || continue
+      cp "$extra_file" "$skill_dir/$base_name"
+    done
+
     # Validate frontmatter (same checks as build mode)
     if ! validate_frontmatter "$skill_dir/SKILL.md" "$skill"; then
       errors=$((errors + 1))
@@ -333,6 +341,16 @@ while IFS= read -r skill; do
   fi
   cp "$src_skill" "$skill_dir/SKILL.md"
 
+  # Copy any extra files from the skill source directory (e.g. GTM-REPORT-TEMPLATE.md)
+  extra_count=0
+  for extra_file in "${SKILLS_SOURCE}/${skill}"/*.md; do
+    base_name=$(basename "$extra_file")
+    [ "$base_name" != "SKILL.md" ] || continue
+    [ -f "$extra_file" ] || continue
+    cp "$extra_file" "$skill_dir/$base_name"
+    extra_count=$((extra_count + 1))
+  done
+
   # Validate SKILL.md frontmatter
   if ! validate_frontmatter "$skill_dir/SKILL.md" "$skill"; then
     errors=$((errors + 1))
@@ -344,6 +362,7 @@ while IFS= read -r skill; do
   template_count=$(copy_resources "templates" "$skill" "$skill_dir")
 
   echo "  SKILL.md: copied"
+  [ "$extra_count" -gt 0 ] && echo "  Extra files: ${extra_count}"
   echo "  Agents: ${agent_count}"
   echo "  Councils: ${council_count}"
   echo "  Templates: ${template_count}"

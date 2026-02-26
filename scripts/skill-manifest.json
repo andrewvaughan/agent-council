@@ -51,5 +51,38 @@
       "security-engineer",
       "backend-specialist"
     ]
+  },
+  "gtm-review": {
+    "councils": ["review-council", "gtm-council"],
+    "agents": [
+      "performance-analyst",
+      "content-reviewer",
+      "design-lead",
+      "lean-delivery-lead",
+      "product-strategist",
+      "business-ops-lead",
+      "security-engineer",
+      "qa-lead",
+      "devx-engineer",
+      "frontend-specialist",
+      "backend-specialist",
+      "platform-engineer"
+    ]
+  },
+  "hotfix": {
+    "councils": ["deployment-council"],
+    "agents": [
+      "platform-engineer",
+      "security-engineer",
+      "qa-lead"
+    ]
+  },
+  "setup-design-system": {
+    "councils": [],
+    "agents": [
+      "design-lead",
+      "frontend-specialist",
+      "product-strategist"
+    ]
   }
 }

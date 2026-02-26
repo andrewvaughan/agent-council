@@ -1,63 +1,33 @@
-# Claude Code Instructions
+# Claude Code — {PROJECT_NAME} <!-- TODO: Replace {PROJECT_NAME} with your project name -->
 
 @AGENTS.md
 
-## Model Mapping
+## Skills & Councils
 
-Agent complexity tiers map to Claude models:
+The development workflow described in `AGENTS.md` is implemented via Claude Code skills in `.claude/skills/`. Invoke skills with `/skill-name` syntax.
 
-- **Standard** → Sonnet (claude-sonnet-4-6) — routine work, most tasks
-- **Advanced** → Opus (claude-opus-4-6) — foundational architecture, major features, critical security
-- **Fast** → Haiku (claude-haiku-4-5-20251001) — routine checks, simple formatting
+| Skill                  | Purpose                         |
+| ---------------------- | ------------------------------- |
+| `/plan-feature`        | Feature planning pipeline       |
+| `/build-feature`       | Full-stack implementation       |
+| `/build-api`           | Backend-only implementation     |
+| `/review-code`         | Multi-perspective code review   |
+| `/submit-pr`           | PR creation and CI monitoring   |
+| `/hotfix`              | Urgent fix (streamlined pipeline) |
+| `/gtm-review`          | Go-to-Market & launch readiness |
+| `/security-audit`      | Security audit (standalone)     |
+| `/setup-design-system` | Design system work (standalone) |
 
-Use Standard by default. Escalate to Advanced only for decisions with broad or lasting impact.
+See `.claude/README.md` for the full reference on councils, agents, skill workflows, and model selection.
 
-## Claude Code Behavior
+## Checkpoints
 
-- Use **Task subagents** to run council members in parallel when a council is activated
-- Invoke skills via **slash commands**: `/plan-feature`, `/build-feature`, `/build-api`, `/review-code`, `/submit-pr`, `/security-audit`
-- After `gh pr create` or `git push`, always **monitor CI**: `gh run watch <run-id> --exit-status`
-- If CI fails, fetch logs (`gh run view <run-id> --log-failed`), fix, push, and re-watch
+Whenever a skill workflow reaches a `### CHECKPOINT` step or otherwise instructs you to "wait for user approval," "ask the user," or "wait for confirmation," you **must** use the `AskUserQuestion` tool instead of plain chat text. This ensures the user receives an interactive notification and can respond directly. Present the relevant context in the question description, and offer clear options (e.g., "Approve," "Request changes," "Skip").
 
-## Plugin Enhancements
+## JSON Files
 
-If [wshobson/agents](https://github.com/wshobson/agents) plugins are installed, skills can delegate to specialized plugins for enhanced results. Skills include conditional notes like:
+Do not use `//` or `//key` comment conventions in JSON files (e.g., `package.json`). Rely on commit messages and GitHub issues for documentation context instead.
 
-> **Claude Code optimization**: If the `/plugin:skill` is available, use it for enhanced results.
+## User-Facing Content Style
 
-Key plugins that enhance the experience:
-
-- `security-scanning` — SAST, hardening, STRIDE, attack trees
-- `ui-design` — accessibility audits, component creation, design review
-- `backend-development` — API design, architecture patterns
-- `frontend-mobile-development` — state management, design systems
-- `documentation-generation` — ADRs, changelogs, OpenAPI specs
-- `database-design` / `database-migrations` — schema design, migration strategies
-
-## Markdown Rendering
-
-Claude Code renders GitHub Flavored Markdown. Use these features in documentation and decision records:
-
-- **GitHub alerts**: `> [!NOTE]`, `> [!TIP]`, `> [!IMPORTANT]`, `> [!WARNING]`, `> [!CAUTION]`
-- **Mermaid diagrams**: Fenced code blocks with `mermaid` language tag
-- **Collapsible sections**: `<details>` / `<summary>` for lengthy content
-- **Tables**: For structured data with 3+ columns
-
-Formatting rules:
-
-- Never place consecutive bold-label lines without a blank line or list syntax between them
-- Use bullet points for structured metadata and key-value blocks
-- Use blank lines between paragraphs, after headings, and before/after lists
-
-## Documentation Standards
-
-Allowed root markdown files: README.md, CONTRIBUTING.md, CHANGELOG.md, LICENSE, AGENTS.md, CODE_OF_CONDUCT.md, SECURITY.md
-
-All project documentation files must include YAML frontmatter:
-
-```yaml
----
-type: guide | overview | reference
-description: one-line summary
----
-```
+All user-facing text (site copy, blog posts, in-app UI text, marketing pages, GTM content) must follow the writing style rules in the `AGENTS.md` "User-Facing Content Style" section. Key rules: no em dashes, no AI-slop vocabulary (delve, tapestry, landscape, leverage, seamless, etc.), no hollow transitions (moreover, furthermore, additionally), no rule-of-three defaults, no promotional inflation. This does not apply to internal docs, code, issues, or PRs.
