@@ -7,14 +7,14 @@ description: Multi-perspective AI development workflows using councils of specia
 
 **Ship better code by replacing single-agent guesswork with structured, multi-perspective AI workflows.**
 
-When a single AI agent plans, builds, and reviews its own code, blind spots compound. Agent Council fixes this by organizing 11 specialized agent personas into 5 councils — each bringing a distinct perspective (security, architecture, quality, operations, user experience) to every significant decision. The result: fewer missed edge cases, stronger security posture, and production-ready code that's been evaluated from multiple angles before it ever reaches a pull request.
+When a single AI agent plans, builds, and reviews its own code, blind spots compound. Agent Council fixes this by organizing 13 specialized agent personas into 6 councils — each bringing a distinct perspective (security, architecture, quality, operations, user experience) to every significant decision. The result: fewer missed edge cases, stronger security posture, and production-ready code that's been evaluated from multiple angles before it ever reaches a pull request.
 
 > [!TIP]
 > **New to council-driven development?** Jump to [Why Councils?](#why-councils) to understand the approach, or skip straight to [Installation](#installation) to try it.
 
 ## Skills
 
-Six executable workflows covering the full development lifecycle:
+Nine executable workflows covering the full development lifecycle:
 
 | Skill | Phase | What it does |
 |-------|-------|-------------|
@@ -23,7 +23,10 @@ Six executable workflows covering the full development lifecycle:
 | `build-api` | Build | Backend-focused API and database development; activates Architecture Council for significant API decisions |
 | `review-code` | Review | Automated SAST scanning + 4-member Review Council for security, quality, documentation, and domain review |
 | `submit-pr` | Ship | Pre-submission quality checks, PR creation with conventional formatting, and CI pipeline monitoring |
+| `hotfix` | Fix | Streamlined urgent-fix pipeline — branches, implements, focused review, creates PR, monitors CI |
+| `gtm-review` | Launch | Go-to-market readiness review combining performance, accessibility, security, content, and GTM Council vote |
 | `security-audit` | Audit | SAST + STRIDE threat modeling + attack tree analysis — standalone or as part of the review pipeline |
+| `setup-design-system` | Design | Initialize or extend a design system with accessible components, Tailwind/shadcn integration, and docs |
 
 ## Councils
 
@@ -36,10 +39,11 @@ Councils are groups of agent personas that evaluate proposals through structured
 | Architecture | 4 agents | API design — reviews schema changes, patterns, and scalability |
 | Review | 4 agents | Code review — assesses security, quality, testing, and documentation |
 | Deployment | 3 agents | PR submission — checks release readiness and infrastructure impact |
+| GTM | 5 agents | Launch readiness — content accuracy, performance, accessibility, and go-to-market readiness |
 
 ## Agent Personas
 
-Eleven specialized perspectives that staff the councils:
+Thirteen specialized perspectives that staff the councils:
 
 | Agent | Focus |
 |-------|-------|
@@ -54,6 +58,8 @@ Eleven specialized perspectives that staff the councils:
 | Lean Delivery Lead | Rapid iteration, feature flags, incremental delivery, shipping speed |
 | Design Lead | UI/UX design, design systems, accessibility, usability |
 | Business Operations Lead | Cost management, ROI analysis, resource allocation, operational impact |
+| Content Reviewer | Marketing content accuracy, messaging alignment, legal compliance |
+| Performance Analyst | Frontend bundle analysis, Core Web Vitals, backend API performance |
 
 Each agent has complexity tiers (Standard and Advanced) that scale review depth based on the significance of the decision.
 
@@ -92,18 +98,48 @@ This installs self-contained skill packages — each with its own bundled agent 
 > [!NOTE]
 > **Claude Code only.** The steps below apply specifically to Claude Code. For other AI coding agents (Cursor, Codex CLI, etc.), see the [Agent Compatibility guide](docs/AGENT-COMPATIBILITY.md).
 
-Agent Council skills invoke subagents via the `Task` tool and reference domain-specific guidance via Claude Code MCP plugins. Install the required [wshobson/agents](https://github.com/wshobson/agents) plugins before using the skills:
+Agent Council skills invoke specialized subagents from the [wshobson/agents](https://github.com/wshobson/agents) plugin marketplace. Install the plugins before using the skills:
 
-```bash
-# In Claude Code, add the plugins:
-/mcp add wshobson/agents:ui-design
-/mcp add wshobson/agents:security-scanning
-/mcp add wshobson/agents:frontend-mobile-development
-/mcp add wshobson/agents:backend-development
-/mcp add wshobson/agents:database-design
+**Step 1 — Add the plugin marketplace** (one-time):
+
+```
+/plugin marketplace add wshobson/agents
 ```
 
-These plugins provide specialized subagents that skills invoke for domain-specific tasks (accessibility audits, SAST scanning, component design, etc.). Skills gracefully degrade when plugins are unavailable — they fall back to manual checklists — but the automated integrations improve quality significantly.
+**Step 2 — Install each plugin** (or use `/plugin` to open the interactive manager and install from the Discover tab):
+
+```
+/plugin install code-documentation@claude-code-workflows
+/plugin install debugging-toolkit@claude-code-workflows
+/plugin install git-pr-workflows@claude-code-workflows
+/plugin install javascript-typescript@claude-code-workflows
+/plugin install full-stack-orchestration@claude-code-workflows
+/plugin install frontend-mobile-development@claude-code-workflows
+/plugin install backend-development@claude-code-workflows
+/plugin install backend-api-security@claude-code-workflows
+/plugin install frontend-mobile-security@claude-code-workflows
+/plugin install unit-testing@claude-code-workflows
+/plugin install code-review-ai@claude-code-workflows
+/plugin install api-testing-observability@claude-code-workflows
+/plugin install ui-design@claude-code-workflows
+/plugin install security-scanning@claude-code-workflows
+/plugin install database-migrations@claude-code-workflows
+/plugin install database-design@claude-code-workflows
+/plugin install cloud-infrastructure@claude-code-workflows
+/plugin install documentation-generation@claude-code-workflows
+/plugin install dependency-management@claude-code-workflows
+/plugin install deployment-validation@claude-code-workflows
+/plugin install observability-monitoring@claude-code-workflows
+/plugin install application-performance@claude-code-workflows
+/plugin install performance-testing-review@claude-code-workflows
+/plugin install seo-technical-optimization@claude-code-workflows
+/plugin install seo-content-creation@claude-code-workflows
+/plugin install content-marketing@claude-code-workflows
+/plugin install accessibility-compliance@claude-code-workflows
+/plugin install business-analytics@claude-code-workflows
+```
+
+Skills gracefully degrade when plugins are unavailable — they fall back to manual checklists — but the automated integrations improve quality significantly.
 
 Point your AI agent to `AGENTS.md` in the installed package for full instructions on available skills, councils, and agents.
 
