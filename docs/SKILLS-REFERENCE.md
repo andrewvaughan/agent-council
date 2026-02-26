@@ -17,9 +17,14 @@ graph LR
     C --> D
     D --> E[submit-pr]
     F[security-audit] -.-> |standalone| D
+    G[hotfix] -.-> |urgent fix| E
+    H[setup-design-system] -.-> |standalone| D
+    I[gtm-review] -.-> |standalone| E
 ```
 
 Each skill owns a single phase and hands off to the next. Skills never cross their scope boundary — `build-feature` commits code but never creates a PR, `review-code` reviews and fixes but never pushes.
+
+Standalone skills (`hotfix`, `setup-design-system`, `gtm-review`, `security-audit`) operate independently of the main pipeline.
 
 ---
 
@@ -371,3 +376,137 @@ For setup instructions and workarounds by agent, see [Agent Compatibility](AGENT
 ```
 
 </details>
+
+---
+
+## hotfix
+
+**Purpose**: Apply an urgent fix through a streamlined pipeline that skips the full planning cycle.
+
+**When to use**: Production bugs, security patches, and critical regressions that cannot wait for the full `/plan-feature` → `/build-feature` pipeline. The change must be small and focused — if it adds new functionality or touches more than ~100 lines, use `/plan-feature` instead.
+
+**What it does**:
+
+1. Defines the fix — gathers symptom, location, urgency, and GitHub issue number (if any) (checkpoint)
+2. Creates a `fix/` branch from latest `main` and investigates root cause
+3. Applies the minimal change needed and writes a regression test
+4. Runs self-checks — type-check, lint, test
+5. Runs a **focused review** — security SAST scan on changed files; accessibility check if frontend changed (checkpoint)
+6. Optionally activates the **Deployment Council** for DB migrations, infrastructure, env var, or auth changes (checkpoint)
+7. Runs pre-push checks, pushes, creates PR with bug description and fix summary (checkpoint)
+8. Monitors CI — auto-fixes formatting failures, checkpoints for other failures
+
+**Councils activated** (conditional):
+
+| Council | Members | When activated |
+|---------|---------|----------------|
+| Deployment | Platform Engineer (Lead), Security Engineer, QA Lead | DB migrations, infra changes, env vars, auth code |
+
+**Outputs**:
+
+- `fix/<short-description>` branch committed and pushed
+- GitHub PR with bug description, root cause, fix, and tests
+- CI monitoring result
+
+**Compatibility**:
+
+| Agent | Support | Notes |
+|-------|---------|-------|
+| Claude Code | Full | `gh` integration, automated review, CI monitoring |
+| Cursor | Partial | Follow steps manually, run checks in terminal |
+| Other agents | Manual | Follow the step-by-step workflow |
+
+For setup instructions and workarounds by agent, see [Agent Compatibility](AGENT-COMPATIBILITY.md).
+
+**Next step**: None — this skill covers the full fix lifecycle through PR creation and CI.
+
+---
+
+## gtm-review
+
+**Purpose**: Run a comprehensive go-to-market and launch readiness review covering performance, accessibility, security, content accuracy, and infrastructure.
+
+**When to use**: Before shipping a significant release, new feature launch, marketing campaign, or any phase where users will encounter the product for the first time. Run after `/review-code` and before final deployment.
+
+**What it does**:
+
+1. Defines launch scope — what's shipping, who the audience is, which areas to audit (checkpoint)
+2. Runs **code quality review** — SAST scan and Review Council on changed files
+3. Runs **performance audit** — Performance Analyst reviews bundle size, Core Web Vitals, API patterns, caching
+4. Runs **accessibility audit** — WCAG 2.1 AA compliance, keyboard navigation, screen reader compatibility
+5. Runs **content & marketing audit** — Content Reviewer checks every claim against actual capabilities, legal links, style compliance
+6. Activates **Architecture Council subset** for security review of new endpoints and auth changes
+7. Runs **infrastructure & documentation readiness** — CI/CD, migrations, monitoring, health checks, docs accuracy
+8. Activates the **GTM Council** (5 members) — full vote on launch readiness (checkpoint)
+9. Presents consolidated report — all findings by severity (checkpoint)
+10. Optionally remediates blocking and high-severity findings
+11. Produces a GTM readiness report in `docs/`
+
+**Councils activated**:
+
+| Council | Members | What they evaluate |
+|---------|---------|-------------------|
+| GTM | Product Strategist (Lead), Business Ops Lead, Content Reviewer, Design Lead, Lean Delivery Lead | Launch readiness, messaging, visual polish, business risk |
+| Architecture (subset) | Security Engineer, Principal Engineer, Backend Specialist | Security posture, infrastructure readiness |
+
+**Outputs**:
+
+- GTM readiness report (`docs/GTM-REPORT-<date>.md`)
+- Consolidated findings with severity levels and council votes
+- Optional committed fixes
+
+**Compatibility**:
+
+| Agent | Support | Notes |
+|-------|---------|-------|
+| Claude Code | Full | Parallel councils, automated scanning, `gh` integration |
+| Cursor | Partial | Follow checklist manually |
+| Other agents | Manual | Follow the step-by-step workflow |
+
+For setup instructions and workarounds by agent, see [Agent Compatibility](AGENT-COMPATIBILITY.md).
+
+**Next step**: `/submit-pr` if changes were made, or proceed to deployment.
+
+---
+
+## setup-design-system
+
+**Purpose**: Initialize or extend a design system with accessible, consistent UI components using Tailwind CSS and shadcn/ui.
+
+**When to use**: Setting up the initial design system from scratch, adding new component categories, or creating complex UI components that need design review. Can run at any point in the pipeline or independently.
+
+**What it does**:
+
+1. Assesses current state — checks for existing design system, shadcn config, Tailwind setup, and design tokens (checkpoint: initializing or extending?)
+2. Activates a **Product Council subset** for initialization or major structural changes — Design Lead, Frontend Specialist, Product Strategist (checkpoint)
+3. Sets up design system infrastructure — design tokens, Tailwind config, CSS custom properties, dark mode strategy, component directory structure
+4. For each component: defines API and variants, implements with full TypeScript and accessibility, writes tests (checkpoint after each component or batch)
+5. Runs **accessibility audit** — WCAG 2.1 AA compliance for all components (checkpoint)
+6. Runs **design review** — consistency, naming, API patterns, visual coherence
+7. Documents the design system — component catalog, token reference, accessibility guide, getting started
+8. Commits with conventional format
+
+**Councils activated** (conditional):
+
+| Council | Members | When activated |
+|---------|---------|----------------|
+| Product (subset) | Design Lead (Lead), Frontend Specialist, Product Strategist | Initialization or major structural changes |
+
+**Outputs**:
+
+- Design system infrastructure (`packages/ui/src/` or similar)
+- Accessible components with TypeScript types, variants, and tests
+- Design token definitions
+- Component documentation
+
+**Compatibility**:
+
+| Agent | Support | Notes |
+|-------|---------|-------|
+| Claude Code | Full | Parallel council via Task subagents, automated accessibility audit |
+| Cursor | Partial | Follow steps manually |
+| Other agents | Manual | Follow the step-by-step workflow |
+
+For setup instructions and workarounds by agent, see [Agent Compatibility](AGENT-COMPATIBILITY.md).
+
+**Next step**: `/review-code` → `/submit-pr` for standalone design work. If building a feature that uses these components, continue with `/build-feature`.
