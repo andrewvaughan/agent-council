@@ -247,11 +247,16 @@ if [ "$CHECK_MODE" = true ]; then
     fi
     cp "$src_skill" "$skill_dir/SKILL.md"
 
-    # Copy any extra files from the skill source directory
+    # Copy any extra files from the skill source directory.
+    # Policy: symlinks are not permitted in canonical/skills/ — skip and warn if found.
     for extra_file in "${SKILLS_SOURCE}/${skill}"/*.md; do
       base_name=$(basename "$extra_file")
       [ "$base_name" != "SKILL.md" ] || continue
       [ -f "$extra_file" ] || continue
+      if [ -L "$extra_file" ]; then
+        echo "  WARNING: Skipping symlink in skill source: ${base_name}"
+        continue
+      fi
       cp "$extra_file" "$skill_dir/$base_name"
     done
 
@@ -341,12 +346,17 @@ while IFS= read -r skill; do
   fi
   cp "$src_skill" "$skill_dir/SKILL.md"
 
-  # Copy any extra files from the skill source directory (e.g. GTM-REPORT-TEMPLATE.md)
+  # Copy any extra files from the skill source directory (e.g. GTM-REPORT-TEMPLATE.md).
+  # Policy: symlinks are not permitted in canonical/skills/ — skip and warn if found.
   extra_count=0
   for extra_file in "${SKILLS_SOURCE}/${skill}"/*.md; do
     base_name=$(basename "$extra_file")
     [ "$base_name" != "SKILL.md" ] || continue
     [ -f "$extra_file" ] || continue
+    if [ -L "$extra_file" ]; then
+      echo "  WARNING: Skipping symlink in skill source: ${base_name}"
+      continue
+    fi
     cp "$extra_file" "$skill_dir/$base_name"
     extra_count=$((extra_count + 1))
   done
