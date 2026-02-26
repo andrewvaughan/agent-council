@@ -1,100 +1,114 @@
 ---
 name: build-api
 description: Build backend API endpoints, services, and database changes. Use for backend-only work like new API routes, business logic, database schema changes, or microservice patterns. Activates the Architecture Council for significant API decisions.
+user-invokable: true
 ---
 
 # Backend API Development Workflow
 
-Build backend API endpoints, services, and database changes following your project's backend framework conventions and architecture patterns. Read the project's `AGENTS.md` for tech stack details (framework, ORM, API style, test runner, etc.).
+Build backend API endpoints, services, and database changes following NestJS patterns, Prisma schema design, and the project's clean architecture conventions.
 
 > [!CAUTION]
 > **Scope boundary**: This skill implements backend code and commits it. It does **NOT** create pull requests, push to remote, run code reviews, or submit anything for merge. When implementation and commits are complete, **stop** and suggest the user run `/review-code` next.
 
-> [!WARNING]
-> **Checkpoint protocol.** When this workflow reaches a `### CHECKPOINT`, you **must** actively prompt the user for a decision — do not simply present information and continue. Use your agent's interactive prompting mechanism (e.g., `AskUserQuestion` in Claude Code) to require an explicit response before proceeding. This prevents queued or in-flight messages from being misinterpreted as approval. If your agent lacks interactive prompting, output the checkpoint content and **stop all work** until the user explicitly responds.
-
-> [!WARNING]
-> **Tech stack required.** This skill adapts to your project's technology choices. If `AGENTS.md` does not specify a backend framework, ORM, API style, validation library, or test runner, **stop and ask the user** what their project uses. Then update `AGENTS.md` with a `## Tech Stack` section so future skills can reference it automatically. Your tech stack entries will look different from these examples — the format is the same, the values are yours:
->
-> TypeScript/Node.js project:
->
->     ## Tech Stack
->     - Backend: Express with TypeScript
->     - ORM: Prisma with PostgreSQL
->     - API style: REST
->     - Validation: Zod
->     - Test runner: Vitest
->     - Package manager: npm
->
-> Python project:
->
->     ## Tech Stack
->     - Backend: FastAPI with Python
->     - ORM: SQLAlchemy with PostgreSQL
->     - API style: REST
->     - Validation: Pydantic
->     - Test runner: pytest
->     - Package manager: uv
-
 ## Step 1: Define API Requirements
 
-Verify we are on a feature branch (not `main`). If on `main`:
+Ensure we are on a feature branch based on the latest `main`. Always fetch first:
 
 ```bash
-git checkout main && git pull origin main
-git checkout -b feature/<feature-slug>
+git fetch origin main
 ```
 
-### Tech Stack Detection
+If on `main`, create a new feature branch from the latest `origin/main`:
 
-Read `AGENTS.md` and locate the `## Tech Stack` section. Handle one of three cases:
-
-**Case 1 — `## Tech Stack` found:** Output a structured confirmation before proceeding:
-
-```
-Tech stack loaded from AGENTS.md:
-- Backend: <value>
-- ORM / Data access: <value>
-- API style: <value>
-- Validation: <value>
-- Test runner: <value>
-- Package manager: <value>
+```bash
+git checkout -b feature/<feature-slug> origin/main
 ```
 
-If any detected framework is unfamiliar, state your confidence level and ask the user for conventions before generating framework-specific code:
+If already on an existing feature branch, rebase it onto the latest `origin/main` to pick up any changes:
 
-> I found `<framework>` in your AGENTS.md. I have general knowledge of `<framework>` but may not know your project's specific conventions. Are there patterns, file structures, or examples I should follow?
+```bash
+git status --porcelain
+```
 
-Do not generate framework-specific scaffolding until the user responds.
+If the working tree is dirty, stash changes before rebasing:
 
-**Case 2 — AGENTS.md exists but has no `## Tech Stack` section:** Stop and ask the user to add one before continuing. Point to the `[!WARNING]` example above for format guidance.
+```bash
+git stash push -m "build-api: stash before rebase"
+git rebase origin/main
+git stash pop
+```
 
-**Case 3 — AGENTS.md does not exist:** Stop and ask the user to create it with a `## Tech Stack` section before continuing.
+If the working tree is clean, rebase directly:
 
-Ask the user (or read from the decision record if `/plan-feature` was run first):
+```bash
+git rebase origin/main
+```
+
+If the user provides a GitHub issue number (e.g., `/build-api 42` or `/build-api #42`), fetch the issue and signal work is in progress (see AGENTS.md "Label Management" for rules):
+
+```bash
+gh issue view <number> --json title,body,labels,state,number
+
+# Single-developer constraint: only one issue should be in-progress at a time.
+# First, remove in-progress from any other issue that has it:
+gh issue list --label "in-progress" --state open --json number --jq '.[].number' | while read n; do
+  gh issue edit "$n" --remove-label "in-progress"
+done
+
+gh issue edit <number> --add-label "in-progress"
+```
+
+Verify the issue is tracked on the [Product Roadmap]({PROJECT_BOARD_URL}) project board. If not, add it:
+
+```bash
+# --limit 200 covers the current board size; increase if the project grows beyond 200 items
+EXISTING=$(gh project item-list {PROJECT_NUMBER} --owner {OWNER} --format json --limit 200 \
+  | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+for item in data.get('items', []):
+    # <number> must be an integer literal, e.g., == 42, not == '42'
+    if item.get('content', {}).get('number') == <number>:
+        print(item['id'])
+        break
+")
+
+if [ -z "$EXISTING" ]; then
+  ITEM_ID=$(gh project item-add {PROJECT_NUMBER} --owner {OWNER} --url "https://github.com/{OWNER}/{REPO}/issues/<number>" --format json | python3 -c "import json,sys; print(json.load(sys.stdin)['id'])")
+  echo "Warning: Issue #<number> was not on the project board. Added it now (item $ITEM_ID)."
+fi
+```
+
+> [!WARNING]
+> If the issue was missing from the project board, it may also be missing phase, size, and date fields. Check the project item and warn the user if fields are unset — this suggests the issue was created outside of `/plan-feature` or `/security-audit`, which are the skills that ensure board membership and field population.
+
+Ask the user (or read from the decision record / issue body if `/plan-feature` was run first):
 
 - What resource(s) or endpoint(s) are being created or modified?
 - What operations are needed (CRUD, custom actions, queries)?
 - Are there database schema changes?
-- What API style does the project use (REST, RPC, etc.)?
+- Is this a tRPC procedure or REST endpoint?
 - Are there authentication or authorization requirements?
 
 If a decision record exists in `docs/decisions/`, read it for the task breakdown.
 
 ## Step 2: Design API Contract
 
-Design the full API contract following your project's API conventions:
+Invoke `/backend-development:api-design-principles` for API design guidance.
 
-- **Endpoints or procedures**: Paths, methods, or procedure names per your API style
-- **Request types**: Typed interfaces with all fields, optional/required markers
+Design the full API contract:
+
+- **Endpoint paths and HTTP methods** (REST) or **procedure names** (tRPC)
+- **Request types**: Full TypeScript interfaces with all fields, optional/required markers
 - **Response types**: Success responses, error responses, pagination if applicable
-- **Validation rules**: Using your project's validation library for runtime validation
+- **Validation rules**: Using Zod schemas for runtime validation
 - **Error format**: Standardized error response structure
 - **Auth requirements**: Which endpoints need authentication, role-based access
 
-If this represents a **significant API decision** (new resource type, breaking change to existing API, new architectural pattern), activate the Architecture Council using the skill's `councils/architecture-council.md`:
+If this represents a **significant API decision** (new resource type, breaking change to existing API, new architectural pattern), activate the Architecture Council using `.claude/councils/architecture-council.md`:
 
-> **Model Selection**: For each council member, read their agent definition from the skill's `agents/<agent-name>.md` and use the model specified in their `## Model` section when spawning Task subagents. Match the context (routine vs. critical) to select the appropriate model when an agent lists multiple options.
+> **Model Selection**: See the [Model Selection](../../README.md#model-selection) section in README.md for mapping agent model specs to Task tool parameters.
 
 ### Principal Engineer — consult: full-stack-orchestration
 
@@ -117,7 +131,7 @@ If this represents a **significant API decision** (new resource type, breaking c
 ### Backend Specialist — consult: backend-development
 
 - **Vote**: Approve / Concern / Block
-- **Rationale**: API design quality, framework patterns, developer experience
+- **Rationale**: API design quality, NestJS patterns, developer experience
 - **Recommendations**: Implementation approach, ecosystem integration
 
 ### CHECKPOINT: Present the API contract (and Architecture Council evaluation if activated) to the user. Wait for approval before implementation begins.
@@ -126,47 +140,55 @@ If this represents a **significant API decision** (new resource type, breaking c
 
 If schema changes are required:
 
-1. Design the schema changes using your project's ORM or data access layer:
+1. Invoke `/database-design:postgresql` for PostgreSQL schema design guidance
+
+2. Design the Prisma schema changes:
    - Model definitions with proper field types
    - Relations and foreign keys
    - Indexes for query performance
    - Unique constraints and validations
    - Enums where appropriate
 
-### CHECKPOINT: Present the schema changes and migration plan to the user. Wait for approval before running the migration.
+3. Invoke `/database-migrations:sql-migrations` for migration generation guidance
 
-2. Generate and apply the migration using your project's migration tool.
+### CHECKPOINT: Present the Prisma schema changes and migration plan to the user. Wait for approval before running the migration.
 
-3. If seed data is needed, update the seed script.
+4. Generate and apply the migration:
+
+   ```bash
+   pnpm db:migrate
+   ```
+
+5. If seed data is needed, update the seed script.
 
 ## Step 4: Implement Backend
 
-Follow your project's backend framework patterns and conventions:
+Follow NestJS patterns and `/backend-development:architecture-patterns` for clean architecture:
 
 ### Types and DTOs
 
-- Define typed request/response interfaces
-- Create validation schemas for runtime validation
-- Export types for frontend consumption if applicable
+- Define request/response TypeScript interfaces
+- Create Zod validation schemas for runtime validation
+- Export types for frontend consumption (via tRPC or shared packages)
 
 ### Repository / Data Access Layer
 
-- Create or update data access queries using your project's ORM
+- Create or update Prisma queries
 - Implement data access patterns (repository pattern if used)
-- Add query optimization (select specific fields, use eager loading wisely)
+- Add query optimization (select specific fields, use includes wisely)
 
 ### Service Layer
 
-- Implement business logic in service classes/modules
+- Implement business logic in NestJS services
 - Add input validation and business rule enforcement
 - Handle error cases with typed exceptions
 - Keep services testable (inject dependencies)
 
 ### Controller / Router Layer
 
-- Create API handlers following your project's routing conventions
+- Create tRPC procedures or NestJS controllers
 - Wire up validation, auth guards, and services
-- Implement proper status codes and error formats
+- Implement proper HTTP status codes (REST) or error codes (tRPC)
 - Add rate limiting if needed for public endpoints
 
 ### Guards and Middleware
@@ -175,6 +197,10 @@ Follow your project's backend framework patterns and conventions:
 - Add authorization checks (role-based or resource-based)
 - Add request logging for debugging
 
+Use `/javascript-typescript:typescript-advanced-types` for complex type scenarios (generics, conditional types, mapped types).
+
+For performance-sensitive endpoints, invoke `/application-performance:performance-optimization` for API profiling and optimization patterns.
+
 ## Step 5: Write Tests
 
 Following the QA Lead testing strategy:
@@ -182,7 +208,7 @@ Following the QA Lead testing strategy:
 ### Unit Tests
 
 - Test each service method in isolation
-- Mock database client and external dependencies
+- Mock Prisma client and external dependencies
 - Test business logic, validation rules, error handling
 - Cover happy paths and edge cases
 
@@ -200,42 +226,54 @@ Following the QA Lead testing strategy:
 - Missing required fields
 - Type coercion and casting
 
-Run tests using your project's test runner and verify coverage meets the >80% target.
+Run tests and verify coverage:
+
+```bash
+pnpm test
+```
+
+Ensure coverage meets the >80% target.
 
 ## Step 6: Generate API Documentation
 
-Generate or update API documentation for the new endpoints. If your project uses an API specification format (OpenAPI, AsyncAPI, etc.), update it to reflect the new endpoints.
+Invoke `/documentation-generation:openapi-spec-generation` to generate or update API documentation for the new endpoints.
+
+If using tRPC, document the procedure signatures and usage examples.
+If using REST, generate or update the OpenAPI/Swagger specification.
 
 ## Step 7: Self-Review
 
-Before presenting to the user, run your project's quality checks:
+Before presenting to the user, verify:
 
-- Type checking (no type errors)
-- Linting (no violations)
-- Formatting (no style issues)
-- Tests (all pass)
+```bash
+pnpm type-check      # No TypeScript errors
+pnpm lint            # No linting violations
+pnpm format:check    # No Prettier formatting issues
+pnpm test            # All unit tests pass
+pnpm test:smoke      # DI container and HTTP pipeline boot OK
+```
 
-If formatting fails, run the auto-formatter on the reported files before proceeding.
+If `format:check` fails, run `pnpm exec prettier --write` on the reported files before proceeding.
 
 Check for common issues:
 
 - No hardcoded secrets or credentials
 - Proper error handling (no swallowed errors)
 - Input validation on all external-facing endpoints
-- Strict typing (no untyped escape hatches)
+- Proper use of TypeScript strict mode (no `any` types)
 
 ## Step 8: Update Documentation
 
 If this API change alters how the project is set up, built, or run, update the relevant documentation **before committing**:
 
-1. **AGENTS.md Tech Stack** — If this implementation introduces or changes any technology (new database, new library, new API pattern), update the `## Tech Stack` section in `AGENTS.md` so future skills reference the correct stack
-2. **README.md** — Update Quick Start, Installation, Usage, or Project Structure sections if the change introduces new infrastructure, services, environment variables, or commands
-3. **Other docs** — Update any relevant documentation files as needed
-
-### CHECKPOINT: If the Tech Stack section in AGENTS.md needs updating, present the proposed changes to the user and wait for approval. The tech stack definition affects all future skill runs.
+1. **README.md** — Update Quick Start, Running the Application, or Project Structure sections if the change introduces new infrastructure, services, environment variables, or commands
+2. **docs/DEVELOPMENT.md** — Update Prerequisites, Local Development Setup, Database Operations, or Troubleshooting sections as needed
+3. **Makefile** — Add new targets for common operations (e.g., new Docker services, database commands)
+4. **`.env.example` files** — Add new environment variables with clear descriptions and safe defaults
+5. **`docs/INDEX.md`** — If any new files were added to `docs/`, add them to the appropriate table in the master documentation index
 
 > [!IMPORTANT]
-> A developer cloning the repo fresh must be able to get the project running by following README.md alone. If your API change adds a service, database, new environment variable, or external dependency, the docs MUST reflect it.
+> A developer cloning the repo fresh must be able to get the project running by following README.md alone. If your API change adds a Docker service, database, new environment variable, or external dependency, the docs MUST reflect it.
 
 ## Step 9: Commit
 
@@ -252,6 +290,19 @@ Or if modifying existing endpoints:
 ```
 feat(api): update <resource> with <change-description>
 ```
+
+### Update GitHub Issue
+
+If implementation was initiated from a GitHub issue:
+
+1. Comment on it with progress:
+
+   ```bash
+   gh issue comment <number> --body "Implementation committed on branch \`<branch-name>\`. Proceeding to code review via \`/review-code\`."
+   ```
+
+> [!NOTE]
+> Do **not** remove the `in-progress` label here. The label stays on the issue until it is closed (handled automatically by `.github/workflows/label-cleanup.yml`). This ensures the issue remains visibly in-progress through code review and PR submission.
 
 ## Step 10: Hand Off — STOP Here
 
