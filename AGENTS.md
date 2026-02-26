@@ -198,7 +198,7 @@ Dependency versions: Always use `^` (caret) ranges — never `>=`, `>`, or `*`. 
 
 ## Tech Stack
 
-<!-- TODO: Replace the tech stack below with your project's actual stack. -->
+<!-- TODO: Replace the tech stack below with your project's actual stack. If you use a pnpm monorepo, also update the {PACKAGE_SCOPE} placeholder in .claude/settings.json with your workspace scope (e.g., "@myorg"). -->
 Frontend: Vite + React 19, TypeScript 5.7+, Tailwind CSS + shadcn/ui
 Backend: NestJS, Prisma + PostgreSQL, tRPC
 Monorepo: pnpm + Turborepo
