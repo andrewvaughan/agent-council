@@ -89,6 +89,22 @@ This installs self-contained skill packages — each with its own bundled agent 
 
 ### Post-Install
 
+> [!NOTE]
+> **Claude Code only.** The steps below apply specifically to Claude Code. For other AI coding agents (Cursor, Codex CLI, etc.), see the [Agent Compatibility guide](docs/AGENT-COMPATIBILITY.md).
+
+Agent Council skills invoke subagents via the `Task` tool and reference domain-specific guidance via Claude Code MCP plugins. Install the required [wshobson/agents](https://github.com/wshobson/agents) plugins before using the skills:
+
+```bash
+# In Claude Code, add the plugins:
+/mcp add wshobson/agents:ui-design
+/mcp add wshobson/agents:security-scanning
+/mcp add wshobson/agents:frontend-mobile-development
+/mcp add wshobson/agents:backend-development
+/mcp add wshobson/agents:database-design
+```
+
+These plugins provide specialized subagents that skills invoke for domain-specific tasks (accessibility audits, SAST scanning, component design, etc.). Skills gracefully degrade when plugins are unavailable — they fall back to manual checklists — but the automated integrations improve quality significantly.
+
 Point your AI agent to `AGENTS.md` in the installed package for full instructions on available skills, councils, and agents.
 
 ### Configuring Your Tech Stack
@@ -171,6 +187,18 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full details on adding skills, agents
 | [Customization Guide](docs/CUSTOMIZATION.md) | How to adapt skills, agents, and councils for your project |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to add skills, agents, councils, and submit changes |
 | [SECURITY.md](SECURITY.md) | Vulnerability reporting and security policy |
+
+## Model Selection
+
+Skills use different Claude models calibrated to task complexity. Pass the appropriate model to the `Task` tool's `model` parameter when invoking subagents:
+
+| Role | Tier | Model |
+|------|------|-------|
+| Strategic planning, architecture decisions | Advanced | `claude-opus-4-6` |
+| Full implementation, council reviews | Standard | `claude-sonnet-4-6` |
+| Focused checks, formatting, quick tasks | Efficient | `claude-haiku-4-5-20251001` |
+
+For the full guide including per-agent tier assignments, see [`.claude/README.md`](.claude/README.md#model-selection).
 
 ## Contributing
 

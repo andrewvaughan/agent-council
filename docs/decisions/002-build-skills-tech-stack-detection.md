@@ -161,7 +161,7 @@ Revisit once at least one external user reports using the skills with a non-Type
 
 - [Issue #6](https://github.com/andrewvaughan/agent-council/issues/6) — Phase 2: Transform implementation skills
 - [Issue #16](https://github.com/andrewvaughan/agent-council/issues/16) — Decouple wshobson/agents plugin references (related; `build-api` Step 2 contains plugin consult references)
-- [Decision 001](docs/decisions/001-example-architecture-decision.md) — Example decision record template
-- [AGENTS.md](AGENTS.md) — Agent council reference and tech stack declaration format
-- [canonical/skills/build-feature/SKILL.md](canonical/skills/build-feature/SKILL.md)
-- [canonical/skills/build-api/SKILL.md](canonical/skills/build-api/SKILL.md)
+- [Decision 001](001-example-architecture-decision.md) — Example decision record template
+- [AGENTS.md](../../AGENTS.md) — Agent council reference and tech stack declaration format
+- [canonical/skills/build-feature/SKILL.md](../../canonical/skills/build-feature/SKILL.md)
+- [canonical/skills/build-api/SKILL.md](../../canonical/skills/build-api/SKILL.md)

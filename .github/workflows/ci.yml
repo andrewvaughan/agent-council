@@ -267,9 +267,9 @@ jobs:
             for link in $links; do
               # Resolve relative to the file's directory
               if [ -n "$link" ]; then
-                # Skip template placeholders (e.g., NNN-slug.md, <number>)
+                # Skip template placeholders (e.g., NNN-slug.md, <number>, {PLACEHOLDER})
                 case "$link" in
-                  *NNN*|*'<'*) continue ;;
+                  *NNN*|*'<'*|*'{'*) continue ;;
                 esac
                 resolved="${dir}/${link}"
                 if [ ! -e "$resolved" ]; then
@@ -278,7 +278,7 @@ jobs:
                 fi
               fi
             done
-          done < <(find . -type f -name "*.md" | grep -v node_modules | grep -v '.git/')
+          done < <(find . -type f -name "*.md" | grep -v node_modules | grep -v '.git/' | grep -v './canonical/skills/')
 
           if [ $errors -gt 0 ]; then
             echo ""

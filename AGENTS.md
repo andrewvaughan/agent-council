@@ -490,7 +490,7 @@ The application assumes it runs behind a TLS-terminating reverse proxy in produc
 - Any change to an existing formula or threshold
 
 <!-- TODO: Update the canonical reference path below if your project uses a different structure for domain documentation. -->
-**Canonical science reference:** All scientific models, formulas, thresholds, and data source documentation live in [`docs/science/`](docs/science/INDEX.md). Update the relevant file there whenever you modify a scientific constant or model.
+**Canonical science reference:** All scientific models, formulas, thresholds, and data source documentation live in `docs/science/`. <!-- TODO: Create docs/science/INDEX.md as your domain science reference, then update this line to link to it. Remove this section if your project does not have domain-specific scientific models. --> Update the relevant file there whenever you modify a scientific constant or model.
 
 **Where to put citations:**
 
